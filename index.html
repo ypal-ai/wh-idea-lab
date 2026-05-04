@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WH Idea Lab — Women's Health & Productivity Intelligence</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #faf7f2;
+      --warm-white: #fffdf9;
+      --blush: #f2d4c8;
+      --rose: #d4816a;
+      --deep-rose: #b05a44;
+      --sage: #8aab8a;
+      --deep-sage: #5c7a5c;
+      --navy: #1e2d40;
+      --navy-mid: #2d4a6b;
+      --gold: #c9a84c;
+      --gold-light: #f0d98a;
+      --lavender: #b8a9d0;
+      --teal: #4a9b8e;
+      --text: #2c2c2c;
+      --text-light: #6b6b6b;
+      --border: rgba(30,45,64,.1);
+      --card-shadow: 0 4px 24px rgba(30,45,64,.08);
+      --radius: 16px;
+      --radius-sm: 10px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(255,253,249,.95); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px; height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo-mark {
+      width: 32px; height: 32px; border-radius: 9px;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 50%, var(--deep-sage) 100%);
+      display: flex; align-items: center; justify-content: center; font-size: 1rem;
+    }
+    .nav-logo-text { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--navy); font-weight: 700; }
+    .nav-logo-sub { font-size: .65rem; color: var(--text-light); letter-spacing: .08em; text-transform: uppercase; display: block; line-height: 1; margin-top: 1px; }
+    .nav-tabs { display: flex; gap: 4px; background: rgba(30,45,64,.06); padding: 4px; border-radius: 100px; }
+    .nav-tab {
+      padding: 7px 20px; border-radius: 100px; border: none; cursor: pointer;
+      font-family: 'Inter', sans-serif; font-size: .83rem; font-weight: 500;
+      color: var(--text-light); background: transparent; transition: all .2s;
+    }
+    .nav-tab.active { background: var(--navy); color: #fff; box-shadow: 0 2px 12px rgba(30,45,64,.25); }
+    .nav-tab:hover:not(.active) { color: var(--navy); background: rgba(30,45,64,.08); }
+    .nav-right { display: flex; align-items: center; gap: 10px; }
+    .nav-date { font-size: .75rem; color: var(--text-light); }
+
+    /* ── PAGES ── */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ── INTELLIGENCE PAGE ── */
+
+    /* Hero stats banner */
+    .intel-hero {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 50%, #3a5a3a 100%);
+      padding: 48px 24px 40px; color: #fff;
+    }
+    .intel-hero-inner { max-width: 1200px; margin: 0 auto; }
+    .intel-hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 36px; }
+    .intel-hero-title { font-family: 'Playfair Display', serif; }
+    .intel-hero-title .eyebrow { font-family: 'Inter', sans-serif; font-size: .72rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 8px; display: block; }
+    .intel-hero-title h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1.15; color: #fff; }
+    .intel-hero-title h1 em { font-style: italic; color: var(--blush); }
+    .intel-hero-title p { font-size: .9rem; color: rgba(255,255,255,.6); margin-top: 10px; max-width: 420px; line-height: 1.6; }
+    .intel-hero-badge { background: rgba(201,168,76,.2); border: 1px solid rgba(201,168,76,.4); border-radius: 100px; padding: 6px 16px; font-size: .75rem; color: var(--gold-light); font-weight: 500; white-space: nowrap; align-self: flex-start; }
+    .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; }
+    .stat-card {
+      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius-sm); padding: 18px 20px; backdrop-filter: blur(8px);
+    }
+    .stat-card .stat-val { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 700; color: #fff; line-height: 1; }
+    .stat-card .stat-label { font-size: .72rem; color: rgba(255,255,255,.55); text-transform: uppercase; letter-spacing: .08em; margin-top: 4px; }
+    .stat-card .stat-growth { font-size: .78rem; color: #6ee7a0; font-weight: 600; margin-top: 6px; display: flex; align-items: center; gap: 4px; }
+    .stat-card .stat-growth.neg { color: #fca5a5; }
+
+    /* Section layout */
+    .intel-body { max-width: 1200px; margin: 0 auto; padding: 36px 24px 80px; display: flex; flex-direction: column; gap: 48px; }
+    .section-header { margin-bottom: 20px; display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .section-header h2 { font-family: 'Playfair Display', serif; font-size: 1.45rem; color: var(--navy); }
+    .section-header p { font-size: .83rem; color: var(--text-light); margin-top: 4px; }
+    .section-tag { font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--rose); }
+
+    /* Trend cards */
+    .trends-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
+    .trend-card {
+      background: var(--warm-white); border-radius: var(--radius); padding: 22px 22px 18px;
+      box-shadow: var(--card-shadow); border: 1px solid transparent;
+      transition: transform .2s, box-shadow .2s, border-color .2s;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .trend-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(30,45,64,.12); border-color: var(--border); }
+    .trend-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+    .trend-icon { font-size: 1.6rem; line-height: 1; }
+    .trend-momentum { display: flex; align-items: center; gap: 5px; font-size: .72rem; font-weight: 700; padding: 4px 10px; border-radius: 100px; }
+    .momentum-hot { background: rgba(255,100,60,.1); color: #d44a20; }
+    .momentum-rising { background: rgba(201,168,76,.12); color: #9a7520; }
+    .momentum-steady { background: rgba(138,171,138,.15); color: var(--deep-sage); }
+    .momentum-emerging { background: rgba(184,169,208,.2); color: #6b5a8c; }
+    .trend-card h3 { font-size: 1rem; font-weight: 600; color: var(--navy); line-height: 1.3; }
+    .trend-card p { font-size: .83rem; color: var(--text-light); line-height: 1.6; flex: 1; }
+    .trend-meta { display: flex; flex-wrap: wrap; gap: 6px; padding-top: 6px; border-top: 1px solid var(--border); }
+    .trend-tag { font-size: .68rem; font-weight: 500; padding: 3px 9px; border-radius: 100px; background: rgba(30,45,64,.06); color: var(--text-light); }
+    .trend-size { font-size: .76rem; font-weight: 600; color: var(--deep-rose); margin-left: auto; }
+
+    /* Market size bars */
+    .market-table { display: flex; flex-direction: column; gap: 14px; }
+    .market-row { display: grid; grid-template-columns: 200px 1fr auto; align-items: center; gap: 16px; }
+    .market-label { font-size: .85rem; font-weight: 500; color: var(--navy); }
+    .market-bar-track { height: 10px; background: rgba(30,45,64,.08); border-radius: 100px; overflow: hidden; }
+    .market-bar-fill { height: 100%; border-radius: 100px; transition: width 1.2s cubic-bezier(.4,0,.2,1); }
+    .market-size-val { font-size: .82rem; font-weight: 700; color: var(--text-light); white-space: nowrap; min-width: 100px; text-align: right; }
+    .market-notes { font-size: .75rem; color: var(--text-light); margin-top: 2px; }
+
+    /* Competitor grid */
+    .competitor-cats { display: flex; flex-direction: column; gap: 28px; }
+    .comp-cat-label { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-light); margin-bottom: 10px; }
+    .comp-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+    .comp-pill {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--warm-white); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 8px 14px;
+      font-size: .82rem; transition: all .15s;
+    }
+    .comp-pill:hover { border-color: var(--rose); box-shadow: 0 2px 12px rgba(212,129,106,.12); }
+    .comp-pill-icon { font-size: 1rem; }
+    .comp-pill-name { font-weight: 600; color: var(--navy); }
+    .comp-pill-stage { font-size: .68rem; color: var(--text-light); }
+    .comp-pill-funding { font-size: .68rem; font-weight: 600; color: var(--deep-rose); }
+    .comp-pill-tag { font-size: .65rem; padding: 2px 7px; border-radius: 100px; font-weight: 500; }
+    .ct-leader { background: rgba(30,45,64,.08); color: var(--navy); }
+    .ct-growing { background: rgba(201,168,76,.12); color: #8a6010; }
+    .ct-niche { background: rgba(138,171,138,.15); color: var(--deep-sage); }
+    .ct-new { background: rgba(184,169,208,.2); color: #6b5a8c; }
+
+    /* Opportunity gap cards */
+    .gap-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
+    .gap-card {
+      border-radius: var(--radius); padding: 22px;
+      display: flex; flex-direction: column; gap: 10px;
+      position: relative; overflow: hidden;
+    }
+    .gap-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+    .gap-high::before { background: linear-gradient(90deg, var(--deep-rose), var(--gold)); }
+    .gap-med::before { background: linear-gradient(90deg, var(--gold), var(--sage)); }
+    .gap-watch::before { background: linear-gradient(90deg, var(--lavender), var(--teal)); }
+    .gap-high { background: linear-gradient(135deg, #fff8f6 0%, #fff3ef 100%); border: 1px solid rgba(176,90,68,.15); }
+    .gap-med { background: linear-gradient(135deg, #fffdf5 0%, #fdf8e8 100%); border: 1px solid rgba(201,168,76,.15); }
+    .gap-watch { background: linear-gradient(135deg, #f8f6ff 0%, #f0eef8 100%); border: 1px solid rgba(184,169,208,.2); }
+    .gap-label { font-size: .65rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    .gap-high .gap-label { color: var(--deep-rose); }
+    .gap-med .gap-label { color: #9a7520; }
+    .gap-watch .gap-label { color: #6b5a8c; }
+    .gap-card h3 { font-size: .98rem; font-weight: 600; color: var(--navy); line-height: 1.3; }
+    .gap-card p { font-size: .82rem; color: var(--text-light); line-height: 1.6; flex: 1; }
+    .gap-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .gap-t { font-size: .68rem; font-weight: 500; padding: 3px 8px; border-radius: 100px; background: rgba(30,45,64,.06); color: var(--text-light); }
+    .gap-card .add-btn {
+      align-self: flex-start; display: inline-flex; align-items: center; gap: 6px;
+      font-size: .78rem; font-weight: 600; padding: 7px 14px; border-radius: 100px;
+      border: none; cursor: pointer; font-family: 'Inter', sans-serif;
+      background: var(--navy); color: #fff; transition: all .2s;
+    }
+    .gap-card .add-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(30,45,64,.2); }
+
+    /* ── TRACKER PAGE ── */
+    .tracker-header {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 60%, #3a6060 100%);
+      padding: 40px 24px 36px;
+    }
+    .tracker-header-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .tracker-header h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3.5vw, 2.2rem); color: #fff; }
+    .tracker-header p { font-size: .88rem; color: rgba(255,255,255,.6); margin-top: 8px; max-width: 420px; line-height: 1.6; }
+    .tracker-stats { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 12px; }
+    .tstat { font-size: .8rem; color: rgba(255,255,255,.7); display: flex; align-items: center; gap: 6px; }
+    .tstat strong { color: #fff; font-size: 1.1rem; }
+    .add-opp-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--blush); color: var(--navy); font-weight: 700; font-size: .88rem;
+      padding: 13px 24px; border-radius: 100px; border: none; cursor: pointer;
+      font-family: 'Inter', sans-serif; transition: all .2s; white-space: nowrap;
+      box-shadow: 0 4px 20px rgba(242,212,200,.3); align-self: flex-start;
+    }
+    .add-opp-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(242,212,200,.45); }
+
+    /* Filter bar */
+    .tracker-filters { background: var(--warm-white); border-bottom: 1px solid var(--border); padding: 12px 24px; }
+    .tracker-filters-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .tfilter-btn { padding: 6px 14px; border-radius: 100px; border: 1.5px solid var(--border); background: transparent; color: var(--text-light); font-size: .78rem; font-weight: 500; cursor: pointer; transition: all .15s; font-family: 'Inter', sans-serif; }
+    .tfilter-btn.active { background: var(--navy); border-color: var(--navy); color: #fff; }
+    .tfilter-btn:hover:not(.active) { border-color: var(--navy); color: var(--navy); }
+    .tfilter-sep { width: 1px; height: 18px; background: var(--border); flex-shrink: 0; }
+    .sort-select { margin-left: auto; padding: 6px 12px; border-radius: 100px; border: 1.5px solid var(--border); background: transparent; color: var(--text-light); font-size: .78rem; cursor: pointer; font-family: 'Inter', sans-serif; }
+
+    /* Board */
+    .tracker-body { max-width: 1200px; margin: 0 auto; padding: 28px 24px 80px; }
+    .board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; align-items: start; }
+    @media (max-width: 900px) { .board { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 550px) { .board { grid-template-columns: 1fr; } }
+
+    .column { background: rgba(30,45,64,.04); border-radius: var(--radius); padding: 14px; display: flex; flex-direction: column; gap: 12px; min-height: 200px; }
+    .col-header { display: flex; align-items: center; justify-content: space-between; padding: 4px 4px 10px; border-bottom: 2px solid transparent; }
+    .col-header.exploring { border-color: var(--lavender); }
+    .col-header.validating { border-color: var(--gold); }
+    .col-header.building { border-color: var(--rose); }
+    .col-header.launched { border-color: var(--sage); }
+    .col-title { font-size: .82rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--navy); }
+    .col-count { font-size: .72rem; font-weight: 700; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(30,45,64,.1); color: var(--navy); }
+    .col-cards { display: flex; flex-direction: column; gap: 10px; min-height: 60px; }
+
+    /* Opportunity cards */
+    .opp-card {
+      background: var(--warm-white); border-radius: var(--radius-sm);
+      padding: 14px; box-shadow: 0 2px 12px rgba(30,45,64,.07);
+      border: 1px solid var(--border); cursor: pointer;
+      transition: transform .18s, box-shadow .18s;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .opp-card:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(30,45,64,.12); }
+    .opp-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 6px; }
+    .opp-card h4 { font-size: .88rem; font-weight: 600; color: var(--navy); line-height: 1.35; flex: 1; }
+    .opp-priority { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+    .p-high { background: var(--deep-rose); }
+    .p-med { background: var(--gold); }
+    .p-low { background: var(--sage); }
+    .opp-card-cat { font-size: .68rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--rose); }
+    .opp-card-note { font-size: .78rem; color: var(--text-light); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .opp-card-footer { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding-top: 6px; border-top: 1px solid var(--border); }
+    .opp-date { font-size: .68rem; color: var(--text-light); }
+    .opp-actions { display: flex; gap: 4px; }
+    .opp-action-btn { width: 26px; height: 26px; border-radius: 6px; border: none; background: transparent; cursor: pointer; font-size: .82rem; display: flex; align-items: center; justify-content: center; transition: background .15s; }
+    .opp-action-btn:hover { background: rgba(30,45,64,.08); }
+    .opp-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+    .opp-tag { font-size: .65rem; padding: 2px 7px; border-radius: 100px; background: rgba(30,45,64,.06); color: var(--text-light); }
+    .empty-col { text-align: center; padding: 24px 16px; color: var(--text-light); font-size: .78rem; line-height: 1.6; }
+    .empty-col .ec-icon { font-size: 1.4rem; margin-bottom: 6px; opacity: .5; }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(30,45,64,.45); z-index: 500;
+      display: flex; align-items: flex-start; justify-content: center; padding: 60px 24px 24px;
+      opacity: 0; pointer-events: none; transition: opacity .2s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: var(--warm-white); border-radius: 20px; width: 100%; max-width: 560px;
+      box-shadow: 0 20px 80px rgba(30,45,64,.25); max-height: calc(100vh - 100px); overflow-y: auto;
+      transform: translateY(20px); transition: transform .25s;
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
+    .modal-header { padding: 24px 24px 0; display: flex; align-items: center; justify-content: space-between; }
+    .modal-header h2 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--navy); }
+    .modal-close { width: 32px; height: 32px; border-radius: 8px; border: none; background: rgba(30,45,64,.08); cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; transition: background .15s; }
+    .modal-close:hover { background: rgba(30,45,64,.14); }
+    .modal-body { padding: 20px 24px 24px; display: flex; flex-direction: column; gap: 18px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: .76rem; font-weight: 600; color: var(--navy); letter-spacing: .04em; }
+    .form-group input, .form-group select, .form-group textarea {
+      padding: 10px 14px; border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border); background: var(--cream);
+      font-family: 'Inter', sans-serif; font-size: .88rem; color: var(--text);
+      transition: border-color .15s;
+      resize: none;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      outline: none; border-color: var(--navy); background: #fff;
+    }
+    .form-group textarea { min-height: 80px; }
+    .modal-footer { padding: 0 24px 24px; display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
+    .btn-cancel { padding: 10px 20px; border-radius: 100px; border: 1.5px solid var(--border); background: transparent; color: var(--text-light); font-family: 'Inter', sans-serif; font-size: .85rem; cursor: pointer; transition: all .15s; }
+    .btn-cancel:hover { border-color: var(--text-light); color: var(--text); }
+    .btn-save { padding: 10px 24px; border-radius: 100px; border: none; background: var(--navy); color: #fff; font-family: 'Inter', sans-serif; font-size: .85rem; font-weight: 600; cursor: pointer; transition: all .15s; }
+    .btn-save:hover { background: var(--navy-mid); transform: translateY(-1px); }
+    .btn-delete { margin-right: auto; padding: 10px 18px; border-radius: 100px; border: 1.5px solid rgba(176,90,68,.3); background: transparent; color: var(--deep-rose); font-family: 'Inter', sans-serif; font-size: .82rem; cursor: pointer; transition: all .15s; }
+    .btn-delete:hover { background: rgba(176,90,68,.07); }
+
+    /* Notes thread in modal */
+    .notes-thread { display: flex; flex-direction: column; gap: 10px; }
+    .note-entry { background: rgba(30,45,64,.04); border-radius: var(--radius-sm); padding: 10px 14px; }
+    .note-entry-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+    .note-author { font-size: .72rem; font-weight: 600; color: var(--navy); }
+    .note-time { font-size: .68rem; color: var(--text-light); }
+    .note-text { font-size: .82rem; color: var(--text); line-height: 1.6; }
+    .note-add-row { display: flex; gap: 8px; align-items: flex-end; }
+    .note-add-row input { flex: 1; padding: 9px 14px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); background: var(--cream); font-family: 'Inter', sans-serif; font-size: .83rem; color: var(--text); }
+    .note-add-row input:focus { outline: none; border-color: var(--navy); background: #fff; }
+    .note-add-btn { padding: 9px 16px; border-radius: var(--radius-sm); border: none; background: var(--navy); color: #fff; font-family: 'Inter', sans-serif; font-size: .78rem; font-weight: 600; cursor: pointer; transition: all .15s; white-space: nowrap; }
+    .note-add-btn:hover { background: var(--navy-mid); }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(30,45,64,.15); border-radius: 100px; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .form-row { grid-template-columns: 1fr; }
+      .market-row { grid-template-columns: 1fr; gap: 6px; }
+      .market-row .market-label { font-size: .8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════ NAV ══════════════════ -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-mark">🌿</div>
+    <div>
+      <span class="nav-logo-text">WH Idea Lab</span>
+      <span class="nav-logo-sub">Women's Health &amp; Productivity</span>
+    </div>
+  </a>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('intel')">📊 Intelligence</button>
+    <button class="nav-tab" onclick="showPage('tracker')">🗂 Tracker</button>
+  </div>
+  <div class="nav-right">
+    <span class="nav-date" id="nav-date"></span>
+  </div>
+</nav>
+
+<!-- ══════════════════ PAGE: INTELLIGENCE ══════════════════ -->
+<div class="page active" id="page-intel">
+
+  <!-- Hero stats -->
+  <div class="intel-hero">
+    <div class="intel-hero-inner">
+      <div class="intel-hero-top">
+        <div class="intel-hero-title">
+          <span class="eyebrow">Market Intelligence Hub</span>
+          <h1>Women's Health &amp;<br><em>Productivity</em> Landscape</h1>
+          <p>Trends, market sizing, and competitor analysis to help you find your next big opportunity.</p>
+        </div>
+        <div class="intel-hero-badge">Updated May 2025</div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-val">$60B</div>
+          <div class="stat-label">FemTech Global Market (2024)</div>
+          <div class="stat-growth">▲ 16% CAGR through 2030</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val">$103B</div>
+          <div class="stat-label">Projected Market Size 2030</div>
+          <div class="stat-growth">▲ 2.2× growth in 6 years</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val">$3.8B</div>
+          <div class="stat-label">VC Invested in FemTech (2023)</div>
+          <div class="stat-growth">▲ Up from $1.2B in 2019</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val">72%</div>
+          <div class="stat-label">Women underserved in clinical research</div>
+          <div class="stat-growth neg">▼ Massive whitespace</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val">$48B</div>
+          <div class="stat-label">Women's Productivity Apps TAM</div>
+          <div class="stat-growth">▲ 21% YoY growth rate</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="intel-body">
+
+    <!-- TRENDS -->
+    <div>
+      <div class="section-header">
+        <div>
+          <div class="section-tag">Trend Radar</div>
+          <h2>Hot Trends Right Now</h2>
+          <p>Momentum signals across women's health and productivity verticals</p>
+        </div>
+      </div>
+      <div class="trends-grid">
+
+        <div class="trend-card">
+          <div class="trend-card-top">
+            <span class="trend-icon">🩸</span>
+            <span class="trend-momentum momentum-hot">🔥 Hot</span>
+          </div>
+          <h3>Cycle-Syncing Productivity</h3>
+          <p>Women optimizing work schedules, workouts, and diet around menstrual phases. Apps like Flo, Clue, and startups adding AI coaching for phase-based productivity.</p>
+          <div class="trend-meta">
+            <span class="trend-tag">Productivity</span>
+            <span class="trend-tag">FemTech</span>
+            <span class="trend-tag">AI</span>
+            <span class="trend-size">$4.2B TAM</span>
+          </div>
+        </div>
+
+        <div class="trend-card">
+          <div class="trend-card-top">
+            <span class="trend-icon">🧠</span>
+            <span class="trend-momentum momentum-hot">🔥 Hot</span>
+          </div>
+          <h3>Women's Mental Wellness & Burnout</h3>
+          <p>Burnout rates among women 42% higher than men post-pandemic. Apps combining therapy access, nervous system tools, and productivity coaching are exploding.</p>
+          <div class="trend-meta">
+            <span class="trend-tag">Mental Health</span>
+            <span class="trend-tag">Wellness</span>
+            <span class="trend-size">$9.8B TAM</span>
+          </div>
+        </div>
+
+        <div class="trend-card">
+          <div class="trend-card-top">
+            <span class="trend-icon">💊</span>
+            <span class="trend-momentum momentum-hot">🔥 Hot</span>
+          </div>
+          <h3>GLP-1 & Women's Metabolic Health</h3>
+          <p>Ozempic/Wegovy wave creating massive demand for female-specific metabolic health tools, nutrition tracking, and muscle preservation protocols tailored to women.</p>
+          <div class="trend-meta">
+            <span class="trend-tag">Nutrition</span>
+            <span class="trend-tag">Metabolic</span>
+            <span class="trend-tag">Trending</span>
+            <span class="trend-size">$12B TAM</span>
+          </div>
+        </div>
+
+        <div class="trend-card">
+          <div class="trend-card-top">
+            <span class="trend-icon">🌡️</span>
+            <span class="trend-momentum momentum-rising">📈 Rising</span>
+          </div>
+          <h3>Perimenopause & Menopause Tech</h3>
+          <p>86M US women will be menopausal by 2030. Startups like Midi Health, Elektra, and Gennev raising big. Huge gap in digital-first perimenopause support (35–45 demo).</p>
+          <div class="trend-meta">
+            <span class="trend-tag">FemTech</span>
+            <span class="trend-tag">Menopause</span>
+            <span class="trend-size">$22B TAM</span>
+          </div>
+        </div>
+
+        <div class="trend-card">
+          <div class="trend-card-top">
+            <span class="trend-icon">😴</span>
+            <span class="trend-momentum momentum-rising">📈 Rising</span>
+          </div>
+          <h3>Female Sleep Optimization</h3>
+          <p>Women sleep differently due to hormonal cycles — yet most sleep apps ignore this. Wearables + AI creating personalized female-first sleep protocols. Huge underserved niche.</p>
+          <div class="trend-meta">
+            <span class="trend-tag">Sleep</span>
+            <span class="trend-tag">Wearables</span>
+            <span class="trend-tag">AI</span>
+            <span class="trend-size">$5.1B TAM</span>
+          </div>
+        </div>
+
+        <div class="trend-card">
+          <div class="trend-card-top">
+            <span class="trend-icon">⚡</span>
+            <span class="trend-momentum momentum-rising">📈 Rising</span>
+          </div>
+          <h3>Energy & Nervous System Regulation</h3>
+          <p>"Adrenal fatigue" and HPA axis dysfunction driving demand for breath work, cold therapy, and nervous system tracking apps. Strong content-to-product conversion opportunity.</p>
+          <div class="trend-meta">
+            <span class="trend-tag">Wellness</span>
+            <span class="trend-tag">Biohacking</span>
+            <span class="trend-size">$3.4B TAM</span>
+          </div>
+        </div>
+
+        <div class="trend-card">
+          <div class="trend-card-top">
+            <span class="trend-icon">🤝</span>
+            <span class="trend-momentum momentum-rising">📈 Rising</span>
+          </div>
+          <h3>Women-Led Community Platforms</h3>
+          <p>Rise of paid communities for women in specific life stages (motherhood, career pivots, chronic illness). Geneva, Heartbeat, and indie creators monetizing deeply loyal cohorts.</p>
+          <div class="trend-meta">
+            <span class="trend-tag">Community</span>
+            <span class="trend-tag">Subscription</span>
+            <span class="trend-size">$6B TAM</span>
+          </div>
+        </div>
+
+        <div class="trend-card">
+          <div class="trend-card-top">
+            <span class="trend-icon">🏋️‍♀️</span>
+            <span class="trend-momentum momentum-steady">↔ Steady</span>
+          </div>
+          <h3>Female-Specific Strength Training</h3>
+          <p>Shift from cardio-only to strength training for women (bone density, longevity, metabolic health). Apps like Evlo Fitness and Strong growing. Content creators converting fast.</p>
+          <div class="trend-meta">
+            <span class="trend-tag">Fitness</span>
+            <span class="trend-tag">Longevity</span>
+            <span class="trend-size">$7.3B TAM</span>
+          </div>
+        </div>
+
+        <div class="trend-card">
+          <div class="trend-card-top">
+            <span class="trend-icon">🧪</span>
+            <span class="trend-momentum momentum-emerging">🌱 Emerging</span>
+          </div>
+          <h3>At-Home Female Hormone Testing</h3>
+          <p>Consumer hormone panels (estrogen, progesterone, cortisol, thyroid) via blood spot tests. DUTCH test going mainstream. Startups building subscription insights layers on top.</p>
+          <div class="trend-meta">
+            <span class="trend-tag">Diagnostics</span>
+            <span class="trend-tag">D2C</span>
+            <span class="trend-tag">Subscription</span>
+            <span class="trend-size">$2.8B TAM</span>
+          </div>
+        </div>
+
+        <div class="trend-card">
+          <div class="trend-card-top">
+            <span class="trend-icon">🍽️</span>
+            <span class="trend-momentum momentum-emerging">🌱 Emerging</span>
+          </div>
+          <h3>Cycle-Aware Nutrition & Meal Planning</h3>
+          <p>Seed cycling, folate cycling, and phase-based eating gaining mainstream traction. Meal kit and subscription food brands starting to target menstruating women specifically.</p>
+          <div class="trend-meta">
+            <span class="trend-tag">Nutrition</span>
+            <span class="trend-tag">FemTech</span>
+            <span class="trend-size">$2.1B TAM</span>
+          </div>
+        </div>
+
+        <div class="trend-card">
+          <div class="trend-card-top">
+            <span class="trend-icon">💼</span>
+            <span class="trend-momentum momentum-emerging">🌱 Emerging</span>
+          </div>
+          <h3>Female Financial Wellness</h3>
+          <p>Women live longer, earn less, and retire with less — driving fintech products for women. Ellevest leading but space is underbuilt. Intersection with health (care costs) is untapped.</p>
+          <div class="trend-meta">
+            <span class="trend-tag">FinTech</span>
+            <span class="trend-tag">Productivity</span>
+            <span class="trend-size">$18B TAM</span>
+          </div>
+        </div>
+
+        <div class="trend-card">
+          <div class="trend-card-top">
+            <span class="trend-icon">🤖</span>
+            <span class="trend-momentum momentum-hot">🔥 Hot</span>
+          </div>
+          <h3>AI Health Coaches for Women</h3>
+          <p>GPT-4o + RAG enabling 24/7 health coaching personalised to cycle, age, and health goals. Wild opportunity for AI companions that actually understand female physiology.</p>
+          <div class="trend-meta">
+            <span class="trend-tag">AI</span>
+            <span class="trend-tag">Coaching</span>
+            <span class="trend-tag">Personalization</span>
+            <span class="trend-size">$8.5B TAM</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- MARKET SIZE -->
+    <div>
+      <div class="section-header">
+        <div>
+          <div class="section-tag">Market Sizing</div>
+          <h2>Segment Market Sizes</h2>
+          <p>Global TAM estimates for 2024–2025 across key verticals</p>
+        </div>
+      </div>
+      <div class="market-table" id="market-table">
+        <!-- filled by JS -->
+      </div>
+    </div>
+
+    <!-- COMPETITORS -->
+    <div>
+      <div class="section-header">
+        <div>
+          <div class="section-tag">Competitive Landscape</div>
+          <h2>Who's Playing Where</h2>
+          <p>Key players by category — understand the field before you enter it</p>
+        </div>
+      </div>
+      <div class="competitor-cats" id="competitor-cats">
+        <!-- filled by JS -->
+      </div>
+    </div>
+
+    <!-- OPPORTUNITY GAPS -->
+    <div>
+      <div class="section-header">
+        <div>
+          <div class="section-tag">Opportunity Analysis</div>
+          <h2>Gaps Worth Pursuing</h2>
+          <p>Underserved niches and whitespace opportunities we've identified</p>
+        </div>
+      </div>
+      <div class="gap-grid" id="gap-grid">
+        <!-- filled by JS -->
+      </div>
+    </div>
+
+  </div>
+</div><!-- /page-intel -->
+
+<!-- ══════════════════ PAGE: TRACKER ══════════════════ -->
+<div class="page" id="page-tracker">
+
+  <div class="tracker-header">
+    <div class="tracker-header-inner">
+      <div>
+        <h1>Opportunity Tracker</h1>
+        <p>Track ideas from first spark to launch. Add notes, assign priority, move between stages.</p>
+        <div class="tracker-stats">
+          <div class="tstat"><strong id="stat-total">0</strong> total</div>
+          <div class="tstat"><strong id="stat-exploring">0</strong> exploring</div>
+          <div class="tstat"><strong id="stat-validating">0</strong> validating</div>
+          <div class="tstat"><strong id="stat-building">0</strong> building</div>
+          <div class="tstat"><strong id="stat-launched">0</strong> launched</div>
+        </div>
+      </div>
+      <button class="add-opp-btn" onclick="openModal()">+ Add Opportunity</button>
+    </div>
+  </div>
+
+  <div class="tracker-filters">
+    <div class="tracker-filters-inner">
+      <span style="font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);margin-right:4px;">Filter:</span>
+      <button class="tfilter-btn active" data-filter="all" onclick="setFilter('all', this)">All</button>
+      <button class="tfilter-btn" data-filter="FemTech" onclick="setFilter('FemTech', this)">FemTech</button>
+      <button class="tfilter-btn" data-filter="Productivity" onclick="setFilter('Productivity', this)">Productivity</button>
+      <button class="tfilter-btn" data-filter="Wellness" onclick="setFilter('Wellness', this)">Wellness</button>
+      <button class="tfilter-btn" data-filter="AI" onclick="setFilter('AI', this)">AI</button>
+      <button class="tfilter-btn" data-filter="Community" onclick="setFilter('Community', this)">Community</button>
+      <div class="tfilter-sep"></div>
+      <button class="tfilter-btn" data-filter="high" onclick="setPriority('high', this)">🔴 High priority</button>
+      <select class="sort-select" id="sort-select" onchange="renderBoard()">
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+        <option value="priority">By priority</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="tracker-body">
+    <div class="board">
+      <div class="column">
+        <div class="col-header exploring">
+          <span class="col-title">🔍 Exploring</span>
+          <span class="col-count" id="count-exploring">0</span>
+        </div>
+        <div class="col-cards" id="col-exploring"></div>
+      </div>
+      <div class="column">
+        <div class="col-header validating">
+          <span class="col-title">🧪 Validating</span>
+          <span class="col-count" id="count-validating">0</span>
+        </div>
+        <div class="col-cards" id="col-validating"></div>
+      </div>
+      <div class="column">
+        <div class="col-header building">
+          <span class="col-title">🔨 Building</span>
+          <span class="col-count" id="count-building">0</span>
+        </div>
+        <div class="col-cards" id="col-building"></div>
+      </div>
+      <div class="column">
+        <div class="col-header launched">
+          <span class="col-title">🚀 Launched</span>
+          <span class="col-count" id="count-launched">0</span>
+        </div>
+        <div class="col-cards" id="col-launched"></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page-tracker -->
+
+<!-- ══════════════════ MODAL: ADD/EDIT OPPORTUNITY ══════════════════ -->
+<div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modal-title">New Opportunity</h2>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="opp-id" />
+
+      <div class="form-group">
+        <label>Opportunity Name *</label>
+        <input type="text" id="opp-name" placeholder="e.g. Cycle-sync productivity planner" />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Category</label>
+          <select id="opp-cat">
+            <option value="FemTech">FemTech</option>
+            <option value="Productivity">Productivity</option>
+            <option value="Wellness">Wellness</option>
+            <option value="AI">AI</option>
+            <option value="Community">Community</option>
+            <option value="Nutrition">Nutrition</option>
+            <option value="Fitness">Fitness</option>
+            <option value="Mental Health">Mental Health</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Stage</label>
+          <select id="opp-stage">
+            <option value="exploring">🔍 Exploring</option>
+            <option value="validating">🧪 Validating</option>
+            <option value="building">🔨 Building</option>
+            <option value="launched">🚀 Launched</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Priority</label>
+          <select id="opp-priority">
+            <option value="high">🔴 High</option>
+            <option value="med" selected>🟡 Medium</option>
+            <option value="low">🟢 Low</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Market Size Estimate</label>
+          <input type="text" id="opp-market" placeholder="e.g. $3B TAM" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Description / Hypothesis</label>
+        <textarea id="opp-desc" placeholder="What's the opportunity? Who's the customer? What's the insight?"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Tags (comma separated)</label>
+        <input type="text" id="opp-tags" placeholder="e.g. B2C, subscription, mobile" />
+      </div>
+
+      <!-- Notes thread -->
+      <div class="form-group">
+        <label>Discussion Notes</label>
+        <div class="notes-thread" id="notes-thread"></div>
+        <div class="note-add-row" style="margin-top:8px;">
+          <input type="text" id="note-input" placeholder="Add a note or comment…" onkeydown="if(event.key==='Enter')addNote()" />
+          <button class="note-add-btn" onclick="addNote()">Add</button>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button class="btn-delete" id="btn-delete" onclick="deleteOpp()" style="display:none;">Delete</button>
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" onclick="saveOpp()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── DATE ──
+const dateEl = document.getElementById('nav-date');
+if (dateEl) {
+  dateEl.textContent = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+// ── PAGE SWITCHING ──
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+  if (id === 'tracker') renderBoard();
+}
+
+// ── MARKET SIZE DATA ──
+const marketData = [
+  { label: 'Menopause & Perimenopause Tech', val: 22, unit: '$22B', cagr: '+18% CAGR' },
+  { label: 'Women\'s Mental Health & Wellness', val: 9.8, unit: '$9.8B', cagr: '+22% CAGR' },
+  { label: 'Female Fitness & Strength Apps', val: 7.3, unit: '$7.3B', cagr: '+14% CAGR' },
+  { label: 'Women\'s Community Platforms', val: 6.0, unit: '$6.0B', cagr: '+31% CAGR' },
+  { label: 'Female Sleep Optimization', val: 5.1, unit: '$5.1B', cagr: '+19% CAGR' },
+  { label: 'Cycle-Syncing & FemTech Apps', val: 4.2, unit: '$4.2B', cagr: '+24% CAGR' },
+  { label: 'Energy / Nervous System Tools', val: 3.4, unit: '$3.4B', cagr: '+27% CAGR' },
+  { label: 'At-Home Hormone Testing', val: 2.8, unit: '$2.8B', cagr: '+35% CAGR' },
+  { label: 'Cycle-Aware Nutrition', val: 2.1, unit: '$2.1B', cagr: '+28% CAGR' },
+];
+
+const barColors = [
+  'linear-gradient(90deg,#b05a44,#d4816a)',
+  'linear-gradient(90deg,#6b5a8c,#b8a9d0)',
+  'linear-gradient(90deg,#5c7a5c,#8aab8a)',
+  'linear-gradient(90deg,#c9a84c,#f0d98a)',
+  'linear-gradient(90deg,#2d4a6b,#4a9b8e)',
+  'linear-gradient(90deg,#d4816a,#c9a84c)',
+  'linear-gradient(90deg,#4a9b8e,#8aab8a)',
+  'linear-gradient(90deg,#9a7520,#c9a84c)',
+  'linear-gradient(90deg,#b8a9d0,#6b5a8c)',
+];
+
+const maxVal = Math.max(...marketData.map(d => d.val));
+const mtEl = document.getElementById('market-table');
+if (mtEl) {
+  marketData.forEach((d, i) => {
+    const pct = (d.val / maxVal * 100).toFixed(1);
+    mtEl.innerHTML += `
+      <div class="market-row">
+        <div>
+          <div class="market-label">${d.label}</div>
+          <div class="market-notes">${d.cagr}</div>
+        </div>
+        <div class="market-bar-track">
+          <div class="market-bar-fill" style="width:0%;background:${barColors[i]}" data-target="${pct}"></div>
+        </div>
+        <div class="market-size-val">${d.unit}</div>
+      </div>`;
+  });
+  // animate bars on scroll
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        document.querySelectorAll('.market-bar-fill').forEach(bar => {
+          bar.style.width = bar.dataset.target + '%';
+        });
+      }
+    });
+  }, { threshold: 0.2 });
+  observer.observe(mtEl);
+}
+
+// ── COMPETITOR DATA ──
+const compData = [
+  {
+    cat: 'Period & Cycle Tracking',
+    players: [
+      { name: 'Flo Health', icon: '🌸', stage: 'Series C', funding: '$200M+', tag: 'leader' },
+      { name: 'Clue', icon: '🔵', stage: 'Series B', funding: '$30M', tag: 'leader' },
+      { name: 'Natural Cycles', icon: '🌡️', stage: 'Public', funding: 'IPO', tag: 'leader' },
+      { name: 'Ovia Health', icon: '💜', stage: 'Acquired', funding: 'Labcorp', tag: 'niche' },
+    ]
+  },
+  {
+    cat: 'Menopause & Hormonal Health',
+    players: [
+      { name: 'Midi Health', icon: '🌿', stage: 'Series A', funding: '$60M', tag: 'growing' },
+      { name: 'Elektra Health', icon: '⚡', stage: 'Seed/A', funding: '$15M', tag: 'growing' },
+      { name: 'Gennev', icon: '🌺', stage: 'Series A', funding: '$10M', tag: 'niche' },
+      { name: 'Evernow', icon: '🌙', stage: 'Series A', funding: '$28M', tag: 'growing' },
+      { name: 'Alloy', icon: '✨', stage: 'Seed', funding: '$5M', tag: 'new' },
+    ]
+  },
+  {
+    cat: 'Women\'s Mental Health & Coaching',
+    players: [
+      { name: 'BetterHelp', icon: '💙', stage: 'Acquired', funding: 'Teladoc', tag: 'leader' },
+      { name: 'Headspace', icon: '🧘', stage: 'Public', funding: '$300M+', tag: 'leader' },
+      { name: 'Maven Clinic', icon: '🌱', stage: 'Series D', funding: '$300M', tag: 'growing' },
+      { name: 'Bloom', icon: '🌸', stage: 'Series A', funding: '$9M', tag: 'niche' },
+      { name: 'Wisdo', icon: '🤝', stage: 'Series A', funding: '$22M', tag: 'growing' },
+    ]
+  },
+  {
+    cat: 'Women\'s Fitness & Strength',
+    players: [
+      { name: 'Peloton', icon: '🚲', stage: 'Public', funding: 'PTON', tag: 'leader' },
+      { name: 'Sweat (Kayla)', icon: '💪', stage: 'Acquired', funding: 'iFIT', tag: 'leader' },
+      { name: 'Evlo Fitness', icon: '🏋️', stage: 'Bootstrapped', funding: '—', tag: 'niche' },
+      { name: 'Ladder', icon: '📈', stage: 'Seed', funding: '$5M', tag: 'growing' },
+      { name: 'Future Fit', icon: '🎯', stage: 'Series B', funding: '$24M', tag: 'growing' },
+    ]
+  },
+  {
+    cat: 'AI Health Coaching & Personalization',
+    players: [
+      { name: 'Noom', icon: '🤖', stage: 'Series F', funding: '$540M', tag: 'leader' },
+      { name: 'Lark Health', icon: '🐦', stage: 'Series D', funding: '$100M', tag: 'leader' },
+      { name: 'Kin', icon: '✨', stage: 'Seed', funding: '$3M', tag: 'new' },
+      { name: 'Cohere Health', icon: '💡', stage: 'Series B', funding: '$50M', tag: 'growing' },
+    ]
+  },
+  {
+    cat: 'Women\'s Productivity & Career',
+    players: [
+      { name: 'Ellevate Network', icon: '🔗', stage: 'Bootstrapped', funding: '—', tag: 'niche' },
+      { name: 'Chief', icon: '👑', stage: 'Series C', funding: '$140M', tag: 'growing' },
+      { name: 'HER', icon: '💜', stage: 'Seed', funding: '$1.5M', tag: 'niche' },
+    ]
+  },
+];
+
+const tagClasses = { leader: 'ct-leader', growing: 'ct-growing', niche: 'ct-niche', new: 'ct-new' };
+const tagLabels = { leader: 'Market Leader', growing: 'Growing', niche: 'Niche', new: 'New Entry' };
+
+const ccEl = document.getElementById('competitor-cats');
+if (ccEl) {
+  compData.forEach(cat => {
+    let html = `<div><div class="comp-cat-label">${cat.cat}</div><div class="comp-grid">`;
+    cat.players.forEach(p => {
+      html += `<div class="comp-pill">
+        <span class="comp-pill-icon">${p.icon}</span>
+        <div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span class="comp-pill-name">${p.name}</span>
+            <span class="comp-pill-tag ${tagClasses[p.tag]}">${tagLabels[p.tag]}</span>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:2px;">
+            <span class="comp-pill-stage">${p.stage}</span>
+            ${p.funding !== '—' ? `<span class="comp-pill-funding">${p.funding}</span>` : ''}
+          </div>
+        </div>
+      </div>`;
+    });
+    html += '</div></div>';
+    ccEl.innerHTML += html;
+  });
+}
+
+// ── OPPORTUNITY GAPS ──
+const gapData = [
+  {
+    tier: 'high',
+    title: 'Perimenopause Companion for 35–45 Year Olds',
+    desc: 'Most menopause apps target post-menopausal women. The perimenopausal 35–45 cohort — highest earning, most confused — is deeply underserved. Combine symptom tracking, education, and community.',
+    tags: ['FemTech', 'Community', 'Subscription', '$22B market'],
+  },
+  {
+    tier: 'high',
+    title: 'Cycle-Synced AI Productivity Planner',
+    desc: 'No mainstream productivity tool (Notion, Todoist, Cal.ai) accounts for menstrual phases. An AI planner that automatically suggests focus work in the follicular phase and review/reflection in luteal has massive appeal.',
+    tags: ['Productivity', 'AI', 'B2C', 'SaaS'],
+  },
+  {
+    tier: 'high',
+    title: 'Women\'s Metabolic Health After GLP-1',
+    desc: 'As millions of women come off GLP-1 drugs, they need muscle preservation, nutrition resets, and metabolic tracking designed for female physiology. Massive first-mover window right now.',
+    tags: ['Nutrition', 'Metabolic', 'Trending', 'D2C'],
+  },
+  {
+    tier: 'med',
+    title: 'Female-Specific Sleep Protocol App',
+    desc: 'Sleep apps (Calm, Sleep Cycle) are gender-neutral. Women\'s sleep is disrupted by cycle phases, pregnancy, and menopause. An app tracking sleep against hormonal data with phase-specific protocols is a gap.',
+    tags: ['Sleep', 'FemTech', 'Wearables'],
+  },
+  {
+    tier: 'med',
+    title: 'Hormone Testing + Insights Subscription',
+    desc: 'At-home test kits exist (DUTCH, EverlyWell) but the insight/coaching layer is weak. Combine regular testing with personalised AI interpretation, protocol suggestions, and community benchmarking.',
+    tags: ['Diagnostics', 'Subscription', 'AI', 'D2C'],
+  },
+  {
+    tier: 'med',
+    title: 'Burnout Recovery Program for Women',
+    desc: 'No structured digital program exists for female burnout recovery (distinct from general stress). 6-week or 12-week program combining somatic work, cycle awareness, and career recalibration.',
+    tags: ['Mental Health', 'Productivity', 'Wellness', 'Course'],
+  },
+  {
+    tier: 'watch',
+    title: 'Community Platform for Women 40+',
+    desc: 'The 40+ professional woman cohort is underserved by existing communities (Reddit too broad, Chief too expensive, LinkedIn too professional). A curated async community with health + career integration.',
+    tags: ['Community', 'Subscription', '$6B market'],
+  },
+  {
+    tier: 'watch',
+    title: 'Cycle-Aware Meal Kit or Nutrition Plan',
+    desc: 'No meal kit brand has built a female-cycle-aware offering. Phase-based meal plans with the right micronutrients (iron pre-period, magnesium luteal) could command premium pricing.',
+    tags: ['Nutrition', 'D2C', 'Subscription', 'CPG'],
+  },
+];
+
+const ggEl = document.getElementById('gap-grid');
+if (ggEl) {
+  gapData.forEach(g => {
+    const tierLabels = { high: '🔥 High Priority Gap', med: '📈 Strong Opportunity', watch: '👀 Watch & Explore' };
+    ggEl.innerHTML += `
+      <div class="gap-card gap-${g.tier}">
+        <div class="gap-label">${tierLabels[g.tier]}</div>
+        <h3>${g.title}</h3>
+        <p>${g.desc}</p>
+        <div class="gap-tags">${g.tags.map(t => `<span class="gap-t">${t}</span>`).join('')}</div>
+        <button class="add-btn" onclick="addFromGap(${JSON.stringify(g.title).replace(/'/g,"&#39;")})">+ Track this →</button>
+      </div>`;
+  });
+}
+
+// ── TRACKER DATA ──
+let opportunities = JSON.parse(localStorage.getItem('horizon-opps') || '[]');
+let currentFilter = 'all';
+let priorityFilter = null;
+let editingId = null;
+let tempNotes = [];
+
+function saveData() {
+  localStorage.setItem('horizon-opps', JSON.stringify(opportunities));
+}
+
+function genId() {
+  return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+}
+
+function renderBoard() {
+  const stages = ['exploring', 'validating', 'building', 'launched'];
+  const sortVal = document.getElementById('sort-select') ? document.getElementById('sort-select').value : 'newest';
+
+  let filtered = [...opportunities];
+  if (currentFilter !== 'all') {
+    filtered = filtered.filter(o => o.cat === currentFilter);
+  }
+  if (priorityFilter) {
+    filtered = filtered.filter(o => o.priority === priorityFilter);
+  }
+
+  if (sortVal === 'newest') filtered.sort((a, b) => b.created - a.created);
+  else if (sortVal === 'oldest') filtered.sort((a, b) => a.created - b.created);
+  else if (sortVal === 'priority') {
+    const ord = { high: 0, med: 1, low: 2 };
+    filtered.sort((a, b) => ord[a.priority] - ord[b.priority]);
+  }
+
+  stages.forEach(stage => {
+    const col = document.getElementById('col-' + stage);
+    const countEl = document.getElementById('count-' + stage);
+    const stageItems = filtered.filter(o => o.stage === stage);
+    if (countEl) countEl.textContent = stageItems.length;
+    if (!col) return;
+
+    if (stageItems.length === 0) {
+      col.innerHTML = `<div class="empty-col"><div class="ec-icon">💭</div>No opportunities here yet</div>`;
+      return;
+    }
+
+    col.innerHTML = stageItems.map(o => {
+      const pClass = { high: 'p-high', med: 'p-med', low: 'p-low' }[o.priority] || 'p-med';
+      const tagHtml = (o.tags || []).slice(0, 3).map(t => `<span class="opp-tag">${t}</span>`).join('');
+      const noteCount = (o.notes || []).length;
+      return `
+        <div class="opp-card" onclick="openEditModal('${o.id}')">
+          <div class="opp-card-top">
+            <h4>${escHtml(o.name)}</h4>
+            <div class="opp-priority ${pClass}" title="${o.priority} priority"></div>
+          </div>
+          <div class="opp-card-cat">${escHtml(o.cat)}${o.market ? ' · ' + escHtml(o.market) : ''}</div>
+          ${o.desc ? `<div class="opp-card-note">${escHtml(o.desc)}</div>` : ''}
+          ${tagHtml ? `<div class="opp-tags">${tagHtml}</div>` : ''}
+          <div class="opp-card-footer">
+            <span class="opp-date">${formatDate(o.created)}${noteCount ? ` · 💬 ${noteCount}` : ''}</span>
+          </div>
+        </div>`;
+    }).join('');
+  });
+
+  // update header stats
+  document.getElementById('stat-total').textContent = opportunities.length;
+  stages.forEach(s => {
+    const el = document.getElementById('stat-' + s);
+    if (el) el.textContent = opportunities.filter(o => o.stage === s).length;
+  });
+}
+
+function escHtml(str) {
+  return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function formatDate(ts) {
+  return new Date(ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+// ── FILTER ──
+function setFilter(val, btn) {
+  // if already active, toggle off
+  if (currentFilter === val && val !== 'all') {
+    currentFilter = 'all';
+    document.querySelectorAll('.tfilter-btn[data-filter]').forEach(b => b.classList.remove('active'));
+    document.querySelector('.tfilter-btn[data-filter="all"]').classList.add('active');
+  } else {
+    currentFilter = val;
+    document.querySelectorAll('.tfilter-btn[data-filter]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  priorityFilter = null;
+  document.querySelector('.tfilter-btn[data-filter="high"]') && document.querySelectorAll('.tfilter-btn').forEach(b => {
+    if (b.dataset.filter === 'high') b.classList.remove('active');
+  });
+  renderBoard();
+}
+
+function setPriority(val, btn) {
+  if (priorityFilter === val) {
+    priorityFilter = null;
+    btn.classList.remove('active');
+  } else {
+    priorityFilter = val;
+    btn.classList.add('active');
+  }
+  renderBoard();
+}
+
+// ── MODAL ──
+function openModal(prefill) {
+  editingId = null;
+  tempNotes = [];
+  document.getElementById('opp-id').value = '';
+  document.getElementById('opp-name').value = prefill || '';
+  document.getElementById('opp-cat').value = 'FemTech';
+  document.getElementById('opp-stage').value = 'exploring';
+  document.getElementById('opp-priority').value = 'med';
+  document.getElementById('opp-market').value = '';
+  document.getElementById('opp-desc').value = '';
+  document.getElementById('opp-tags').value = '';
+  document.getElementById('btn-delete').style.display = 'none';
+  document.getElementById('modal-title').textContent = 'New Opportunity';
+  renderNotes();
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function openEditModal(id) {
+  const opp = opportunities.find(o => o.id === id);
+  if (!opp) return;
+  editingId = id;
+  tempNotes = [...(opp.notes || [])];
+  document.getElementById('opp-id').value = id;
+  document.getElementById('opp-name').value = opp.name;
+  document.getElementById('opp-cat').value = opp.cat;
+  document.getElementById('opp-stage').value = opp.stage;
+  document.getElementById('opp-priority').value = opp.priority;
+  document.getElementById('opp-market').value = opp.market || '';
+  document.getElementById('opp-desc').value = opp.desc || '';
+  document.getElementById('opp-tags').value = (opp.tags || []).join(', ');
+  document.getElementById('btn-delete').style.display = 'inline-flex';
+  document.getElementById('modal-title').textContent = 'Edit Opportunity';
+  renderNotes();
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  editingId = null;
+  tempNotes = [];
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+}
+
+function saveOpp() {
+  const name = document.getElementById('opp-name').value.trim();
+  if (!name) { document.getElementById('opp-name').focus(); return; }
+
+  const rawTags = document.getElementById('opp-tags').value;
+  const tags = rawTags ? rawTags.split(',').map(t => t.trim()).filter(Boolean) : [];
+
+  if (editingId) {
+    const idx = opportunities.findIndex(o => o.id === editingId);
+    if (idx !== -1) {
+      opportunities[idx] = {
+        ...opportunities[idx],
+        name,
+        cat: document.getElementById('opp-cat').value,
+        stage: document.getElementById('opp-stage').value,
+        priority: document.getElementById('opp-priority').value,
+        market: document.getElementById('opp-market').value.trim(),
+        desc: document.getElementById('opp-desc').value.trim(),
+        tags,
+        notes: [...tempNotes],
+        updated: Date.now(),
+      };
+    }
+  } else {
+    opportunities.push({
+      id: genId(),
+      name,
+      cat: document.getElementById('opp-cat').value,
+      stage: document.getElementById('opp-stage').value,
+      priority: document.getElementById('opp-priority').value,
+      market: document.getElementById('opp-market').value.trim(),
+      desc: document.getElementById('opp-desc').value.trim(),
+      tags,
+      notes: [...tempNotes],
+      created: Date.now(),
+      updated: Date.now(),
+    });
+  }
+
+  saveData();
+  closeModal();
+  renderBoard();
+}
+
+function deleteOpp() {
+  if (!editingId) return;
+  if (!confirm('Delete this opportunity? This cannot be undone.')) return;
+  opportunities = opportunities.filter(o => o.id !== editingId);
+  saveData();
+  closeModal();
+  renderBoard();
+}
+
+// ── NOTES ──
+function renderNotes() {
+  const el = document.getElementById('notes-thread');
+  if (!el) return;
+  if (tempNotes.length === 0) {
+    el.innerHTML = '<div style="font-size:.78rem;color:var(--text-light);font-style:italic;">No notes yet — start the discussion!</div>';
+    return;
+  }
+  el.innerHTML = tempNotes.map(n => `
+    <div class="note-entry">
+      <div class="note-entry-header">
+        <span class="note-author">${escHtml(n.author)}</span>
+        <span class="note-time">${formatDate(n.ts)}</span>
+      </div>
+      <div class="note-text">${escHtml(n.text)}</div>
+    </div>`).join('');
+}
+
+function addNote() {
+  const input = document.getElementById('note-input');
+  const text = input.value.trim();
+  if (!text) return;
+  tempNotes.push({ text, author: 'You', ts: Date.now() });
+  input.value = '';
+  renderNotes();
+}
+
+// ── ADD FROM GAP ──
+function addFromGap(title) {
+  showPage('tracker');
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-tab')[1].classList.add('active');
+  setTimeout(() => openModal(title), 100);
+}
+
+// initial render
+renderBoard();
+</script>
+</body>
+</html>
