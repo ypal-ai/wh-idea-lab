@@ -3,326 +3,274 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WH Idea Lab — Women's Health & Productivity Intelligence</title>
+  <title>WH Idea Lab</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --cream: #faf7f2; --warm-white: #fffdf9; --blush: #f2d4c8;
-      --rose: #d4816a; --deep-rose: #b05a44; --sage: #8aab8a; --deep-sage: #5c7a5c;
-      --navy: #1e2d40; --navy-mid: #2d4a6b; --gold: #c9a84c; --gold-light: #f0d98a;
-      --lavender: #b8a9d0; --teal: #4a9b8e;
-      --text: #2c2c2c; --text-light: #6b6b6b;
-      --border: rgba(30,45,64,.1); --card-shadow: 0 4px 24px rgba(30,45,64,.08);
-      --radius: 16px; --radius-sm: 10px;
+      --cream:#faf7f2; --warm-white:#fffdf9; --blush:#f2d4c8;
+      --rose:#d4816a; --deep-rose:#b05a44; --sage:#8aab8a; --deep-sage:#5c7a5c;
+      --navy:#1e2d40; --navy-mid:#2d4a6b; --gold:#c9a84c; --gold-light:#f0d98a;
+      --lavender:#b8a9d0; --teal:#4a9b8e;
+      --text:#2c2c2c; --text-light:#6b6b6b;
+      --border:rgba(30,45,64,.1); --card-shadow:0 4px 24px rgba(30,45,64,.08);
+      --radius:16px; --radius-sm:10px;
     }
     html { scroll-behavior: smooth; }
-    body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+    body { font-family:'Inter',sans-serif; background:var(--cream); color:var(--text); min-height:100vh; }
 
-    /* ════════════════════════════════
-       AUTH SCREEN
-    ════════════════════════════════ */
+    /* ── AUTH ── */
     #auth-screen {
-      position: fixed; inset: 0; z-index: 999;
-      background: linear-gradient(145deg, #1e2d40 0%, #2d4a6b 45%, #3a5a3a 100%);
-      display: flex; align-items: center; justify-content: center; padding: 24px;
+      position:fixed; inset:0; z-index:999;
+      background:linear-gradient(145deg,#1e2d40 0%,#2d4a6b 45%,#3a5a3a 100%);
+      display:flex; align-items:center; justify-content:center; padding:24px;
     }
-    #auth-screen.hidden { display: none; }
-
+    #auth-screen.hidden { display:none; }
     .auth-box {
-      background: rgba(255,253,249,.97); border-radius: 24px;
-      padding: 40px 36px; width: 100%; max-width: 420px;
-      box-shadow: 0 32px 80px rgba(0,0,0,.35);
-      display: flex; flex-direction: column; align-items: center; gap: 28px;
+      background:rgba(255,253,249,.97); border-radius:24px;
+      padding:40px 36px; width:100%; max-width:420px;
+      box-shadow:0 32px 80px rgba(0,0,0,.35);
+      display:flex; flex-direction:column; align-items:center; gap:24px;
     }
-    .auth-logo { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-    .auth-logo-mark {
-      width: 52px; height: 52px; border-radius: 14px;
-      background: linear-gradient(135deg, var(--navy), var(--deep-sage));
-      display: flex; align-items: center; justify-content: center; font-size: 1.6rem;
-    }
-    .auth-logo h1 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--navy); text-align: center; }
-    .auth-logo p { font-size: .78rem; color: var(--text-light); text-align: center; letter-spacing: .04em; }
-
-    .auth-step { width: 100%; display: flex; flex-direction: column; gap: 14px; }
-    .auth-step.hidden { display: none; }
-    .auth-step-title { font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-light); text-align: center; }
-
-    /* Login form */
-    .auth-field { display: flex; flex-direction: column; gap: 6px; width: 100%; }
-    .auth-field label { font-size: .76rem; font-weight: 600; color: var(--navy); }
+    .auth-logo { display:flex; flex-direction:column; align-items:center; gap:10px; }
+    .auth-logo-mark { width:52px; height:52px; border-radius:14px; background:linear-gradient(135deg,var(--navy),var(--deep-sage)); display:flex; align-items:center; justify-content:center; font-size:1.6rem; }
+    .auth-logo h1 { font-family:'Playfair Display',serif; font-size:1.5rem; color:var(--navy); }
+    .auth-logo p { font-size:.78rem; color:var(--text-light); letter-spacing:.04em; }
+    .auth-tabs { display:flex; gap:0; background:rgba(30,45,64,.06); padding:4px; border-radius:100px; width:100%; }
+    .auth-tab { flex:1; padding:8px; border-radius:100px; border:none; cursor:pointer; font-family:'Inter',sans-serif; font-size:.82rem; font-weight:500; color:var(--text-light); background:transparent; transition:all .2s; }
+    .auth-tab.active { background:var(--navy); color:#fff; }
+    .auth-panel { width:100%; display:flex; flex-direction:column; gap:14px; }
+    .auth-panel.hidden { display:none; }
+    .auth-field { display:flex; flex-direction:column; gap:6px; }
+    .auth-field label { font-size:.76rem; font-weight:600; color:var(--navy); }
     .auth-field input {
-      padding: 12px 16px; border-radius: var(--radius-sm);
-      border: 1.5px solid var(--border); background: var(--cream);
-      font-family: 'Inter', sans-serif; font-size: .92rem; color: var(--text);
-      transition: border-color .15s; width: 100%;
+      padding:12px 16px; border-radius:var(--radius-sm);
+      border:1.5px solid var(--border); background:var(--cream);
+      font-family:'Inter',sans-serif; font-size:.9rem; color:var(--text);
+      transition:border-color .15s; width:100%;
     }
-    .auth-field input:focus { outline: none; border-color: var(--navy); background: #fff; }
-    .auth-field input.error { border-color: var(--deep-rose); }
-
+    .auth-field input:focus { outline:none; border-color:var(--navy); background:#fff; }
+    .auth-field-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .color-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .color-row label { font-size:.76rem; font-weight:600; color:var(--navy); width:100%; }
+    .cdot { width:24px; height:24px; border-radius:50%; cursor:pointer; border:2px solid transparent; transition:transform .15s,border-color .15s; flex-shrink:0; }
+    .cdot:hover { transform:scale(1.2); }
+    .cdot.sel { border-color:var(--navy); transform:scale(1.15); }
     .auth-btn {
-      width: 100%; padding: 14px; border-radius: 100px; border: none;
-      background: var(--navy); color: #fff; font-family: 'Inter', sans-serif;
-      font-size: .92rem; font-weight: 700; cursor: pointer; transition: all .2s;
+      width:100%; padding:14px; border-radius:100px; border:none;
+      background:var(--navy); color:#fff; font-family:'Inter',sans-serif;
+      font-size:.92rem; font-weight:700; cursor:pointer; transition:all .2s;
     }
-    .auth-btn:hover { background: var(--navy-mid); transform: translateY(-1px); }
-    .auth-btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
-    .auth-error { font-size: .8rem; color: var(--deep-rose); text-align: center; min-height: 18px; }
-    .auth-hint { font-size: .72rem; color: var(--text-light); text-align: center; line-height: 1.5; }
+    .auth-btn:hover { background:var(--navy-mid); transform:translateY(-1px); }
+    .auth-btn:disabled { opacity:.4; cursor:not-allowed; transform:none; }
+    .auth-error { font-size:.8rem; color:var(--deep-rose); text-align:center; min-height:18px; }
+    .auth-hint { font-size:.72rem; color:var(--text-light); text-align:center; line-height:1.6; }
 
-    /* Setup form */
-    .setup-divider { width: 100%; height: 1px; background: var(--border); margin: 4px 0; }
-    .setup-user-section { display: flex; flex-direction: column; gap: 10px; width: 100%; }
-    .setup-user-label {
-      display: flex; align-items: center; gap: 8px;
-      font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-light);
-    }
-    .setup-user-label .label-avatar { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .62rem; font-weight: 700; color: #fff; }
-    .setup-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .color-picker { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
-    .color-picker-label { font-size: .72rem; color: var(--text-light); }
-    .color-dot { width: 20px; height: 20px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform .15s, border-color .15s; }
-    .color-dot:hover { transform: scale(1.2); }
-    .color-dot.selected { border-color: var(--navy); transform: scale(1.15); }
+    /* loading spinner */
+    .spinner { width:20px; height:20px; border:2px solid rgba(255,255,255,.3); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; display:inline-block; }
+    @keyframes spin { to { transform:rotate(360deg); } }
 
-    /* Profile picker */
-    .profile-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; width: 100%; }
-    .profile-card {
-      display: flex; flex-direction: column; align-items: center; gap: 10px;
-      padding: 22px 14px; border-radius: var(--radius); border: 2px solid var(--border);
-      background: var(--cream); cursor: pointer; transition: all .2s;
-    }
-    .profile-card:hover { border-color: var(--navy); background: #fff; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(30,45,64,.12); }
-    .big-avatar { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 700; color: #fff; }
-    .profile-name { font-size: .92rem; font-weight: 700; color: var(--navy); }
-    .profile-email { font-size: .7rem; color: var(--text-light); max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center; }
+    /* ── NAV ── */
+    nav { position:sticky; top:0; z-index:200; background:rgba(255,253,249,.95); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); padding:0 24px; height:60px; display:flex; align-items:center; justify-content:space-between; }
+    .nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .nav-logo-mark { width:32px; height:32px; border-radius:9px; background:linear-gradient(135deg,var(--navy),var(--deep-sage)); display:flex; align-items:center; justify-content:center; font-size:1rem; }
+    .nav-logo-text { font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--navy); font-weight:700; }
+    .nav-logo-sub { font-size:.65rem; color:var(--text-light); letter-spacing:.08em; text-transform:uppercase; display:block; line-height:1; margin-top:1px; }
+    .nav-tabs { display:flex; gap:4px; background:rgba(30,45,64,.06); padding:4px; border-radius:100px; }
+    .nav-tab { padding:7px 20px; border-radius:100px; border:none; cursor:pointer; font-family:'Inter',sans-serif; font-size:.83rem; font-weight:500; color:var(--text-light); background:transparent; transition:all .2s; }
+    .nav-tab.active { background:var(--navy); color:#fff; box-shadow:0 2px 12px rgba(30,45,64,.25); }
+    .nav-tab:hover:not(.active) { color:var(--navy); background:rgba(30,45,64,.08); }
+    .nav-user { display:flex; align-items:center; gap:8px; background:rgba(30,45,64,.06); border-radius:100px; padding:5px 12px 5px 5px; cursor:pointer; transition:background .15s; border:none; font-family:'Inter',sans-serif; }
+    .nav-user:hover { background:rgba(30,45,64,.11); }
+    .nav-user-av { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.78rem; font-weight:700; color:#fff; }
+    .nav-user-name { font-size:.8rem; font-weight:600; color:var(--navy); }
+    .nav-user-sub { font-size:.68rem; color:var(--text-light); }
 
-    /* Password step */
-    .pw-user-header { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-    .pw-user-header .big-avatar { width: 48px; height: 48px; font-size: 1.2rem; }
-    .pw-user-name { font-size: 1rem; font-weight: 700; color: var(--navy); }
-    .pw-user-email { font-size: .75rem; color: var(--text-light); }
-    .auth-back { background: none; border: none; font-family: 'Inter', sans-serif; font-size: .78rem; color: var(--text-light); cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: background .15s; align-self: flex-start; }
-    .auth-back:hover { background: rgba(30,45,64,.07); color: var(--navy); }
+    /* realtime badge */
+    .realtime-dot { width:7px; height:7px; border-radius:50%; background:#22c55e; display:inline-block; margin-left:4px; animation:pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1}50%{opacity:.4} }
 
-    /* ════════════════════════════════
-       NAV
-    ════════════════════════════════ */
-    nav {
-      position: sticky; top: 0; z-index: 200;
-      background: rgba(255,253,249,.95); backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      padding: 0 24px; height: 60px;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .nav-logo-mark { width: 32px; height: 32px; border-radius: 9px; background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 50%, var(--deep-sage) 100%); display: flex; align-items: center; justify-content: center; font-size: 1rem; }
-    .nav-logo-text { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--navy); font-weight: 700; }
-    .nav-logo-sub { font-size: .65rem; color: var(--text-light); letter-spacing: .08em; text-transform: uppercase; display: block; line-height: 1; margin-top: 1px; }
-    .nav-tabs { display: flex; gap: 4px; background: rgba(30,45,64,.06); padding: 4px; border-radius: 100px; }
-    .nav-tab { padding: 7px 20px; border-radius: 100px; border: none; cursor: pointer; font-family: 'Inter', sans-serif; font-size: .83rem; font-weight: 500; color: var(--text-light); background: transparent; transition: all .2s; }
-    .nav-tab.active { background: var(--navy); color: #fff; box-shadow: 0 2px 12px rgba(30,45,64,.25); }
-    .nav-tab:hover:not(.active) { color: var(--navy); background: rgba(30,45,64,.08); }
-    .nav-user { display: flex; align-items: center; gap: 8px; background: rgba(30,45,64,.06); border-radius: 100px; padding: 5px 12px 5px 5px; cursor: pointer; transition: background .15s; border: none; font-family: 'Inter', sans-serif; }
-    .nav-user:hover { background: rgba(30,45,64,.11); }
-    .nav-user-avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .78rem; font-weight: 700; color: #fff; }
-    .nav-user-name { font-size: .8rem; font-weight: 600; color: var(--navy); }
-    .nav-user-switch { font-size: .68rem; color: var(--text-light); }
+    /* ── PAGES ── */
+    .page { display:none; }
+    .page.active { display:block; }
 
-    /* ════════════════════════════════
-       PAGES
-    ════════════════════════════════ */
-    .page { display: none; }
-    .page.active { display: block; }
+    /* ── INTEL ── */
+    .intel-hero { background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 50%,#3a5a3a 100%); padding:48px 24px 40px; color:#fff; }
+    .intel-hero-inner { max-width:1200px; margin:0 auto; }
+    .intel-hero-top { display:flex; align-items:flex-start; justify-content:space-between; gap:24px; flex-wrap:wrap; margin-bottom:36px; }
+    .intel-hero-title .eyebrow { font-size:.72rem; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--gold-light); margin-bottom:8px; display:block; }
+    .intel-hero-title h1 { font-family:'Playfair Display',serif; font-size:clamp(1.8rem,4vw,2.8rem); line-height:1.15; color:#fff; }
+    .intel-hero-title h1 em { font-style:italic; color:var(--blush); }
+    .intel-hero-title p { font-size:.9rem; color:rgba(255,255,255,.6); margin-top:10px; max-width:420px; line-height:1.6; }
+    .intel-hero-badge { background:rgba(201,168,76,.2); border:1px solid rgba(201,168,76,.4); border-radius:100px; padding:6px 16px; font-size:.75rem; color:var(--gold-light); font-weight:500; white-space:nowrap; align-self:flex-start; }
+    .stats-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:16px; }
+    .stat-card { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); border-radius:var(--radius-sm); padding:18px 20px; }
+    .stat-val { font-family:'Playfair Display',serif; font-size:1.9rem; font-weight:700; color:#fff; line-height:1; }
+    .stat-label { font-size:.72rem; color:rgba(255,255,255,.55); text-transform:uppercase; letter-spacing:.08em; margin-top:4px; }
+    .stat-growth { font-size:.78rem; color:#6ee7a0; font-weight:600; margin-top:6px; }
+    .stat-growth.neg { color:#fca5a5; }
+    .intel-body { max-width:1200px; margin:0 auto; padding:36px 24px 80px; display:flex; flex-direction:column; gap:48px; }
+    .section-header { margin-bottom:20px; display:flex; align-items:flex-end; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    .section-header h2 { font-family:'Playfair Display',serif; font-size:1.45rem; color:var(--navy); }
+    .section-header p { font-size:.83rem; color:var(--text-light); margin-top:4px; }
+    .section-tag { font-size:.68rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--rose); }
+    .trends-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:18px; }
+    .trend-card { background:var(--warm-white); border-radius:var(--radius); padding:22px; box-shadow:var(--card-shadow); border:1px solid transparent; transition:transform .2s,box-shadow .2s; display:flex; flex-direction:column; gap:12px; }
+    .trend-card:hover { transform:translateY(-3px); box-shadow:0 8px 32px rgba(30,45,64,.12); border-color:var(--border); }
+    .trend-card-top { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+    .trend-icon { font-size:1.6rem; line-height:1; }
+    .trend-momentum { font-size:.72rem; font-weight:700; padding:4px 10px; border-radius:100px; }
+    .momentum-hot { background:rgba(255,100,60,.1); color:#d44a20; }
+    .momentum-rising { background:rgba(201,168,76,.12); color:#9a7520; }
+    .momentum-steady { background:rgba(138,171,138,.15); color:var(--deep-sage); }
+    .momentum-emerging { background:rgba(184,169,208,.2); color:#6b5a8c; }
+    .trend-card h3 { font-size:1rem; font-weight:600; color:var(--navy); line-height:1.3; }
+    .trend-card p { font-size:.83rem; color:var(--text-light); line-height:1.6; flex:1; }
+    .trend-meta { display:flex; flex-wrap:wrap; gap:6px; padding-top:6px; border-top:1px solid var(--border); }
+    .trend-tag { font-size:.68rem; padding:3px 9px; border-radius:100px; background:rgba(30,45,64,.06); color:var(--text-light); }
+    .trend-size { font-size:.76rem; font-weight:600; color:var(--deep-rose); margin-left:auto; }
+    .market-table { display:flex; flex-direction:column; gap:14px; }
+    .market-row { display:grid; grid-template-columns:200px 1fr auto; align-items:center; gap:16px; }
+    .market-label { font-size:.85rem; font-weight:500; color:var(--navy); }
+    .market-notes { font-size:.75rem; color:var(--text-light); margin-top:2px; }
+    .market-bar-track { height:10px; background:rgba(30,45,64,.08); border-radius:100px; overflow:hidden; }
+    .market-bar-fill { height:100%; border-radius:100px; transition:width 1.2s cubic-bezier(.4,0,.2,1); }
+    .market-size-val { font-size:.82rem; font-weight:700; color:var(--text-light); white-space:nowrap; min-width:100px; text-align:right; }
+    .competitor-cats { display:flex; flex-direction:column; gap:28px; }
+    .comp-cat-label { font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--text-light); margin-bottom:10px; }
+    .comp-grid { display:flex; flex-wrap:wrap; gap:10px; }
+    .comp-pill { display:flex; align-items:center; gap:8px; background:var(--warm-white); border:1px solid var(--border); border-radius:var(--radius-sm); padding:8px 14px; transition:all .15s; }
+    .comp-pill:hover { border-color:var(--rose); box-shadow:0 2px 12px rgba(212,129,106,.12); }
+    .comp-pill-icon { font-size:1rem; }
+    .comp-pill-name { font-size:.82rem; font-weight:600; color:var(--navy); }
+    .comp-pill-stage,.comp-pill-funding { font-size:.68rem; }
+    .comp-pill-stage { color:var(--text-light); }
+    .comp-pill-funding { font-weight:600; color:var(--deep-rose); }
+    .comp-pill-tag { font-size:.65rem; padding:2px 7px; border-radius:100px; font-weight:500; }
+    .ct-leader { background:rgba(30,45,64,.08); color:var(--navy); }
+    .ct-growing { background:rgba(201,168,76,.12); color:#8a6010; }
+    .ct-niche { background:rgba(138,171,138,.15); color:var(--deep-sage); }
+    .ct-new { background:rgba(184,169,208,.2); color:#6b5a8c; }
+    .gap-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:18px; }
+    .gap-card { border-radius:var(--radius); padding:22px; display:flex; flex-direction:column; gap:10px; position:relative; overflow:hidden; }
+    .gap-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+    .gap-high::before { background:linear-gradient(90deg,var(--deep-rose),var(--gold)); }
+    .gap-med::before { background:linear-gradient(90deg,var(--gold),var(--sage)); }
+    .gap-watch::before { background:linear-gradient(90deg,var(--lavender),var(--teal)); }
+    .gap-high { background:linear-gradient(135deg,#fff8f6,#fff3ef); border:1px solid rgba(176,90,68,.15); }
+    .gap-med { background:linear-gradient(135deg,#fffdf5,#fdf8e8); border:1px solid rgba(201,168,76,.15); }
+    .gap-watch { background:linear-gradient(135deg,#f8f6ff,#f0eef8); border:1px solid rgba(184,169,208,.2); }
+    .gap-label { font-size:.65rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+    .gap-high .gap-label { color:var(--deep-rose); }
+    .gap-med .gap-label { color:#9a7520; }
+    .gap-watch .gap-label { color:#6b5a8c; }
+    .gap-card h3 { font-size:.98rem; font-weight:600; color:var(--navy); line-height:1.3; }
+    .gap-card p { font-size:.82rem; color:var(--text-light); line-height:1.6; flex:1; }
+    .gap-tags { display:flex; flex-wrap:wrap; gap:6px; }
+    .gap-t { font-size:.68rem; padding:3px 8px; border-radius:100px; background:rgba(30,45,64,.06); color:var(--text-light); }
+    .gap-card .add-btn { align-self:flex-start; padding:7px 14px; border-radius:100px; border:none; cursor:pointer; font-family:'Inter',sans-serif; font-size:.78rem; font-weight:600; background:var(--navy); color:#fff; transition:all .2s; }
+    .gap-card .add-btn:hover { transform:translateY(-1px); box-shadow:0 4px 16px rgba(30,45,64,.2); }
 
-    /* ════════════════════════════════
-       INTELLIGENCE PAGE
-    ════════════════════════════════ */
-    .intel-hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 50%, #3a5a3a 100%); padding: 48px 24px 40px; color: #fff; }
-    .intel-hero-inner { max-width: 1200px; margin: 0 auto; }
-    .intel-hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 36px; }
-    .intel-hero-title .eyebrow { font-family: 'Inter', sans-serif; font-size: .72rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 8px; display: block; }
-    .intel-hero-title h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1.15; color: #fff; }
-    .intel-hero-title h1 em { font-style: italic; color: var(--blush); }
-    .intel-hero-title p { font-size: .9rem; color: rgba(255,255,255,.6); margin-top: 10px; max-width: 420px; line-height: 1.6; }
-    .intel-hero-badge { background: rgba(201,168,76,.2); border: 1px solid rgba(201,168,76,.4); border-radius: 100px; padding: 6px 16px; font-size: .75rem; color: var(--gold-light); font-weight: 500; white-space: nowrap; align-self: flex-start; }
-    .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; }
-    .stat-card { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12); border-radius: var(--radius-sm); padding: 18px 20px; backdrop-filter: blur(8px); }
-    .stat-card .stat-val { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 700; color: #fff; line-height: 1; }
-    .stat-card .stat-label { font-size: .72rem; color: rgba(255,255,255,.55); text-transform: uppercase; letter-spacing: .08em; margin-top: 4px; }
-    .stat-card .stat-growth { font-size: .78rem; color: #6ee7a0; font-weight: 600; margin-top: 6px; }
-    .stat-card .stat-growth.neg { color: #fca5a5; }
-    .intel-body { max-width: 1200px; margin: 0 auto; padding: 36px 24px 80px; display: flex; flex-direction: column; gap: 48px; }
-    .section-header { margin-bottom: 20px; display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-    .section-header h2 { font-family: 'Playfair Display', serif; font-size: 1.45rem; color: var(--navy); }
-    .section-header p { font-size: .83rem; color: var(--text-light); margin-top: 4px; }
-    .section-tag { font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--rose); }
-    .trends-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
-    .trend-card { background: var(--warm-white); border-radius: var(--radius); padding: 22px 22px 18px; box-shadow: var(--card-shadow); border: 1px solid transparent; transition: transform .2s, box-shadow .2s, border-color .2s; display: flex; flex-direction: column; gap: 12px; }
-    .trend-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(30,45,64,.12); border-color: var(--border); }
-    .trend-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
-    .trend-icon { font-size: 1.6rem; line-height: 1; }
-    .trend-momentum { font-size: .72rem; font-weight: 700; padding: 4px 10px; border-radius: 100px; }
-    .momentum-hot { background: rgba(255,100,60,.1); color: #d44a20; }
-    .momentum-rising { background: rgba(201,168,76,.12); color: #9a7520; }
-    .momentum-steady { background: rgba(138,171,138,.15); color: var(--deep-sage); }
-    .momentum-emerging { background: rgba(184,169,208,.2); color: #6b5a8c; }
-    .trend-card h3 { font-size: 1rem; font-weight: 600; color: var(--navy); line-height: 1.3; }
-    .trend-card p { font-size: .83rem; color: var(--text-light); line-height: 1.6; flex: 1; }
-    .trend-meta { display: flex; flex-wrap: wrap; gap: 6px; padding-top: 6px; border-top: 1px solid var(--border); }
-    .trend-tag { font-size: .68rem; font-weight: 500; padding: 3px 9px; border-radius: 100px; background: rgba(30,45,64,.06); color: var(--text-light); }
-    .trend-size { font-size: .76rem; font-weight: 600; color: var(--deep-rose); margin-left: auto; }
-    .market-table { display: flex; flex-direction: column; gap: 14px; }
-    .market-row { display: grid; grid-template-columns: 200px 1fr auto; align-items: center; gap: 16px; }
-    .market-label { font-size: .85rem; font-weight: 500; color: var(--navy); }
-    .market-bar-track { height: 10px; background: rgba(30,45,64,.08); border-radius: 100px; overflow: hidden; }
-    .market-bar-fill { height: 100%; border-radius: 100px; transition: width 1.2s cubic-bezier(.4,0,.2,1); }
-    .market-size-val { font-size: .82rem; font-weight: 700; color: var(--text-light); white-space: nowrap; min-width: 100px; text-align: right; }
-    .market-notes { font-size: .75rem; color: var(--text-light); margin-top: 2px; }
-    .competitor-cats { display: flex; flex-direction: column; gap: 28px; }
-    .comp-cat-label { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-light); margin-bottom: 10px; }
-    .comp-grid { display: flex; flex-wrap: wrap; gap: 10px; }
-    .comp-pill { display: flex; align-items: center; gap: 8px; background: var(--warm-white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px 14px; transition: all .15s; }
-    .comp-pill:hover { border-color: var(--rose); box-shadow: 0 2px 12px rgba(212,129,106,.12); }
-    .comp-pill-icon { font-size: 1rem; }
-    .comp-pill-name { font-size: .82rem; font-weight: 600; color: var(--navy); }
-    .comp-pill-stage { font-size: .68rem; color: var(--text-light); }
-    .comp-pill-funding { font-size: .68rem; font-weight: 600; color: var(--deep-rose); }
-    .comp-pill-tag { font-size: .65rem; padding: 2px 7px; border-radius: 100px; font-weight: 500; }
-    .ct-leader { background: rgba(30,45,64,.08); color: var(--navy); }
-    .ct-growing { background: rgba(201,168,76,.12); color: #8a6010; }
-    .ct-niche { background: rgba(138,171,138,.15); color: var(--deep-sage); }
-    .ct-new { background: rgba(184,169,208,.2); color: #6b5a8c; }
-    .gap-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
-    .gap-card { border-radius: var(--radius); padding: 22px; display: flex; flex-direction: column; gap: 10px; position: relative; overflow: hidden; }
-    .gap-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
-    .gap-high::before { background: linear-gradient(90deg, var(--deep-rose), var(--gold)); }
-    .gap-med::before { background: linear-gradient(90deg, var(--gold), var(--sage)); }
-    .gap-watch::before { background: linear-gradient(90deg, var(--lavender), var(--teal)); }
-    .gap-high { background: linear-gradient(135deg, #fff8f6, #fff3ef); border: 1px solid rgba(176,90,68,.15); }
-    .gap-med { background: linear-gradient(135deg, #fffdf5, #fdf8e8); border: 1px solid rgba(201,168,76,.15); }
-    .gap-watch { background: linear-gradient(135deg, #f8f6ff, #f0eef8); border: 1px solid rgba(184,169,208,.2); }
-    .gap-label { font-size: .65rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
-    .gap-high .gap-label { color: var(--deep-rose); }
-    .gap-med .gap-label { color: #9a7520; }
-    .gap-watch .gap-label { color: #6b5a8c; }
-    .gap-card h3 { font-size: .98rem; font-weight: 600; color: var(--navy); line-height: 1.3; }
-    .gap-card p { font-size: .82rem; color: var(--text-light); line-height: 1.6; flex: 1; }
-    .gap-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-    .gap-t { font-size: .68rem; padding: 3px 8px; border-radius: 100px; background: rgba(30,45,64,.06); color: var(--text-light); }
-    .gap-card .add-btn { align-self: flex-start; padding: 7px 14px; border-radius: 100px; border: none; cursor: pointer; font-family: 'Inter', sans-serif; font-size: .78rem; font-weight: 600; background: var(--navy); color: #fff; transition: all .2s; }
-    .gap-card .add-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(30,45,64,.2); }
+    /* ── TRACKER ── */
+    .tracker-header { background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 60%,#3a6060 100%); padding:40px 24px 36px; }
+    .tracker-header-inner { max-width:1200px; margin:0 auto; display:flex; align-items:flex-start; justify-content:space-between; gap:20px; flex-wrap:wrap; }
+    .tracker-header h1 { font-family:'Playfair Display',serif; font-size:clamp(1.6rem,3.5vw,2.2rem); color:#fff; }
+    .tracker-header p { font-size:.88rem; color:rgba(255,255,255,.6); margin-top:8px; max-width:420px; line-height:1.6; }
+    .tracker-stats { display:flex; gap:20px; flex-wrap:wrap; margin-top:12px; }
+    .tstat { font-size:.8rem; color:rgba(255,255,255,.7); display:flex; align-items:center; gap:6px; }
+    .tstat strong { color:#fff; font-size:1.1rem; }
+    .add-opp-btn { display:inline-flex; align-items:center; gap:8px; background:var(--blush); color:var(--navy); font-weight:700; font-size:.88rem; padding:13px 24px; border-radius:100px; border:none; cursor:pointer; font-family:'Inter',sans-serif; transition:all .2s; white-space:nowrap; box-shadow:0 4px 20px rgba(242,212,200,.3); align-self:flex-start; }
+    .add-opp-btn:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(242,212,200,.45); }
+    .team-bar { background:rgba(255,255,255,.07); border-top:1px solid rgba(255,255,255,.1); margin-top:20px; padding-top:16px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+    .team-bar-label { font-size:.7rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.45); }
+    .team-chip { display:flex; align-items:center; gap:7px; background:rgba(255,255,255,.1); border-radius:100px; padding:5px 12px 5px 5px; }
+    .team-chip-av { width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.65rem; font-weight:700; color:#fff; }
+    .team-chip-name { font-size:.75rem; color:rgba(255,255,255,.8); font-weight:500; }
+    .team-chip-count { font-size:.68rem; color:rgba(255,255,255,.5); }
+    .tracker-filters { background:var(--warm-white); border-bottom:1px solid var(--border); padding:12px 24px; }
+    .tracker-filters-inner { max-width:1200px; margin:0 auto; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .tfilter-btn { padding:6px 14px; border-radius:100px; border:1.5px solid var(--border); background:transparent; color:var(--text-light); font-size:.78rem; font-weight:500; cursor:pointer; transition:all .15s; font-family:'Inter',sans-serif; }
+    .tfilter-btn.active { background:var(--navy); border-color:var(--navy); color:#fff; }
+    .tfilter-btn:hover:not(.active) { border-color:var(--navy); color:var(--navy); }
+    .tfilter-sep { width:1px; height:18px; background:var(--border); flex-shrink:0; }
+    .sort-select { margin-left:auto; padding:6px 12px; border-radius:100px; border:1.5px solid var(--border); background:transparent; color:var(--text-light); font-size:.78rem; cursor:pointer; font-family:'Inter',sans-serif; }
+    .tracker-body { max-width:1200px; margin:0 auto; padding:28px 24px 80px; }
+    .board { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; align-items:start; }
+    @media(max-width:900px){.board{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:550px){.board{grid-template-columns:1fr;}}
+    .column { background:rgba(30,45,64,.04); border-radius:var(--radius); padding:14px; display:flex; flex-direction:column; gap:12px; min-height:200px; }
+    .col-header { display:flex; align-items:center; justify-content:space-between; padding:4px 4px 10px; border-bottom:2px solid transparent; }
+    .col-header.exploring{border-color:var(--lavender);} .col-header.validating{border-color:var(--gold);} .col-header.building{border-color:var(--rose);} .col-header.launched{border-color:var(--sage);}
+    .col-title { font-size:.82rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--navy); }
+    .col-count { font-size:.72rem; font-weight:700; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:rgba(30,45,64,.1); color:var(--navy); }
+    .col-cards { display:flex; flex-direction:column; gap:10px; min-height:60px; }
+    .opp-card { background:var(--warm-white); border-radius:var(--radius-sm); padding:14px; box-shadow:0 2px 12px rgba(30,45,64,.07); border:1px solid var(--border); cursor:pointer; transition:transform .18s,box-shadow .18s; display:flex; flex-direction:column; gap:8px; }
+    .opp-card:hover { transform:translateY(-2px); box-shadow:0 6px 24px rgba(30,45,64,.12); }
+    .opp-card-top { display:flex; align-items:flex-start; justify-content:space-between; gap:6px; }
+    .opp-card h4 { font-size:.88rem; font-weight:600; color:var(--navy); line-height:1.35; flex:1; }
+    .opp-priority { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:4px; }
+    .p-high{background:var(--deep-rose);} .p-med{background:var(--gold);} .p-low{background:var(--sage);}
+    .opp-card-cat { font-size:.68rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--rose); }
+    .opp-card-note { font-size:.78rem; color:var(--text-light); line-height:1.5; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+    .opp-card-footer { display:flex; align-items:center; justify-content:space-between; padding-top:6px; border-top:1px solid var(--border); }
+    .opp-date { font-size:.68rem; color:var(--text-light); }
+    .opp-tags { display:flex; gap:5px; flex-wrap:wrap; }
+    .opp-tag { font-size:.65rem; padding:2px 7px; border-radius:100px; background:rgba(30,45,64,.06); color:var(--text-light); }
+    .card-authors { display:flex; }
+    .card-av { width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.58rem; font-weight:700; color:#fff; border:1.5px solid var(--warm-white); margin-left:-4px; }
+    .card-av:first-child { margin-left:0; }
+    .empty-col { text-align:center; padding:24px 16px; color:var(--text-light); font-size:.78rem; line-height:1.6; }
+    .empty-col .ec-icon { font-size:1.4rem; margin-bottom:6px; opacity:.5; display:block; }
 
-    /* ════════════════════════════════
-       TRACKER PAGE
-    ════════════════════════════════ */
-    .tracker-header { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 60%, #3a6060 100%); padding: 40px 24px 36px; }
-    .tracker-header-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
-    .tracker-header h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3.5vw, 2.2rem); color: #fff; }
-    .tracker-header p { font-size: .88rem; color: rgba(255,255,255,.6); margin-top: 8px; max-width: 420px; line-height: 1.6; }
-    .tracker-stats { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 12px; }
-    .tstat { font-size: .8rem; color: rgba(255,255,255,.7); display: flex; align-items: center; gap: 6px; }
-    .tstat strong { color: #fff; font-size: 1.1rem; }
-    .add-opp-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--blush); color: var(--navy); font-weight: 700; font-size: .88rem; padding: 13px 24px; border-radius: 100px; border: none; cursor: pointer; font-family: 'Inter', sans-serif; transition: all .2s; white-space: nowrap; box-shadow: 0 4px 20px rgba(242,212,200,.3); align-self: flex-start; }
-    .add-opp-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(242,212,200,.45); }
-    .team-bar { background: rgba(255,255,255,.07); border-top: 1px solid rgba(255,255,255,.1); margin-top: 20px; padding-top: 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-    .team-bar-label { font-size: .7rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.45); }
-    .team-member-chip { display: flex; align-items: center; gap: 7px; background: rgba(255,255,255,.1); border-radius: 100px; padding: 5px 12px 5px 5px; }
-    .team-chip-avatar { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .65rem; font-weight: 700; color: #fff; }
-    .team-chip-name { font-size: .75rem; color: rgba(255,255,255,.8); font-weight: 500; }
-    .team-chip-count { font-size: .68rem; color: rgba(255,255,255,.5); }
-    .tracker-filters { background: var(--warm-white); border-bottom: 1px solid var(--border); padding: 12px 24px; }
-    .tracker-filters-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-    .tfilter-btn { padding: 6px 14px; border-radius: 100px; border: 1.5px solid var(--border); background: transparent; color: var(--text-light); font-size: .78rem; font-weight: 500; cursor: pointer; transition: all .15s; font-family: 'Inter', sans-serif; }
-    .tfilter-btn.active { background: var(--navy); border-color: var(--navy); color: #fff; }
-    .tfilter-btn:hover:not(.active) { border-color: var(--navy); color: var(--navy); }
-    .tfilter-sep { width: 1px; height: 18px; background: var(--border); flex-shrink: 0; }
-    .sort-select { margin-left: auto; padding: 6px 12px; border-radius: 100px; border: 1.5px solid var(--border); background: transparent; color: var(--text-light); font-size: .78rem; cursor: pointer; font-family: 'Inter', sans-serif; }
-    .tracker-body { max-width: 1200px; margin: 0 auto; padding: 28px 24px 80px; }
-    .board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; align-items: start; }
-    @media (max-width: 900px) { .board { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 550px) { .board { grid-template-columns: 1fr; } }
-    .column { background: rgba(30,45,64,.04); border-radius: var(--radius); padding: 14px; display: flex; flex-direction: column; gap: 12px; min-height: 200px; }
-    .col-header { display: flex; align-items: center; justify-content: space-between; padding: 4px 4px 10px; border-bottom: 2px solid transparent; }
-    .col-header.exploring { border-color: var(--lavender); }
-    .col-header.validating { border-color: var(--gold); }
-    .col-header.building { border-color: var(--rose); }
-    .col-header.launched { border-color: var(--sage); }
-    .col-title { font-size: .82rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--navy); }
-    .col-count { font-size: .72rem; font-weight: 700; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(30,45,64,.1); color: var(--navy); }
-    .col-cards { display: flex; flex-direction: column; gap: 10px; min-height: 60px; }
-    .opp-card { background: var(--warm-white); border-radius: var(--radius-sm); padding: 14px; box-shadow: 0 2px 12px rgba(30,45,64,.07); border: 1px solid var(--border); cursor: pointer; transition: transform .18s, box-shadow .18s; display: flex; flex-direction: column; gap: 8px; }
-    .opp-card:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(30,45,64,.12); }
-    .opp-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 6px; }
-    .opp-card h4 { font-size: .88rem; font-weight: 600; color: var(--navy); line-height: 1.35; flex: 1; }
-    .opp-priority { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
-    .p-high { background: var(--deep-rose); } .p-med { background: var(--gold); } .p-low { background: var(--sage); }
-    .opp-card-cat { font-size: .68rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--rose); }
-    .opp-card-note { font-size: .78rem; color: var(--text-light); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    .opp-card-footer { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding-top: 6px; border-top: 1px solid var(--border); }
-    .opp-date { font-size: .68rem; color: var(--text-light); }
-    .opp-tags { display: flex; gap: 5px; flex-wrap: wrap; }
-    .opp-tag { font-size: .65rem; padding: 2px 7px; border-radius: 100px; background: rgba(30,45,64,.06); color: var(--text-light); }
-    .card-authors { display: flex; }
-    .card-author-av { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .58rem; font-weight: 700; color: #fff; border: 1.5px solid var(--warm-white); margin-left: -4px; }
-    .card-author-av:first-child { margin-left: 0; }
-    .empty-col { text-align: center; padding: 24px 16px; color: var(--text-light); font-size: .78rem; line-height: 1.6; }
-    .empty-col .ec-icon { font-size: 1.4rem; margin-bottom: 6px; opacity: .5; }
+    /* ── MODAL ── */
+    .modal-overlay { position:fixed; inset:0; background:rgba(30,45,64,.45); z-index:500; display:flex; align-items:flex-start; justify-content:center; padding:60px 24px 24px; opacity:0; pointer-events:none; transition:opacity .2s; }
+    .modal-overlay.open { opacity:1; pointer-events:all; }
+    .modal { background:var(--warm-white); border-radius:20px; width:100%; max-width:560px; box-shadow:0 20px 80px rgba(30,45,64,.25); max-height:calc(100vh - 100px); overflow-y:auto; transform:translateY(20px); transition:transform .25s; }
+    .modal-overlay.open .modal { transform:translateY(0); }
+    .modal-header { padding:24px 24px 0; display:flex; align-items:center; justify-content:space-between; }
+    .modal-header h2 { font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--navy); }
+    .modal-close { width:32px; height:32px; border-radius:8px; border:none; background:rgba(30,45,64,.08); cursor:pointer; font-size:1.1rem; display:flex; align-items:center; justify-content:center; }
+    .modal-close:hover { background:rgba(30,45,64,.14); }
+    .modal-body { padding:20px 24px 24px; display:flex; flex-direction:column; gap:18px; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .form-group { display:flex; flex-direction:column; gap:6px; }
+    .form-group label { font-size:.76rem; font-weight:600; color:var(--navy); }
+    .form-group input,.form-group select,.form-group textarea { padding:10px 14px; border-radius:var(--radius-sm); border:1.5px solid var(--border); background:var(--cream); font-family:'Inter',sans-serif; font-size:.88rem; color:var(--text); transition:border-color .15s; resize:none; }
+    .form-group input:focus,.form-group select:focus,.form-group textarea:focus { outline:none; border-color:var(--navy); background:#fff; }
+    .form-group textarea { min-height:80px; }
+    .modal-footer { padding:0 24px 24px; display:flex; align-items:center; justify-content:flex-end; gap:10px; }
+    .btn-cancel { padding:10px 20px; border-radius:100px; border:1.5px solid var(--border); background:transparent; color:var(--text-light); font-family:'Inter',sans-serif; font-size:.85rem; cursor:pointer; }
+    .btn-save { padding:10px 24px; border-radius:100px; border:none; background:var(--navy); color:#fff; font-family:'Inter',sans-serif; font-size:.85rem; font-weight:600; cursor:pointer; transition:all .15s; }
+    .btn-save:hover { background:var(--navy-mid); transform:translateY(-1px); }
+    .btn-save:disabled { opacity:.5; cursor:not-allowed; transform:none; }
+    .btn-delete { margin-right:auto; padding:10px 18px; border-radius:100px; border:1.5px solid rgba(176,90,68,.3); background:transparent; color:var(--deep-rose); font-family:'Inter',sans-serif; font-size:.82rem; cursor:pointer; }
+    .btn-delete:hover { background:rgba(176,90,68,.07); }
 
-    /* ════════════════════════════════
-       MODAL
-    ════════════════════════════════ */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(30,45,64,.45); z-index: 500; display: flex; align-items: flex-start; justify-content: center; padding: 60px 24px 24px; opacity: 0; pointer-events: none; transition: opacity .2s; }
-    .modal-overlay.open { opacity: 1; pointer-events: all; }
-    .modal { background: var(--warm-white); border-radius: 20px; width: 100%; max-width: 560px; box-shadow: 0 20px 80px rgba(30,45,64,.25); max-height: calc(100vh - 100px); overflow-y: auto; transform: translateY(20px); transition: transform .25s; }
-    .modal-overlay.open .modal { transform: translateY(0); }
-    .modal-header { padding: 24px 24px 0; display: flex; align-items: center; justify-content: space-between; }
-    .modal-header h2 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--navy); }
-    .modal-close { width: 32px; height: 32px; border-radius: 8px; border: none; background: rgba(30,45,64,.08); cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; }
-    .modal-close:hover { background: rgba(30,45,64,.14); }
-    .modal-body { padding: 20px 24px 24px; display: flex; flex-direction: column; gap: 18px; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .form-group { display: flex; flex-direction: column; gap: 6px; }
-    .form-group label { font-size: .76rem; font-weight: 600; color: var(--navy); }
-    .form-group input, .form-group select, .form-group textarea { padding: 10px 14px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); background: var(--cream); font-family: 'Inter', sans-serif; font-size: .88rem; color: var(--text); transition: border-color .15s; resize: none; }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--navy); background: #fff; }
-    .form-group textarea { min-height: 80px; }
-    .modal-footer { padding: 0 24px 24px; display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
-    .btn-cancel { padding: 10px 20px; border-radius: 100px; border: 1.5px solid var(--border); background: transparent; color: var(--text-light); font-family: 'Inter', sans-serif; font-size: .85rem; cursor: pointer; }
-    .btn-cancel:hover { border-color: var(--text-light); }
-    .btn-save { padding: 10px 24px; border-radius: 100px; border: none; background: var(--navy); color: #fff; font-family: 'Inter', sans-serif; font-size: .85rem; font-weight: 600; cursor: pointer; transition: all .15s; }
-    .btn-save:hover { background: var(--navy-mid); transform: translateY(-1px); }
-    .btn-delete { margin-right: auto; padding: 10px 18px; border-radius: 100px; border: 1.5px solid rgba(176,90,68,.3); background: transparent; color: var(--deep-rose); font-family: 'Inter', sans-serif; font-size: .82rem; cursor: pointer; }
-    .btn-delete:hover { background: rgba(176,90,68,.07); }
-    .notes-section label { font-size: .76rem; font-weight: 600; color: var(--navy); display: block; margin-bottom: 10px; }
-    .notes-thread { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; max-height: 240px; overflow-y: auto; }
-    .note-entry { border-radius: var(--radius-sm); padding: 10px 14px; }
-    .note-u0 { background: rgba(30,45,64,.04); }
-    .note-u1 { background: rgba(138,171,138,.08); }
-    .note-entry-header { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; }
-    .note-avatar { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .6rem; font-weight: 700; color: #fff; flex-shrink: 0; }
-    .note-author { font-size: .75rem; font-weight: 700; }
-    .note-time { font-size: .68rem; color: var(--text-light); margin-left: auto; }
-    .note-text { font-size: .82rem; color: var(--text); line-height: 1.6; }
-    .note-add-row { display: flex; gap: 8px; }
-    .note-add-row input { flex: 1; padding: 9px 14px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); background: var(--cream); font-family: 'Inter', sans-serif; font-size: .83rem; color: var(--text); }
-    .note-add-row input:focus { outline: none; border-color: var(--navy); background: #fff; }
-    .note-add-btn { padding: 9px 16px; border-radius: var(--radius-sm); border: none; background: var(--navy); color: #fff; font-family: 'Inter', sans-serif; font-size: .78rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
-    .note-add-btn:hover { background: var(--navy-mid); }
-    .note-who { font-size: .72rem; color: var(--text-light); margin-top: 5px; display: flex; align-items: center; gap: 5px; }
-    .note-who-av { width: 16px; height: 16px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: .5rem; font-weight: 700; color: #fff; }
+    /* notes */
+    .notes-label { font-size:.76rem; font-weight:600; color:var(--navy); display:block; margin-bottom:10px; }
+    .notes-thread { display:flex; flex-direction:column; gap:8px; margin-bottom:10px; max-height:220px; overflow-y:auto; }
+    .note-entry { border-radius:var(--radius-sm); padding:10px 14px; background:rgba(30,45,64,.04); }
+    .note-hdr { display:flex; align-items:center; gap:7px; margin-bottom:4px; }
+    .note-av { width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.6rem; font-weight:700; color:#fff; flex-shrink:0; }
+    .note-author { font-size:.75rem; font-weight:700; }
+    .note-time { font-size:.68rem; color:var(--text-light); margin-left:auto; }
+    .note-text { font-size:.82rem; color:var(--text); line-height:1.6; }
+    .note-add-row { display:flex; gap:8px; }
+    .note-add-row input { flex:1; padding:9px 14px; border-radius:var(--radius-sm); border:1.5px solid var(--border); background:var(--cream); font-family:'Inter',sans-serif; font-size:.83rem; color:var(--text); }
+    .note-add-row input:focus { outline:none; border-color:var(--navy); background:#fff; }
+    .note-add-btn { padding:9px 16px; border-radius:var(--radius-sm); border:none; background:var(--navy); color:#fff; font-family:'Inter',sans-serif; font-size:.78rem; font-weight:600; cursor:pointer; white-space:nowrap; }
+    .note-add-btn:hover { background:var(--navy-mid); }
+    .note-who { font-size:.72rem; color:var(--text-light); margin-top:5px; display:flex; align-items:center; gap:5px; }
+    .note-who-av { width:15px; height:15px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:.5rem; font-weight:700; color:#fff; }
 
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(30,45,64,.15); border-radius: 100px; }
-    @media (max-width: 640px) { .form-row { grid-template-columns: 1fr; } .market-row { grid-template-columns: 1fr; gap: 6px; } }
+    ::-webkit-scrollbar{width:6px;} ::-webkit-scrollbar-track{background:transparent;} ::-webkit-scrollbar-thumb{background:rgba(30,45,64,.15);border-radius:100px;}
+    @media(max-width:640px){.form-row{grid-template-columns:1fr;}.market-row{grid-template-columns:1fr;gap:6px;}.auth-field-row{grid-template-columns:1fr;}}
   </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════
-     AUTH SCREEN
-══════════════════════════════════ -->
+<!-- ══════════ AUTH ══════════ -->
 <div id="auth-screen">
   <div class="auth-box">
     <div class="auth-logo">
@@ -331,46 +279,13 @@
       <p>Women's Health &amp; Productivity Intelligence</p>
     </div>
 
-    <!-- STEP: First-time setup -->
-    <div class="auth-step hidden" id="step-setup">
-      <div class="auth-step-title">Create your workspace</div>
-
-      <div class="setup-user-section">
-        <div class="setup-user-label">
-          <div class="label-avatar" id="lav0" style="background:#d4816a">J</div>
-          Person 1
-        </div>
-        <div class="setup-row">
-          <div class="auth-field"><label>Name</label><input id="s-name0" placeholder="Your name" value="Julia" oninput="setupAvatarUpdate(0)" /></div>
-          <div class="auth-field"><label>Email</label><input type="email" id="s-email0" placeholder="you@email.com" /></div>
-        </div>
-        <div class="auth-field"><label>Password</label><input type="password" id="s-pw0" placeholder="Choose a password" /></div>
-        <div class="color-picker"><span class="color-picker-label">Colour:</span><div id="cpick0"></div></div>
-      </div>
-
-      <div class="setup-divider"></div>
-
-      <div class="setup-user-section">
-        <div class="setup-user-label">
-          <div class="label-avatar" id="lav1" style="background:#8aab8a">P</div>
-          Person 2
-        </div>
-        <div class="setup-row">
-          <div class="auth-field"><label>Name</label><input id="s-name1" placeholder="Partner's name" value="Partner" oninput="setupAvatarUpdate(1)" /></div>
-          <div class="auth-field"><label>Email</label><input type="email" id="s-email1" placeholder="partner@email.com" /></div>
-        </div>
-        <div class="auth-field"><label>Password</label><input type="password" id="s-pw1" placeholder="Choose a password" /></div>
-        <div class="color-picker"><span class="color-picker-label">Colour:</span><div id="cpick1"></div></div>
-      </div>
-
-      <div class="auth-error" id="setup-error"></div>
-      <button class="auth-btn" onclick="finishSetup()">Create our space →</button>
-      <div class="auth-hint">Credentials are stored locally in your browser.<br>Only people on this device can log in.</div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchAuthTab('login',this)">Sign in</button>
+      <button class="auth-tab" onclick="switchAuthTab('signup',this)">Create account</button>
     </div>
 
-    <!-- STEP: Login with email + password -->
-    <div class="auth-step hidden" id="step-login">
-      <div class="auth-step-title">Sign in</div>
+    <!-- Sign in -->
+    <div class="auth-panel" id="panel-login">
       <div class="auth-field">
         <label>Email</label>
         <input type="email" id="l-email" placeholder="you@email.com" onkeydown="if(event.key==='Enter')document.getElementById('l-pw').focus()" />
@@ -380,16 +295,40 @@
         <input type="password" id="l-pw" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()" />
       </div>
       <div class="auth-error" id="login-error"></div>
-      <button class="auth-btn" onclick="doLogin()">Sign in →</button>
+      <button class="auth-btn" id="login-btn" onclick="doLogin()">Sign in →</button>
+    </div>
+
+    <!-- Sign up -->
+    <div class="auth-panel hidden" id="panel-signup">
+      <div class="auth-field-row">
+        <div class="auth-field">
+          <label>Your name</label>
+          <input type="text" id="s-name" placeholder="Julia" oninput="updateSignupAvatar()" />
+        </div>
+        <div class="auth-field">
+          <label>Email</label>
+          <input type="email" id="s-email" placeholder="you@email.com" />
+        </div>
+      </div>
+      <div class="auth-field">
+        <label>Password (min 6 characters)</label>
+        <input type="password" id="s-pw" placeholder="Choose a password" onkeydown="if(event.key==='Enter')doSignup()" />
+      </div>
+      <div class="color-row">
+        <label>Profile colour</label>
+        <div id="signup-colors"></div>
+        <div id="signup-av-preview" style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#fff;background:#d4816a;margin-left:auto;">?</div>
+      </div>
+      <div class="auth-error" id="signup-error"></div>
+      <button class="auth-btn" id="signup-btn" onclick="doSignup()">Create account →</button>
+      <div class="auth-hint">Your partner creates their own account separately.</div>
     </div>
 
   </div>
 </div>
 
-<!-- ══════════════════════════════════
-     MAIN APP
-══════════════════════════════════ -->
-<div id="app" style="display:none;">
+<!-- ══════════ APP ══════════ -->
+<div id="app" style="display:none">
 
 <nav>
   <a class="nav-logo" href="#">
@@ -403,16 +342,17 @@
     <button class="nav-tab active" onclick="showPage('intel',this)">📊 Intelligence</button>
     <button class="nav-tab" onclick="showPage('tracker',this)">🗂 Tracker</button>
   </div>
-  <button class="nav-user" onclick="doLogout()" title="Sign out">
-    <div class="nav-user-avatar" id="nav-avatar"></div>
+  <button class="nav-user" onclick="doSignOut()">
+    <div class="nav-user-av" id="nav-av"></div>
     <div>
       <div class="nav-user-name" id="nav-name"></div>
-      <div class="nav-user-switch">sign out</div>
+      <div class="nav-user-sub">sign out</div>
     </div>
+    <span class="realtime-dot" title="Live sync on"></span>
   </button>
 </nav>
 
-<!-- ══════════════ INTELLIGENCE ══════════════ -->
+<!-- INTEL -->
 <div class="page active" id="page-intel">
   <div class="intel-hero">
     <div class="intel-hero-inner">
@@ -441,29 +381,29 @@
         <div class="trend-card"><div class="trend-card-top"><span class="trend-icon">🧠</span><span class="trend-momentum momentum-hot">🔥 Hot</span></div><h3>Women's Mental Wellness & Burnout</h3><p>Burnout rates among women 42% higher than men post-pandemic. Apps combining therapy access, nervous system tools, and productivity coaching are exploding.</p><div class="trend-meta"><span class="trend-tag">Mental Health</span><span class="trend-tag">Wellness</span><span class="trend-size">$9.8B TAM</span></div></div>
         <div class="trend-card"><div class="trend-card-top"><span class="trend-icon">💊</span><span class="trend-momentum momentum-hot">🔥 Hot</span></div><h3>GLP-1 & Women's Metabolic Health</h3><p>Ozempic/Wegovy wave creating massive demand for female-specific metabolic health tools, nutrition tracking, and muscle preservation protocols tailored to women.</p><div class="trend-meta"><span class="trend-tag">Nutrition</span><span class="trend-tag">Metabolic</span><span class="trend-tag">Trending</span><span class="trend-size">$12B TAM</span></div></div>
         <div class="trend-card"><div class="trend-card-top"><span class="trend-icon">🌡️</span><span class="trend-momentum momentum-rising">📈 Rising</span></div><h3>Perimenopause & Menopause Tech</h3><p>86M US women will be menopausal by 2030. Startups like Midi Health, Elektra, and Gennev raising big. Huge gap in digital-first perimenopause support (35–45 demo).</p><div class="trend-meta"><span class="trend-tag">FemTech</span><span class="trend-tag">Menopause</span><span class="trend-size">$22B TAM</span></div></div>
-        <div class="trend-card"><div class="trend-card-top"><span class="trend-icon">😴</span><span class="trend-momentum momentum-rising">📈 Rising</span></div><h3>Female Sleep Optimization</h3><p>Women sleep differently due to hormonal cycles — yet most sleep apps ignore this. Wearables + AI creating personalized female-first sleep protocols. Huge underserved niche.</p><div class="trend-meta"><span class="trend-tag">Sleep</span><span class="trend-tag">Wearables</span><span class="trend-tag">AI</span><span class="trend-size">$5.1B TAM</span></div></div>
-        <div class="trend-card"><div class="trend-card-top"><span class="trend-icon">⚡</span><span class="trend-momentum momentum-rising">📈 Rising</span></div><h3>Energy & Nervous System Regulation</h3><p>"Adrenal fatigue" and HPA axis dysfunction driving demand for breath work, cold therapy, and nervous system tracking apps. Strong content-to-product conversion opportunity.</p><div class="trend-meta"><span class="trend-tag">Wellness</span><span class="trend-tag">Biohacking</span><span class="trend-size">$3.4B TAM</span></div></div>
-        <div class="trend-card"><div class="trend-card-top"><span class="trend-icon">🤝</span><span class="trend-momentum momentum-rising">📈 Rising</span></div><h3>Women-Led Community Platforms</h3><p>Rise of paid communities for women in specific life stages (motherhood, career pivots, chronic illness). Geneva, Heartbeat, and indie creators monetizing deeply loyal cohorts.</p><div class="trend-meta"><span class="trend-tag">Community</span><span class="trend-tag">Subscription</span><span class="trend-size">$6B TAM</span></div></div>
-        <div class="trend-card"><div class="trend-card-top"><span class="trend-icon">🏋️‍♀️</span><span class="trend-momentum momentum-steady">↔ Steady</span></div><h3>Female-Specific Strength Training</h3><p>Shift from cardio-only to strength training for women. Apps like Evlo Fitness and Strong growing. Content creators converting to app subscribers fast.</p><div class="trend-meta"><span class="trend-tag">Fitness</span><span class="trend-tag">Longevity</span><span class="trend-size">$7.3B TAM</span></div></div>
+        <div class="trend-card"><div class="trend-card-top"><span class="trend-icon">😴</span><span class="trend-momentum momentum-rising">📈 Rising</span></div><h3>Female Sleep Optimization</h3><p>Women sleep differently due to hormonal cycles — yet most sleep apps ignore this. Wearables + AI creating personalized female-first sleep protocols.</p><div class="trend-meta"><span class="trend-tag">Sleep</span><span class="trend-tag">Wearables</span><span class="trend-tag">AI</span><span class="trend-size">$5.1B TAM</span></div></div>
+        <div class="trend-card"><div class="trend-card-top"><span class="trend-icon">⚡</span><span class="trend-momentum momentum-rising">📈 Rising</span></div><h3>Energy & Nervous System Regulation</h3><p>"Adrenal fatigue" and HPA axis dysfunction driving demand for breath work, cold therapy, and nervous system tracking apps.</p><div class="trend-meta"><span class="trend-tag">Wellness</span><span class="trend-tag">Biohacking</span><span class="trend-size">$3.4B TAM</span></div></div>
+        <div class="trend-card"><div class="trend-card-top"><span class="trend-icon">🤝</span><span class="trend-momentum momentum-rising">📈 Rising</span></div><h3>Women-Led Community Platforms</h3><p>Rise of paid communities for women in specific life stages. Geneva, Heartbeat, and indie creators monetizing deeply loyal cohorts.</p><div class="trend-meta"><span class="trend-tag">Community</span><span class="trend-tag">Subscription</span><span class="trend-size">$6B TAM</span></div></div>
+        <div class="trend-card"><div class="trend-card-top"><span class="trend-icon">🏋️‍♀️</span><span class="trend-momentum momentum-steady">↔ Steady</span></div><h3>Female-Specific Strength Training</h3><p>Shift from cardio-only to strength training for women. Apps like Evlo Fitness and Strong growing fast.</p><div class="trend-meta"><span class="trend-tag">Fitness</span><span class="trend-tag">Longevity</span><span class="trend-size">$7.3B TAM</span></div></div>
         <div class="trend-card"><div class="trend-card-top"><span class="trend-icon">🧪</span><span class="trend-momentum momentum-emerging">🌱 Emerging</span></div><h3>At-Home Female Hormone Testing</h3><p>Consumer hormone panels via blood spot tests. DUTCH test going mainstream. Startups building subscription insights layers on top.</p><div class="trend-meta"><span class="trend-tag">Diagnostics</span><span class="trend-tag">D2C</span><span class="trend-tag">Subscription</span><span class="trend-size">$2.8B TAM</span></div></div>
-        <div class="trend-card"><div class="trend-card-top"><span class="trend-icon">🍽️</span><span class="trend-momentum momentum-emerging">🌱 Emerging</span></div><h3>Cycle-Aware Nutrition & Meal Planning</h3><p>Seed cycling, folate cycling, and phase-based eating gaining mainstream traction. Meal kit and subscription food brands starting to target menstruating women specifically.</p><div class="trend-meta"><span class="trend-tag">Nutrition</span><span class="trend-tag">FemTech</span><span class="trend-size">$2.1B TAM</span></div></div>
-        <div class="trend-card"><div class="trend-card-top"><span class="trend-icon">💼</span><span class="trend-momentum momentum-emerging">🌱 Emerging</span></div><h3>Female Financial Wellness</h3><p>Women live longer, earn less, retire with less — driving fintech for women. Ellevest leading but space is underbuilt. Intersection with health costs is untapped.</p><div class="trend-meta"><span class="trend-tag">FinTech</span><span class="trend-tag">Productivity</span><span class="trend-size">$18B TAM</span></div></div>
-        <div class="trend-card"><div class="trend-card-top"><span class="trend-icon">🤖</span><span class="trend-momentum momentum-hot">🔥 Hot</span></div><h3>AI Health Coaches for Women</h3><p>GPT-4o + RAG enabling 24/7 health coaching personalised to cycle, age, and health goals. Wild opportunity for AI companions that actually understand female physiology.</p><div class="trend-meta"><span class="trend-tag">AI</span><span class="trend-tag">Coaching</span><span class="trend-tag">Personalization</span><span class="trend-size">$8.5B TAM</span></div></div>
+        <div class="trend-card"><div class="trend-card-top"><span class="trend-icon">🍽️</span><span class="trend-momentum momentum-emerging">🌱 Emerging</span></div><h3>Cycle-Aware Nutrition & Meal Planning</h3><p>Seed cycling and phase-based eating gaining traction. Meal kit brands starting to target menstruating women specifically.</p><div class="trend-meta"><span class="trend-tag">Nutrition</span><span class="trend-tag">FemTech</span><span class="trend-size">$2.1B TAM</span></div></div>
+        <div class="trend-card"><div class="trend-card-top"><span class="trend-icon">💼</span><span class="trend-momentum momentum-emerging">🌱 Emerging</span></div><h3>Female Financial Wellness</h3><p>Women live longer, earn less, retire with less. Ellevest leading but space is underbuilt. Intersection with health costs is untapped.</p><div class="trend-meta"><span class="trend-tag">FinTech</span><span class="trend-tag">Productivity</span><span class="trend-size">$18B TAM</span></div></div>
+        <div class="trend-card"><div class="trend-card-top"><span class="trend-icon">🤖</span><span class="trend-momentum momentum-hot">🔥 Hot</span></div><h3>AI Health Coaches for Women</h3><p>GPT-4o + RAG enabling 24/7 health coaching personalised to cycle, age, and goals. Massive opportunity for AI companions that understand female physiology.</p><div class="trend-meta"><span class="trend-tag">AI</span><span class="trend-tag">Coaching</span><span class="trend-tag">Personalization</span><span class="trend-size">$8.5B TAM</span></div></div>
       </div>
     </div>
     <div><div class="section-header"><div><div class="section-tag">Market Sizing</div><h2>Segment Market Sizes</h2><p>Global TAM estimates for 2024–2025</p></div></div><div class="market-table" id="market-table"></div></div>
-    <div><div class="section-header"><div><div class="section-tag">Competitive Landscape</div><h2>Who's Playing Where</h2><p>Key players by category</p></div></div><div class="competitor-cats" id="competitor-cats"></div></div>
-    <div><div class="section-header"><div><div class="section-tag">Opportunity Analysis</div><h2>Gaps Worth Pursuing</h2><p>Underserved niches and whitespace opportunities</p></div></div><div class="gap-grid" id="gap-grid"></div></div>
+    <div><div class="section-header"><div><div class="section-tag">Competitive Landscape</div><h2>Who's Playing Where</h2></div></div><div class="competitor-cats" id="competitor-cats"></div></div>
+    <div><div class="section-header"><div><div class="section-tag">Opportunity Analysis</div><h2>Gaps Worth Pursuing</h2></div></div><div class="gap-grid" id="gap-grid"></div></div>
   </div>
 </div>
 
-<!-- ══════════════ TRACKER ══════════════ -->
+<!-- TRACKER -->
 <div class="page" id="page-tracker">
   <div class="tracker-header">
     <div class="tracker-header-inner">
       <div style="flex:1">
         <h1>Opportunity Tracker</h1>
-        <p>Track ideas from first spark to launch. Notes show who said what.</p>
+        <p>Shared workspace — changes sync in real time between you and your partner.</p>
         <div class="tracker-stats">
           <div class="tstat"><strong id="stat-total">0</strong> total</div>
           <div class="tstat"><strong id="stat-exploring">0</strong> exploring</div>
@@ -503,7 +443,6 @@
     </div>
   </div>
 </div>
-
 </div><!-- /app -->
 
 <!-- MODAL -->
@@ -523,205 +462,443 @@
       </div>
       <div class="form-group"><label>Description / Hypothesis</label><textarea id="opp-desc" placeholder="What's the opportunity? Who's the customer? What's the insight?"></textarea></div>
       <div class="form-group"><label>Tags (comma separated)</label><input type="text" id="opp-tags" placeholder="e.g. B2C, subscription, mobile" /></div>
-      <div class="notes-section">
-        <label>Discussion Notes</label>
+      <div>
+        <span class="notes-label">Discussion Notes</span>
         <div class="notes-thread" id="notes-thread"></div>
         <div class="note-add-row">
-          <input type="text" id="note-input" placeholder="Add a note or comment…" onkeydown="if(event.key==='Enter')addNote()" />
-          <button class="note-add-btn" onclick="addNote()">Post</button>
+          <input type="text" id="note-input" placeholder="Add a note or comment…" onkeydown="if(event.key==='Enter')postNote()" />
+          <button class="note-add-btn" onclick="postNote()">Post</button>
         </div>
-        <div class="note-who" id="note-who-label"></div>
+        <div class="note-who" id="note-who"></div>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn-delete" id="btn-delete" onclick="deleteOpp()" style="display:none">Delete</button>
+      <button class="btn-delete" id="btn-delete" onclick="confirmDelete()" style="display:none">Delete</button>
       <button class="btn-cancel" onclick="closeModal()">Cancel</button>
-      <button class="btn-save" onclick="saveOpp()">Save</button>
+      <button class="btn-save" id="btn-save" onclick="saveOpp()">Save</button>
     </div>
   </div>
 </div>
 
 <script>
-// ══════════════════════════════════════
-// UTILS
-// ══════════════════════════════════════
+// ══════════════════════════════════
+// SUPABASE
+// ══════════════════════════════════
+const { createClient } = supabase;
+const sb = createClient(
+  'https://oianghfsdipjipmbyzik.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9pYW5naGZzZGlwamlwbWJ5emlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MDUyODIsImV4cCI6MjA5MzQ4MTI4Mn0.keWipdyeRmUMcl-fut0t70DXafh8lqpOBYNj3Yy0Jts'
+);
+
+// ══════════════════════════════════
+// STATE
+// ══════════════════════════════════
 const COLORS = ['#d4816a','#8aab8a','#2d4a6b','#c9a84c','#b8a9d0','#4a9b8e','#b05a44','#5c7a5c'];
-const CNAMES = ['Rose','Sage','Navy','Gold','Lavender','Teal','Deep Rose','Forest'];
+let currentUser = null;   // supabase auth user
+let myProfile   = null;   // row from profiles table
+let allProfiles = {};     // { userId: profile }
+let opps        = [];     // opportunities with notes
+let modalOppId  = null;   // null = new, string = editing
+let tempNotes   = [];     // notes buffer for new opp
+let cfilt = 'all', pfilt = null;
 
-function escHtml(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function formatDate(ts) { return new Date(ts).toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
-function formatDT(ts) { return new Date(ts).toLocaleDateString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}); }
-
-async function sha256(str) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+// ══════════════════════════════════
+// AUTH TABS
+// ══════════════════════════════════
+function switchAuthTab(tab, btn) {
+  document.querySelectorAll('.auth-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-login').classList.toggle('hidden', tab !== 'login');
+  document.getElementById('panel-signup').classList.toggle('hidden', tab !== 'signup');
 }
 
-// ══════════════════════════════════════
-// STORAGE
-// ══════════════════════════════════════
-let store = JSON.parse(localStorage.getItem('wh-store') || 'null');
-let opps  = JSON.parse(localStorage.getItem('wh-opps')  || '[]');
-let activeUser = null; // index 0 or 1
+// signup color picker
+let signupColor = COLORS[0];
+const scWrap = document.getElementById('signup-colors');
+COLORS.forEach(c => {
+  const d = document.createElement('div');
+  d.className = 'cdot' + (c === COLORS[0] ? ' sel' : '');
+  d.style.background = c;
+  d.onclick = () => {
+    scWrap.querySelectorAll('.cdot').forEach(x => x.classList.remove('sel'));
+    d.classList.add('sel');
+    signupColor = c;
+    document.getElementById('signup-av-preview').style.background = c;
+  };
+  scWrap.appendChild(d);
+});
+function updateSignupAvatar() {
+  const n = document.getElementById('s-name').value.trim();
+  const el = document.getElementById('signup-av-preview');
+  el.textContent = n ? n[0].toUpperCase() : '?';
+}
 
-function saveStore() { localStorage.setItem('wh-store', JSON.stringify(store)); }
-function saveOpps()  { localStorage.setItem('wh-opps',  JSON.stringify(opps)); }
+// ══════════════════════════════════
+// SIGN IN
+// ══════════════════════════════════
+async function doLogin() {
+  const err = document.getElementById('login-error');
+  const btn = document.getElementById('login-btn');
+  err.textContent = '';
+  const email = document.getElementById('l-email').value.trim();
+  const pw    = document.getElementById('l-pw').value;
+  if (!email || !pw) { err.textContent = 'Please enter email and password.'; return; }
+  btn.innerHTML = '<span class="spinner"></span>';
+  btn.disabled = true;
+  const { error } = await sb.auth.signInWithPassword({ email, password: pw });
+  btn.innerHTML = 'Sign in →';
+  btn.disabled = false;
+  if (error) { err.textContent = error.message === 'Invalid login credentials' ? 'Wrong email or password.' : error.message; }
+}
 
-// ══════════════════════════════════════
-// SETUP — COLOR PICKERS
-// ══════════════════════════════════════
-const defColors = ['#d4816a','#8aab8a'];
-[0,1].forEach(i => {
-  const wrap = document.getElementById('cpick' + i);
-  COLORS.forEach((c, ci) => {
-    const d = document.createElement('div');
-    d.className = 'color-dot' + (c === defColors[i] ? ' selected' : '');
-    d.style.background = c; d.title = CNAMES[ci];
-    d.onclick = () => {
-      wrap.querySelectorAll('.color-dot').forEach(x => x.classList.remove('selected'));
-      d.classList.add('selected');
-      document.getElementById('lav' + i).style.background = c;
-    };
-    wrap.appendChild(d);
+// ══════════════════════════════════
+// SIGN UP
+// ══════════════════════════════════
+async function doSignup() {
+  const err = document.getElementById('signup-error');
+  const btn = document.getElementById('signup-btn');
+  err.textContent = '';
+  const name  = document.getElementById('s-name').value.trim();
+  const email = document.getElementById('s-email').value.trim();
+  const pw    = document.getElementById('s-pw').value;
+  if (!name)  { err.textContent = 'Please enter your name.'; return; }
+  if (!email) { err.textContent = 'Please enter your email.'; return; }
+  if (!pw || pw.length < 6) { err.textContent = 'Password must be at least 6 characters.'; return; }
+  btn.innerHTML = '<span class="spinner"></span>';
+  btn.disabled = true;
+  const { data, error } = await sb.auth.signUp({ email, password: pw });
+  if (error) { err.textContent = error.message; btn.innerHTML = 'Create account →'; btn.disabled = false; return; }
+  // create profile
+  await sb.from('profiles').insert({
+    id: data.user.id,
+    name,
+    color: signupColor,
+    initials: name[0].toUpperCase()
   });
-  document.getElementById('lav' + i).style.background = defColors[i];
+  btn.innerHTML = 'Create account →';
+  btn.disabled = false;
+}
+
+// ══════════════════════════════════
+// SIGN OUT
+// ══════════════════════════════════
+async function doSignOut() {
+  await sb.auth.signOut();
+}
+
+// ══════════════════════════════════
+// AUTH STATE LISTENER
+// ══════════════════════════════════
+sb.auth.onAuthStateChange(async (event, session) => {
+  if (session?.user) {
+    currentUser = session.user;
+    await loadProfiles();
+    await loadOpps();
+    subscribeRealtime();
+    enterApp();
+  } else {
+    currentUser = null; myProfile = null;
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('auth-screen').classList.remove('hidden');
+  }
 });
 
-function setupAvatarUpdate(i) {
-  const n = document.getElementById('s-name' + i).value.trim();
-  document.getElementById('lav' + i).textContent = n ? n[0].toUpperCase() : '?';
+// ══════════════════════════════════
+// LOAD DATA
+// ══════════════════════════════════
+async function loadProfiles() {
+  const { data } = await sb.from('profiles').select('*');
+  allProfiles = {};
+  (data || []).forEach(p => { allProfiles[p.id] = p; });
+  myProfile = allProfiles[currentUser.id] || null;
 }
 
-// ══════════════════════════════════════
-// INIT — decide which screen to show
-// ══════════════════════════════════════
-(function init() {
-  if (!store) {
-    // First time — show setup
-    document.getElementById('step-setup').classList.remove('hidden');
-  } else {
-    // Returning — check session
-    const saved = sessionStorage.getItem('wh-uid');
-    if (saved !== null) {
-      activeUser = parseInt(saved);
-      enterApp();
-    } else {
-      document.getElementById('step-login').classList.remove('hidden');
-    }
-  }
-})();
-
-// ══════════════════════════════════════
-// SETUP SUBMIT
-// ══════════════════════════════════════
-async function finishSetup() {
-  const errEl = document.getElementById('setup-error');
-  errEl.textContent = '';
-
-  const fields = [0,1].map(i => ({
-    name:  document.getElementById('s-name'  + i).value.trim(),
-    email: document.getElementById('s-email' + i).value.trim().toLowerCase(),
-    pw:    document.getElementById('s-pw'    + i).value,
-    color: document.getElementById('cpick'   + i).querySelector('.color-dot.selected')?.style.background || defColors[i],
-  }));
-
-  if (!fields[0].name || !fields[1].name) { errEl.textContent = 'Please enter both names.'; return; }
-  if (!fields[0].email || !fields[1].email) { errEl.textContent = 'Please enter both email addresses.'; return; }
-  if (fields[0].email === fields[1].email) { errEl.textContent = 'Emails must be different.'; return; }
-  if (!fields[0].pw || fields[0].pw.length < 4) { errEl.textContent = 'Person 1: password must be at least 4 characters.'; return; }
-  if (!fields[1].pw || fields[1].pw.length < 4) { errEl.textContent = 'Person 2: password must be at least 4 characters.'; return; }
-
-  const hashes = await Promise.all(fields.map(f => sha256(f.email + ':' + f.pw)));
-
-  store = {
-    users: fields.map((f, i) => ({
-      name:     f.name,
-      email:    f.email,
-      pwHash:   hashes[i],
-      color:    f.color,
-      initials: f.name[0].toUpperCase(),
-    }))
-  };
-  saveStore();
-
-  activeUser = 0;
-  sessionStorage.setItem('wh-uid', '0');
-  enterApp();
+async function loadOpps() {
+  const { data } = await sb
+    .from('opportunities')
+    .select('*, notes(id, text, user_id, created_at)')
+    .order('created_at', { ascending: false });
+  opps = data || [];
+  renderBoard();
 }
 
-// ══════════════════════════════════════
-// LOGIN
-// ══════════════════════════════════════
-async function doLogin() {
-  const errEl = document.getElementById('login-error');
-  errEl.textContent = '';
-
-  const email = document.getElementById('l-email').value.trim().toLowerCase();
-  const pw    = document.getElementById('l-pw').value;
-
-  if (!email || !pw) { errEl.textContent = 'Please fill in email and password.'; return; }
-
-  const hash = await sha256(email + ':' + pw);
-  const idx  = store.users.findIndex(u => u.email === email && u.pwHash === hash);
-
-  if (idx === -1) {
-    errEl.textContent = 'Email or password is incorrect.';
-    document.getElementById('l-pw').value = '';
-    document.getElementById('l-pw').focus();
-    return;
-  }
-
-  activeUser = idx;
-  sessionStorage.setItem('wh-uid', String(idx));
-  enterApp();
+// ══════════════════════════════════
+// REAL-TIME
+// ══════════════════════════════════
+function subscribeRealtime() {
+  sb.channel('wh-changes')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'opportunities' }, loadOpps)
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'notes' }, async () => {
+      await loadOpps();
+      // refresh notes in open modal
+      if (modalOppId) renderModalNotes();
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, loadProfiles)
+    .subscribe();
 }
 
-// ══════════════════════════════════════
-// ENTER / LEAVE APP
-// ══════════════════════════════════════
+// ══════════════════════════════════
+// ENTER APP
+// ══════════════════════════════════
 function enterApp() {
   document.getElementById('auth-screen').classList.add('hidden');
   document.getElementById('app').style.display = 'block';
-  updateNavUser();
-  renderBoard();
+  const u = allProfiles[currentUser.id];
+  if (u) {
+    document.getElementById('nav-av').textContent = u.initials;
+    document.getElementById('nav-av').style.background = u.color;
+    document.getElementById('nav-name').textContent = u.name;
+  }
   renderTeamBar();
 }
 
-function doLogout() {
-  sessionStorage.removeItem('wh-uid');
-  activeUser = null;
-  document.getElementById('app').style.display = 'none';
-  document.getElementById('auth-screen').classList.remove('hidden');
-  // clear and re-show login form
-  document.getElementById('l-email').value = '';
-  document.getElementById('l-pw').value = '';
-  document.getElementById('login-error').textContent = '';
-  document.getElementById('step-setup').classList.add('hidden');
-  document.getElementById('step-login').classList.remove('hidden');
-}
-
-function updateNavUser() {
-  if (activeUser === null || !store) return;
-  const u = store.users[activeUser];
-  const av = document.getElementById('nav-avatar');
-  av.textContent = u.initials; av.style.background = u.color;
-  document.getElementById('nav-name').textContent = u.name;
-}
-
-// ══════════════════════════════════════
+// ══════════════════════════════════
 // NAV
-// ══════════════════════════════════════
+// ══════════════════════════════════
 function showPage(id, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
   if (btn) btn.classList.add('active');
-  if (id === 'tracker') renderBoard();
 }
 
-// ══════════════════════════════════════
-// MARKET DATA
-// ══════════════════════════════════════
+// ══════════════════════════════════
+// BOARD
+// ══════════════════════════════════
+const esc = s => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const fdate = ts => new Date(ts).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+const fdatetime = ts => new Date(ts).toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+const pColor = id => allProfiles[id]?.color || '#aaa';
+const pName  = id => allProfiles[id]?.name  || 'Unknown';
+const pInit  = id => allProfiles[id]?.initials || '?';
+
+function renderTeamBar() {
+  const el = document.getElementById('team-bar');
+  if (!el) return;
+  const profs = Object.values(allProfiles);
+  if (!profs.length) { el.innerHTML = ''; return; }
+  const counts = {};
+  opps.forEach(o => { if (o.created_by) counts[o.created_by] = (counts[o.created_by]||0)+1; });
+  el.innerHTML = '<span class="team-bar-label">Team</span>' +
+    profs.map(p => `<div class="team-chip">
+      <div class="team-chip-av" style="background:${p.color}">${p.initials}</div>
+      <span class="team-chip-name">${esc(p.name)}</span>
+      <span class="team-chip-count">${counts[p.id]||0} opp.</span>
+    </div>`).join('');
+}
+
+function renderBoard() {
+  const sort = document.getElementById('sort-select')?.value || 'newest';
+  let list = [...opps];
+  if (cfilt !== 'all') list = list.filter(o => o.category === cfilt);
+  if (pfilt)           list = list.filter(o => o.priority === pfilt);
+  if (sort === 'newest') list.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+  else if (sort === 'oldest') list.sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
+  else { const ord={high:0,med:1,low:2}; list.sort((a,b) => ord[a.priority]-ord[b.priority]); }
+
+  ['exploring','validating','building','launched'].forEach(stage => {
+    const col = document.getElementById('col-' + stage);
+    const cnt = document.getElementById('count-' + stage);
+    const items = list.filter(o => o.stage === stage);
+    if (cnt) cnt.textContent = items.length;
+    if (!col) return;
+    if (!items.length) { col.innerHTML = `<div class="empty-col"><span class="ec-icon">💭</span>Drop ideas here</div>`; return; }
+    col.innerHTML = items.map(o => {
+      const pC = {high:'p-high',med:'p-med',low:'p-low'}[o.priority] || 'p-med';
+      const tags = (o.tags||[]).slice(0,3).map(t => `<span class="opp-tag">${esc(t)}</span>`).join('');
+      const nc = (o.notes||[]).length;
+      const authorIds = [...new Set([o.created_by, ...(o.notes||[]).map(n=>n.user_id)].filter(Boolean))];
+      const avs = authorIds.map(id => `<div class="card-av" style="background:${pColor(id)}" title="${esc(pName(id))}">${pInit(id)}</div>`).join('');
+      return `<div class="opp-card" onclick="openEditModal('${o.id}')">
+        <div class="opp-card-top"><h4>${esc(o.name)}</h4><div class="opp-priority ${pC}"></div></div>
+        <div class="opp-card-cat">${esc(o.category||'')}${o.market?' · '+esc(o.market):''}</div>
+        ${o.description?`<div class="opp-card-note">${esc(o.description)}</div>`:''}
+        ${tags?`<div class="opp-tags">${tags}</div>`:''}
+        <div class="opp-card-footer">
+          <span class="opp-date">${fdate(o.created_at)}${nc?` · 💬 ${nc}`:''}</span>
+          <div class="card-authors">${avs}</div>
+        </div>
+      </div>`;
+    }).join('');
+  });
+
+  const total = opps.length;
+  document.getElementById('stat-total').textContent = total;
+  ['exploring','validating','building','launched'].forEach(s => {
+    const el = document.getElementById('stat-' + s);
+    if (el) el.textContent = opps.filter(o => o.stage === s).length;
+  });
+  renderTeamBar();
+}
+
+function setFilter(val, btn) {
+  cfilt = cfilt === val && val !== 'all' ? 'all' : val;
+  document.querySelectorAll('.tfilter-btn[data-filter]').forEach(b => b.classList.remove('active'));
+  (cfilt === 'all' ? document.querySelector('.tfilter-btn[data-filter="all"]') : btn)?.classList.add('active');
+  pfilt = null;
+  document.querySelectorAll('.tfilter-btn[data-priority]').forEach(b => b.classList.remove('active'));
+  renderBoard();
+}
+function setPriority(val, btn) {
+  pfilt = pfilt === val ? null : val;
+  document.querySelectorAll('.tfilter-btn[data-priority]').forEach(b => b.classList.remove('active'));
+  if (pfilt) btn.classList.add('active');
+  renderBoard();
+}
+
+// ══════════════════════════════════
+// MODAL
+// ══════════════════════════════════
+function openModal(pre) {
+  modalOppId = null; tempNotes = [];
+  ['opp-id','opp-name','opp-market','opp-desc','opp-tags'].forEach(id => document.getElementById(id).value='');
+  document.getElementById('opp-cat').value = 'FemTech';
+  document.getElementById('opp-stage').value = 'exploring';
+  document.getElementById('opp-priority').value = 'med';
+  if (pre) document.getElementById('opp-name').value = pre;
+  document.getElementById('btn-delete').style.display = 'none';
+  document.getElementById('modal-title').textContent = 'New Opportunity';
+  renderModalNotes();
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function openEditModal(id) {
+  const o = opps.find(x => x.id === id);
+  if (!o) return;
+  modalOppId = id; tempNotes = [];
+  document.getElementById('opp-id').value = id;
+  document.getElementById('opp-name').value = o.name;
+  document.getElementById('opp-cat').value = o.category || 'FemTech';
+  document.getElementById('opp-stage').value = o.stage;
+  document.getElementById('opp-priority').value = o.priority;
+  document.getElementById('opp-market').value = o.market || '';
+  document.getElementById('opp-desc').value = o.description || '';
+  document.getElementById('opp-tags').value = (o.tags||[]).join(', ');
+  document.getElementById('btn-delete').style.display = 'inline-flex';
+  document.getElementById('modal-title').textContent = 'Edit Opportunity';
+  renderModalNotes();
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  modalOppId = null; tempNotes = [];
+}
+function handleOverlayClick(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); }
+
+async function saveOpp() {
+  const name = document.getElementById('opp-name').value.trim();
+  if (!name) { document.getElementById('opp-name').focus(); return; }
+  const btn = document.getElementById('btn-save');
+  btn.disabled = true; btn.textContent = 'Saving…';
+
+  const raw = document.getElementById('opp-tags').value;
+  const tags = raw ? raw.split(',').map(t=>t.trim()).filter(Boolean) : [];
+  const payload = {
+    name,
+    category: document.getElementById('opp-cat').value,
+    stage: document.getElementById('opp-stage').value,
+    priority: document.getElementById('opp-priority').value,
+    market: document.getElementById('opp-market').value.trim(),
+    description: document.getElementById('opp-desc').value.trim(),
+    tags,
+    updated_at: new Date().toISOString(),
+  };
+
+  if (modalOppId) {
+    await sb.from('opportunities').update(payload).eq('id', modalOppId);
+  } else {
+    const { data } = await sb.from('opportunities')
+      .insert({ ...payload, created_by: currentUser.id })
+      .select().single();
+    if (data && tempNotes.length) {
+      await sb.from('notes').insert(tempNotes.map(n => ({
+        opportunity_id: data.id, text: n.text, user_id: n.user_id
+      })));
+    }
+  }
+
+  btn.disabled = false; btn.textContent = 'Save';
+  closeModal();
+}
+
+async function confirmDelete() {
+  if (!modalOppId || !confirm('Delete this opportunity? This cannot be undone.')) return;
+  await sb.from('opportunities').delete().eq('id', modalOppId);
+  closeModal();
+}
+
+// ══════════════════════════════════
+// NOTES
+// ══════════════════════════════════
+function renderModalNotes() {
+  const el = document.getElementById('notes-thread');
+  const who = document.getElementById('note-who');
+  if (!el) return;
+
+  // "posting as" label
+  if (myProfile) {
+    who.innerHTML = `Posting as <div class="note-who-av" style="background:${myProfile.color}">${myProfile.initials}</div> <strong>${esc(myProfile.name)}</strong>`;
+  }
+
+  // notes to display
+  let notes = [];
+  if (modalOppId) {
+    const o = opps.find(x => x.id === modalOppId);
+    notes = (o?.notes || []).slice().sort((a,b) => new Date(a.created_at)-new Date(b.created_at));
+  } else {
+    notes = tempNotes;
+  }
+
+  if (!notes.length) {
+    el.innerHTML = '<div style="font-size:.78rem;color:var(--text-light);font-style:italic;padding:6px 0">No notes yet — start the discussion!</div>';
+    return;
+  }
+
+  el.innerHTML = notes.map(n => {
+    const uid  = n.user_id;
+    const col  = pColor(uid);
+    const name = pName(uid);
+    const init = pInit(uid);
+    const ts   = n.created_at ? fdatetime(n.created_at) : 'just now';
+    return `<div class="note-entry">
+      <div class="note-hdr">
+        <div class="note-av" style="background:${col}">${init}</div>
+        <span class="note-author" style="color:${col}">${esc(name)}</span>
+        <span class="note-time">${ts}</span>
+      </div>
+      <div class="note-text">${esc(n.text)}</div>
+    </div>`;
+  }).join('');
+  el.scrollTop = el.scrollHeight;
+}
+
+async function postNote() {
+  const inp = document.getElementById('note-input');
+  const text = inp.value.trim();
+  if (!text) return;
+  inp.value = '';
+
+  if (modalOppId) {
+    // existing opp — save immediately to DB
+    await sb.from('notes').insert({ opportunity_id: modalOppId, text, user_id: currentUser.id });
+    // real-time will refresh
+  } else {
+    // new opp — buffer locally
+    tempNotes.push({ text, user_id: currentUser.id, created_at: new Date().toISOString() });
+    renderModalNotes();
+  }
+}
+
+function addFromGap(title) {
+  showPage('tracker');
+  document.querySelectorAll('.nav-tab').forEach((t,i) => t.classList.toggle('active', i===1));
+  setTimeout(() => openModal(title), 100);
+}
+
+// ══════════════════════════════════
+// STATIC INTEL DATA
+// ══════════════════════════════════
 const mktData = [
   {label:'Menopause & Perimenopause Tech',val:22,unit:'$22B',cagr:'+18% CAGR'},
   {label:"Women's Mental Health & Wellness",val:9.8,unit:'$9.8B',cagr:'+22% CAGR'},
@@ -733,175 +910,37 @@ const mktData = [
   {label:'At-Home Hormone Testing',val:2.8,unit:'$2.8B',cagr:'+35% CAGR'},
   {label:'Cycle-Aware Nutrition',val:2.1,unit:'$2.1B',cagr:'+28% CAGR'},
 ];
-const barC = ['linear-gradient(90deg,#b05a44,#d4816a)','linear-gradient(90deg,#6b5a8c,#b8a9d0)','linear-gradient(90deg,#5c7a5c,#8aab8a)','linear-gradient(90deg,#c9a84c,#f0d98a)','linear-gradient(90deg,#2d4a6b,#4a9b8e)','linear-gradient(90deg,#d4816a,#c9a84c)','linear-gradient(90deg,#4a9b8e,#8aab8a)','linear-gradient(90deg,#9a7520,#c9a84c)','linear-gradient(90deg,#b8a9d0,#6b5a8c)'];
-const maxV = Math.max(...mktData.map(d=>d.val));
-const mtEl = document.getElementById('market-table');
-mktData.forEach((d,i) => { const p=(d.val/maxV*100).toFixed(1); mtEl.innerHTML+=`<div class="market-row"><div><div class="market-label">${d.label}</div><div class="market-notes">${d.cagr}</div></div><div class="market-bar-track"><div class="market-bar-fill" style="width:0%;background:${barC[i]}" data-target="${p}"></div></div><div class="market-size-val">${d.unit}</div></div>`; });
+const barC=['linear-gradient(90deg,#b05a44,#d4816a)','linear-gradient(90deg,#6b5a8c,#b8a9d0)','linear-gradient(90deg,#5c7a5c,#8aab8a)','linear-gradient(90deg,#c9a84c,#f0d98a)','linear-gradient(90deg,#2d4a6b,#4a9b8e)','linear-gradient(90deg,#d4816a,#c9a84c)','linear-gradient(90deg,#4a9b8e,#8aab8a)','linear-gradient(90deg,#9a7520,#c9a84c)','linear-gradient(90deg,#b8a9d0,#6b5a8c)'];
+const maxV=Math.max(...mktData.map(d=>d.val));
+const mtEl=document.getElementById('market-table');
+mktData.forEach((d,i)=>{const p=(d.val/maxV*100).toFixed(1);mtEl.innerHTML+=`<div class="market-row"><div><div class="market-label">${d.label}</div><div class="market-notes">${d.cagr}</div></div><div class="market-bar-track"><div class="market-bar-fill" style="width:0%;background:${barC[i]}" data-target="${p}"></div></div><div class="market-size-val">${d.unit}</div></div>`;});
 new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)document.querySelectorAll('.market-bar-fill').forEach(b=>b.style.width=b.dataset.target+'%')});},{threshold:.2}).observe(mtEl);
 
 const compData=[
-  {cat:'Period & Cycle Tracking',players:[{name:'Flo Health',icon:'🌸',stage:'Series C',funding:'$200M+',tag:'leader'},{name:'Clue',icon:'🔵',stage:'Series B',funding:'$30M',tag:'leader'},{name:'Natural Cycles',icon:'🌡️',stage:'Public',funding:'IPO',tag:'leader'},{name:'Ovia Health',icon:'💜',stage:'Acquired',funding:'Labcorp',tag:'niche'}]},
-  {cat:'Menopause & Hormonal Health',players:[{name:'Midi Health',icon:'🌿',stage:'Series A',funding:'$60M',tag:'growing'},{name:'Elektra Health',icon:'⚡',stage:'Seed/A',funding:'$15M',tag:'growing'},{name:'Gennev',icon:'🌺',stage:'Series A',funding:'$10M',tag:'niche'},{name:'Evernow',icon:'🌙',stage:'Series A',funding:'$28M',tag:'growing'},{name:'Alloy',icon:'✨',stage:'Seed',funding:'$5M',tag:'new'}]},
-  {cat:"Women's Mental Health",players:[{name:'BetterHelp',icon:'💙',stage:'Acquired',funding:'Teladoc',tag:'leader'},{name:'Headspace',icon:'🧘',stage:'Public',funding:'$300M+',tag:'leader'},{name:'Maven Clinic',icon:'🌱',stage:'Series D',funding:'$300M',tag:'growing'},{name:'Bloom',icon:'🌸',stage:'Series A',funding:'$9M',tag:'niche'}]},
-  {cat:"Women's Fitness & Strength",players:[{name:'Peloton',icon:'🚲',stage:'Public',funding:'PTON',tag:'leader'},{name:'Sweat (Kayla)',icon:'💪',stage:'Acquired',funding:'iFIT',tag:'leader'},{name:'Evlo Fitness',icon:'🏋️',stage:'Bootstrapped',funding:'—',tag:'niche'},{name:'Future Fit',icon:'🎯',stage:'Series B',funding:'$24M',tag:'growing'}]},
-  {cat:'AI Health Coaching',players:[{name:'Noom',icon:'🤖',stage:'Series F',funding:'$540M',tag:'leader'},{name:'Lark Health',icon:'🐦',stage:'Series D',funding:'$100M',tag:'leader'},{name:'Kin',icon:'✨',stage:'Seed',funding:'$3M',tag:'new'}]},
-  {cat:"Women's Productivity & Career",players:[{name:'Ellevate',icon:'🔗',stage:'Bootstrapped',funding:'—',tag:'niche'},{name:'Chief',icon:'👑',stage:'Series C',funding:'$140M',tag:'growing'}]},
+  {cat:'Period & Cycle Tracking',players:[{n:'Flo Health',i:'🌸',s:'Series C',f:'$200M+',t:'leader'},{n:'Clue',i:'🔵',s:'Series B',f:'$30M',t:'leader'},{n:'Natural Cycles',i:'🌡️',s:'Public',f:'IPO',t:'leader'},{n:'Ovia Health',i:'💜',s:'Acquired',f:'Labcorp',t:'niche'}]},
+  {cat:'Menopause & Hormonal Health',players:[{n:'Midi Health',i:'🌿',s:'Series A',f:'$60M',t:'growing'},{n:'Elektra Health',i:'⚡',s:'Seed/A',f:'$15M',t:'growing'},{n:'Gennev',i:'🌺',s:'Series A',f:'$10M',t:'niche'},{n:'Evernow',i:'🌙',s:'Series A',f:'$28M',t:'growing'},{n:'Alloy',i:'✨',s:'Seed',f:'$5M',t:'new'}]},
+  {cat:"Women's Mental Health",players:[{n:'BetterHelp',i:'💙',s:'Acquired',f:'Teladoc',t:'leader'},{n:'Headspace',i:'🧘',s:'Public',f:'$300M+',t:'leader'},{n:'Maven Clinic',i:'🌱',s:'Series D',f:'$300M',t:'growing'},{n:'Bloom',i:'🌸',s:'Series A',f:'$9M',t:'niche'}]},
+  {cat:"Women's Fitness",players:[{n:'Peloton',i:'🚲',s:'Public',f:'PTON',t:'leader'},{n:'Sweat (Kayla)',i:'💪',s:'Acquired',f:'iFIT',t:'leader'},{n:'Evlo Fitness',i:'🏋️',s:'Bootstrapped',f:'—',t:'niche'},{n:'Future Fit',i:'🎯',s:'Series B',f:'$24M',t:'growing'}]},
+  {cat:'AI Health Coaching',players:[{n:'Noom',i:'🤖',s:'Series F',f:'$540M',t:'leader'},{n:'Lark Health',i:'🐦',s:'Series D',f:'$100M',t:'leader'},{n:'Kin',i:'✨',s:'Seed',f:'$3M',t:'new'}]},
+  {cat:"Women's Productivity & Career",players:[{n:'Ellevate',i:'🔗',s:'Bootstrapped',f:'—',t:'niche'},{n:'Chief',i:'👑',s:'Series C',f:'$140M',t:'growing'}]},
 ];
 const tC={leader:'ct-leader',growing:'ct-growing',niche:'ct-niche',new:'ct-new'};
 const tL={leader:'Market Leader',growing:'Growing',niche:'Niche',new:'New Entry'};
 const ccEl=document.getElementById('competitor-cats');
-compData.forEach(c=>{let h=`<div><div class="comp-cat-label">${c.cat}</div><div class="comp-grid">`;c.players.forEach(p=>{h+=`<div class="comp-pill"><span class="comp-pill-icon">${p.icon}</span><div><div style="display:flex;align-items:center;gap:6px"><span class="comp-pill-name">${p.name}</span><span class="comp-pill-tag ${tC[p.tag]}">${tL[p.tag]}</span></div><div style="display:flex;gap:8px;margin-top:2px"><span class="comp-pill-stage">${p.stage}</span>${p.funding!=='—'?`<span class="comp-pill-funding">${p.funding}</span>`:''}</div></div></div>`;});ccEl.innerHTML+=h+'</div></div>';});
+compData.forEach(c=>{let h=`<div><div class="comp-cat-label">${c.cat}</div><div class="comp-grid">`;c.players.forEach(p=>{h+=`<div class="comp-pill"><span class="comp-pill-icon">${p.i}</span><div><div style="display:flex;align-items:center;gap:6px"><span class="comp-pill-name">${p.n}</span><span class="comp-pill-tag ${tC[p.t]}">${tL[p.t]}</span></div><div style="display:flex;gap:8px;margin-top:2px"><span class="comp-pill-stage">${p.s}</span>${p.f!=='—'?`<span class="comp-pill-funding">${p.f}</span>`:''}</div></div></div>`;});ccEl.innerHTML+=h+'</div></div>';});
 
 const gapData=[
   {tier:'high',title:'Perimenopause Companion for 35–45 Year Olds',desc:'Most menopause apps target post-menopausal women. The perimenopausal 35–45 cohort is deeply underserved. Combine symptom tracking, education, and community.',tags:['FemTech','Community','Subscription','$22B market']},
-  {tier:'high',title:'Cycle-Synced AI Productivity Planner',desc:'No mainstream productivity tool accounts for menstrual phases. An AI planner that suggests focus work in follicular phase and reflection in luteal has massive appeal.',tags:['Productivity','AI','B2C','SaaS']},
+  {tier:'high',title:'Cycle-Synced AI Productivity Planner',desc:'No mainstream productivity tool accounts for menstrual phases. An AI planner suggesting focus work in follicular phase and reflection in luteal has massive appeal.',tags:['Productivity','AI','B2C','SaaS']},
   {tier:'high',title:"Women's Metabolic Health After GLP-1",desc:'As millions of women come off GLP-1 drugs, they need muscle preservation, nutrition resets, and metabolic tracking designed for female physiology.',tags:['Nutrition','Metabolic','Trending','D2C']},
-  {tier:'med',title:'Female-Specific Sleep Protocol App',desc:"Sleep apps are gender-neutral. Women's sleep is disrupted by cycle phases, pregnancy, and menopause. Phase-specific protocols are a gap.",tags:['Sleep','FemTech','Wearables']},
-  {tier:'med',title:'Hormone Testing + Insights Subscription',desc:'At-home test kits exist but the insight/coaching layer is weak. Combine regular testing with AI interpretation, protocol suggestions, and community.',tags:['Diagnostics','Subscription','AI','D2C']},
-  {tier:'med',title:'Burnout Recovery Program for Women',desc:'No structured digital program exists for female burnout recovery. 6–12 week program combining somatic work, cycle awareness, and career recalibration.',tags:['Mental Health','Productivity','Wellness','Course']},
-  {tier:'watch',title:'Community Platform for Women 40+',desc:'The 40+ professional woman cohort is underserved. A curated async community with health + career integration could command premium pricing.',tags:['Community','Subscription','$6B market']},
-  {tier:'watch',title:'Cycle-Aware Meal Kit',desc:'No meal kit brand has built a female-cycle-aware offering. Phase-based meal plans with the right micronutrients could command premium pricing.',tags:['Nutrition','D2C','Subscription','CPG']},
+  {tier:'med',title:'Female-Specific Sleep Protocol App',desc:"Sleep apps are gender-neutral. Women's sleep is disrupted by cycle phases, pregnancy, and menopause. Phase-specific protocols are a clear gap.",tags:['Sleep','FemTech','Wearables']},
+  {tier:'med',title:'Hormone Testing + Insights Subscription',desc:'At-home test kits exist but the insight/coaching layer is weak. Combine regular testing with AI interpretation and community benchmarking.',tags:['Diagnostics','Subscription','AI','D2C']},
+  {tier:'med',title:'Burnout Recovery Program for Women',desc:'No structured digital program for female burnout recovery. 6–12 week program combining somatic work, cycle awareness, and career recalibration.',tags:['Mental Health','Productivity','Wellness','Course']},
+  {tier:'watch',title:'Community Platform for Women 40+',desc:'The 40+ professional woman cohort is underserved. Curated async community with health + career integration could command premium pricing.',tags:['Community','Subscription','$6B market']},
+  {tier:'watch',title:'Cycle-Aware Meal Kit',desc:'No meal kit brand has built a cycle-aware offering. Phase-based meal plans with the right micronutrients could command premium pricing.',tags:['Nutrition','D2C','Subscription','CPG']},
 ];
 const gL={high:'🔥 High Priority Gap',med:'📈 Strong Opportunity',watch:'👀 Watch & Explore'};
-const ggEl=document.getElementById('gap-grid');
-gapData.forEach(g=>{ggEl.innerHTML+=`<div class="gap-card gap-${g.tier}"><div class="gap-label">${gL[g.tier]}</div><h3>${g.title}</h3><p>${g.desc}</p><div class="gap-tags">${g.tags.map(t=>`<span class="gap-t">${t}</span>`).join('')}</div><button class="add-btn" onclick="addFromGap(${JSON.stringify(g.title)})">+ Track this →</button></div>`;});
-
-// ══════════════════════════════════════
-// TRACKER
-// ══════════════════════════════════════
-let currentFilter='all', priorityFilter=null, editingId=null, tempNotes=[];
-
-function genId() { return Date.now().toString(36)+Math.random().toString(36).substr(2,5); }
-function getUserColor(idx)    { return store?.users[idx]?.color    || '#aaa'; }
-function getUserName(idx)     { return store?.users[idx]?.name     || 'Unknown'; }
-function getUserInitials(idx) { return store?.users[idx]?.initials || '?'; }
-
-function renderTeamBar() {
-  const el = document.getElementById('team-bar');
-  if (!el || !store) return;
-  const counts = [0,1].map(i => opps.filter(o=>o.createdBy===i).length);
-  el.innerHTML = '<span class="team-bar-label">Team</span>' +
-    store.users.map((u,i) => `<div class="team-member-chip"><div class="team-chip-avatar" style="background:${u.color}">${u.initials}</div><span class="team-chip-name">${escHtml(u.name)}</span><span class="team-chip-count">${counts[i]} opp.</span></div>`).join('');
-}
-
-function renderBoard() {
-  if (!store) return;
-  const sort = document.getElementById('sort-select')?.value || 'newest';
-  let list = [...opps];
-  if (currentFilter !== 'all') list = list.filter(o=>o.cat===currentFilter);
-  if (priorityFilter)          list = list.filter(o=>o.priority===priorityFilter);
-  if (sort==='newest')  list.sort((a,b)=>b.created-a.created);
-  else if (sort==='oldest') list.sort((a,b)=>a.created-b.created);
-  else { const ord={high:0,med:1,low:2}; list.sort((a,b)=>ord[a.priority]-ord[b.priority]); }
-
-  ['exploring','validating','building','launched'].forEach(stage => {
-    const col = document.getElementById('col-'+stage);
-    const cnt = document.getElementById('count-'+stage);
-    const items = list.filter(o=>o.stage===stage);
-    if (cnt) cnt.textContent = items.length;
-    if (!col) return;
-    if (!items.length) { col.innerHTML=`<div class="empty-col"><div class="ec-icon">💭</div>Drop ideas here</div>`; return; }
-    col.innerHTML = items.map(o => {
-      const pC={high:'p-high',med:'p-med',low:'p-low'}[o.priority]||'p-med';
-      const tags=(o.tags||[]).slice(0,3).map(t=>`<span class="opp-tag">${escHtml(t)}</span>`).join('');
-      const noteCount=(o.notes||[]).length;
-      const authorIdxs=[...new Set([o.createdBy,...((o.notes||[]).map(n=>n.userIdx))].filter(x=>x!=null))];
-      const avs=authorIdxs.map(i=>`<div class="card-author-av" style="background:${getUserColor(i)}" title="${getUserName(i)}">${getUserInitials(i)}</div>`).join('');
-      return `<div class="opp-card" onclick="openEditModal('${o.id}')">
-        <div class="opp-card-top"><h4>${escHtml(o.name)}</h4><div class="opp-priority ${pC}"></div></div>
-        <div class="opp-card-cat">${escHtml(o.cat)}${o.market?' · '+escHtml(o.market):''}</div>
-        ${o.desc?`<div class="opp-card-note">${escHtml(o.desc)}</div>`:''}
-        ${tags?`<div class="opp-tags">${tags}</div>`:''}
-        <div class="opp-card-footer"><span class="opp-date">${formatDate(o.created)}${noteCount?` · 💬 ${noteCount}`:''}</span><div class="card-authors">${avs}</div></div>
-      </div>`;
-    }).join('');
-  });
-
-  document.getElementById('stat-total').textContent = opps.length;
-  ['exploring','validating','building','launched'].forEach(s=>{const el=document.getElementById('stat-'+s);if(el)el.textContent=opps.filter(o=>o.stage===s).length;});
-  renderTeamBar();
-}
-
-function setFilter(val, btn) {
-  currentFilter = (currentFilter===val && val!=='all') ? 'all' : val;
-  document.querySelectorAll('.tfilter-btn[data-filter]').forEach(b=>b.classList.remove('active'));
-  (currentFilter==='all' ? document.querySelector('.tfilter-btn[data-filter="all"]') : btn)?.classList.add('active');
-  priorityFilter=null; document.querySelectorAll('.tfilter-btn[data-priority]').forEach(b=>b.classList.remove('active'));
-  renderBoard();
-}
-function setPriority(val, btn) {
-  priorityFilter = priorityFilter===val ? null : val;
-  document.querySelectorAll('.tfilter-btn[data-priority]').forEach(b=>b.classList.remove('active'));
-  if (priorityFilter) btn.classList.add('active');
-  renderBoard();
-}
-
-// modal
-function openModal(pre) {
-  editingId=null; tempNotes=[];
-  ['opp-id','opp-name','opp-market','opp-desc','opp-tags'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('opp-cat').value='FemTech';
-  document.getElementById('opp-stage').value='exploring';
-  document.getElementById('opp-priority').value='med';
-  if (pre) document.getElementById('opp-name').value=pre;
-  document.getElementById('btn-delete').style.display='none';
-  document.getElementById('modal-title').textContent='New Opportunity';
-  renderNotes(); document.getElementById('modal-overlay').classList.add('open');
-}
-function openEditModal(id) {
-  const o=opps.find(x=>x.id===id); if(!o) return;
-  editingId=id; tempNotes=[...(o.notes||[])];
-  document.getElementById('opp-id').value=id;
-  document.getElementById('opp-name').value=o.name;
-  document.getElementById('opp-cat').value=o.cat;
-  document.getElementById('opp-stage').value=o.stage;
-  document.getElementById('opp-priority').value=o.priority;
-  document.getElementById('opp-market').value=o.market||'';
-  document.getElementById('opp-desc').value=o.desc||'';
-  document.getElementById('opp-tags').value=(o.tags||[]).join(', ');
-  document.getElementById('btn-delete').style.display='inline-flex';
-  document.getElementById('modal-title').textContent='Edit Opportunity';
-  renderNotes(); document.getElementById('modal-overlay').classList.add('open');
-}
-function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); editingId=null; tempNotes=[]; }
-function handleOverlayClick(e) { if(e.target===document.getElementById('modal-overlay'))closeModal(); }
-
-function saveOpp() {
-  const name=document.getElementById('opp-name').value.trim();
-  if(!name){document.getElementById('opp-name').focus();return;}
-  const tags=document.getElementById('opp-tags').value?document.getElementById('opp-tags').value.split(',').map(t=>t.trim()).filter(Boolean):[];
-  const data={name,cat:document.getElementById('opp-cat').value,stage:document.getElementById('opp-stage').value,priority:document.getElementById('opp-priority').value,market:document.getElementById('opp-market').value.trim(),desc:document.getElementById('opp-desc').value.trim(),tags,notes:[...tempNotes],updated:Date.now()};
-  if(editingId){const i=opps.findIndex(o=>o.id===editingId);if(i!==-1)opps[i]={...opps[i],...data};}
-  else opps.push({id:genId(),...data,createdBy:activeUser,created:Date.now()});
-  saveOpps(); closeModal(); renderBoard();
-}
-function deleteOpp() {
-  if(!editingId||!confirm('Delete this opportunity?'))return;
-  opps=opps.filter(o=>o.id!==editingId);
-  saveOpps(); closeModal(); renderBoard();
-}
-
-function renderNotes() {
-  const el=document.getElementById('notes-thread'); if(!el)return;
-  const whoEl=document.getElementById('note-who-label');
-  if(whoEl&&store&&activeUser!=null){const u=store.users[activeUser];whoEl.innerHTML=`Posting as <div class="note-who-av" style="background:${u.color}">${u.initials}</div> <strong>${escHtml(u.name)}</strong>`;}
-  if(!tempNotes.length){el.innerHTML='<div style="font-size:.78rem;color:var(--text-light);font-style:italic;padding:6px 0">No notes yet — start the discussion!</div>';return;}
-  el.innerHTML=tempNotes.map(n=>`<div class="note-entry note-u${(n.userIdx??0)}">
-    <div class="note-entry-header"><div class="note-avatar" style="background:${getUserColor(n.userIdx)}">${getUserInitials(n.userIdx)}</div><span class="note-author" style="color:${getUserColor(n.userIdx)}">${escHtml(getUserName(n.userIdx))}</span><span class="note-time">${formatDT(n.ts)}</span></div>
-    <div class="note-text">${escHtml(n.text)}</div>
-  </div>`).join('');
-  el.scrollTop=el.scrollHeight;
-}
-function addNote() {
-  const inp=document.getElementById('note-input');
-  const txt=inp.value.trim(); if(!txt)return;
-  tempNotes.push({text:txt,userIdx:activeUser,ts:Date.now()});
-  inp.value=''; renderNotes();
-}
-function addFromGap(title) {
-  showPage('tracker'); document.querySelectorAll('.nav-tab').forEach((t,i)=>{t.classList.toggle('active',i===1);});
-  setTimeout(()=>openModal(title),100);
-}
+document.getElementById('gap-grid').innerHTML=gapData.map(g=>`<div class="gap-card gap-${g.tier}"><div class="gap-label">${gL[g.tier]}</div><h3>${g.title}</h3><p>${g.desc}</p><div class="gap-tags">${g.tags.map(t=>`<span class="gap-t">${t}</span>`).join('')}</div><button class="add-btn" onclick="addFromGap(${JSON.stringify(g.title)})">+ Track this →</button></div>`).join('');
 </script>
 </body>
 </html>
