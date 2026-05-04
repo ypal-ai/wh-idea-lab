@@ -472,6 +472,7 @@
         <div class="note-who" id="note-who"></div>
       </div>
     </div>
+    <div id="modal-error" style="padding:0 24px 8px;font-size:.8rem;color:var(--deep-rose);display:none"></div>
     <div class="modal-footer">
       <button class="btn-delete" id="btn-delete" onclick="confirmDelete()" style="display:none">Delete</button>
       <button class="btn-cancel" onclick="closeModal()">Cancel</button>
@@ -786,45 +787,66 @@ function closeModal() {
 }
 function handleOverlayClick(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); }
 
+function showModalError(msg) {
+  const el = document.getElementById('modal-error');
+  el.textContent = '⚠ ' + msg;
+  el.style.display = 'block';
+}
+function clearModalError() {
+  const el = document.getElementById('modal-error');
+  if (el) { el.textContent = ''; el.style.display = 'none'; }
+}
+
 async function saveOpp() {
+  clearModalError();
   const name = document.getElementById('opp-name').value.trim();
   if (!name) { document.getElementById('opp-name').focus(); return; }
+  if (!currentUser) { showModalError('Not logged in — please refresh and sign in again.'); return; }
+
   const btn = document.getElementById('btn-save');
   btn.disabled = true; btn.textContent = 'Saving…';
 
   const raw = document.getElementById('opp-tags').value;
-  const tags = raw ? raw.split(',').map(t=>t.trim()).filter(Boolean) : [];
+  const tags = raw ? raw.split(',').map(t => t.trim()).filter(Boolean) : [];
   const payload = {
     name,
     category: document.getElementById('opp-cat').value,
-    stage: document.getElementById('opp-stage').value,
+    stage:    document.getElementById('opp-stage').value,
     priority: document.getElementById('opp-priority').value,
-    market: document.getElementById('opp-market').value.trim(),
-    description: document.getElementById('opp-desc').value.trim(),
+    market:   document.getElementById('opp-market').value.trim() || null,
+    description: document.getElementById('opp-desc').value.trim() || null,
     tags,
-    updated_at: new Date().toISOString(),
   };
 
-  if (modalOppId) {
-    await sb.from('opportunities').update(payload).eq('id', modalOppId);
-  } else {
-    const { data } = await sb.from('opportunities')
-      .insert({ ...payload, created_by: currentUser.id })
-      .select().single();
-    if (data && tempNotes.length) {
-      await sb.from('notes').insert(tempNotes.map(n => ({
-        opportunity_id: data.id, text: n.text, user_id: n.user_id
-      })));
+  try {
+    if (modalOppId) {
+      const { error } = await sb.from('opportunities').update(payload).eq('id', modalOppId);
+      if (error) throw error;
+    } else {
+      const { data, error } = await sb.from('opportunities')
+        .insert({ ...payload, created_by: currentUser.id })
+        .select().single();
+      if (error) throw error;
+      if (data && tempNotes.length) {
+        const { error: ne } = await sb.from('notes').insert(
+          tempNotes.map(n => ({ opportunity_id: data.id, text: n.text, user_id: n.user_id }))
+        );
+        if (ne) console.warn('Notes insert error:', ne.message);
+      }
     }
+    btn.disabled = false; btn.textContent = 'Save';
+    closeModal();
+  } catch (e) {
+    console.error('saveOpp error:', e);
+    showModalError(e.message || 'Something went wrong — check console.');
+    btn.disabled = false; btn.textContent = 'Save';
   }
-
-  btn.disabled = false; btn.textContent = 'Save';
-  closeModal();
 }
 
 async function confirmDelete() {
   if (!modalOppId || !confirm('Delete this opportunity? This cannot be undone.')) return;
-  await sb.from('opportunities').delete().eq('id', modalOppId);
+  const { error } = await sb.from('opportunities').delete().eq('id', modalOppId);
+  if (error) { showModalError(error.message); return; }
   closeModal();
 }
 
