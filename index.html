@@ -20,7 +20,7 @@
     body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
 
     /* ════════════════════════════════
-       AUTH SCREENS
+       AUTH SCREEN
     ════════════════════════════════ */
     #auth-screen {
       position: fixed; inset: 0; z-index: 999;
@@ -44,21 +44,21 @@
     .auth-logo h1 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--navy); text-align: center; }
     .auth-logo p { font-size: .78rem; color: var(--text-light); text-align: center; letter-spacing: .04em; }
 
-    /* Step containers */
-    .auth-step { width: 100%; display: flex; flex-direction: column; gap: 16px; }
+    .auth-step { width: 100%; display: flex; flex-direction: column; gap: 14px; }
     .auth-step.hidden { display: none; }
-    .auth-step-title { font-size: .82rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-light); text-align: center; }
+    .auth-step-title { font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-light); text-align: center; }
 
-    /* PIN input */
-    .pin-row { display: flex; gap: 10px; justify-content: center; }
-    .pin-digit {
-      width: 52px; height: 60px; border-radius: 12px; border: 2px solid var(--border);
-      background: var(--cream); font-size: 1.6rem; font-weight: 700; color: var(--navy);
-      text-align: center; font-family: 'Inter', sans-serif; transition: border-color .15s;
-      -webkit-text-security: disc;
+    /* Login form */
+    .auth-field { display: flex; flex-direction: column; gap: 6px; width: 100%; }
+    .auth-field label { font-size: .76rem; font-weight: 600; color: var(--navy); }
+    .auth-field input {
+      padding: 12px 16px; border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border); background: var(--cream);
+      font-family: 'Inter', sans-serif; font-size: .92rem; color: var(--text);
+      transition: border-color .15s; width: 100%;
     }
-    .pin-digit:focus { outline: none; border-color: var(--navy); background: #fff; }
-    .pin-digit.filled { border-color: var(--deep-sage); }
+    .auth-field input:focus { outline: none; border-color: var(--navy); background: #fff; }
+    .auth-field input.error { border-color: var(--deep-rose); }
 
     .auth-btn {
       width: 100%; padding: 14px; border-radius: 100px; border: none;
@@ -68,46 +68,42 @@
     .auth-btn:hover { background: var(--navy-mid); transform: translateY(-1px); }
     .auth-btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
     .auth-error { font-size: .8rem; color: var(--deep-rose); text-align: center; min-height: 18px; }
+    .auth-hint { font-size: .72rem; color: var(--text-light); text-align: center; line-height: 1.5; }
 
     /* Setup form */
-    .setup-users { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .setup-user-card { display: flex; flex-direction: column; gap: 10px; }
-    .setup-avatar-row { display: flex; align-items: center; gap: 10px; }
-    .avatar-preview {
-      width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center;
-      justify-content: center; font-size: 1rem; font-weight: 700; color: #fff; flex-shrink: 0;
+    .setup-divider { width: 100%; height: 1px; background: var(--border); margin: 4px 0; }
+    .setup-user-section { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+    .setup-user-label {
+      display: flex; align-items: center; gap: 8px;
+      font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-light);
     }
-    .setup-input {
-      width: 100%; padding: 9px 13px; border-radius: var(--radius-sm);
-      border: 1.5px solid var(--border); background: var(--cream);
-      font-family: 'Inter', sans-serif; font-size: .85rem; color: var(--text);
-    }
-    .setup-input:focus { outline: none; border-color: var(--navy); background: #fff; }
-    .color-picker { display: flex; gap: 6px; flex-wrap: wrap; }
-    .color-dot {
-      width: 22px; height: 22px; border-radius: 50%; cursor: pointer;
-      border: 2px solid transparent; transition: transform .15s, border-color .15s;
-    }
+    .setup-user-label .label-avatar { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .62rem; font-weight: 700; color: #fff; }
+    .setup-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .color-picker { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+    .color-picker-label { font-size: .72rem; color: var(--text-light); }
+    .color-dot { width: 20px; height: 20px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform .15s, border-color .15s; }
     .color-dot:hover { transform: scale(1.2); }
     .color-dot.selected { border-color: var(--navy); transform: scale(1.15); }
-    .setup-pin-row { display: flex; flex-direction: column; gap: 8px; }
-    .setup-pin-row label { font-size: .76rem; font-weight: 600; color: var(--navy); }
-    .setup-hint { font-size: .72rem; color: var(--text-light); text-align: center; }
 
     /* Profile picker */
-    .profile-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .profile-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; width: 100%; }
     .profile-card {
       display: flex; flex-direction: column; align-items: center; gap: 10px;
-      padding: 22px 16px; border-radius: var(--radius); border: 2px solid var(--border);
+      padding: 22px 14px; border-radius: var(--radius); border: 2px solid var(--border);
       background: var(--cream); cursor: pointer; transition: all .2s;
     }
     .profile-card:hover { border-color: var(--navy); background: #fff; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(30,45,64,.12); }
-    .profile-card .big-avatar {
-      width: 60px; height: 60px; border-radius: 50%; display: flex;
-      align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; color: #fff;
-    }
-    .profile-card .profile-name { font-size: .95rem; font-weight: 700; color: var(--navy); }
-    .profile-card .profile-role { font-size: .72rem; color: var(--text-light); }
+    .big-avatar { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 700; color: #fff; }
+    .profile-name { font-size: .92rem; font-weight: 700; color: var(--navy); }
+    .profile-email { font-size: .7rem; color: var(--text-light); max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center; }
+
+    /* Password step */
+    .pw-user-header { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .pw-user-header .big-avatar { width: 48px; height: 48px; font-size: 1.2rem; }
+    .pw-user-name { font-size: 1rem; font-weight: 700; color: var(--navy); }
+    .pw-user-email { font-size: .75rem; color: var(--text-light); }
+    .auth-back { background: none; border: none; font-family: 'Inter', sans-serif; font-size: .78rem; color: var(--text-light); cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: background .15s; align-self: flex-start; }
+    .auth-back:hover { background: rgba(30,45,64,.07); color: var(--navy); }
 
     /* ════════════════════════════════
        NAV
@@ -120,33 +116,16 @@
       display: flex; align-items: center; justify-content: space-between;
     }
     .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .nav-logo-mark {
-      width: 32px; height: 32px; border-radius: 9px;
-      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 50%, var(--deep-sage) 100%);
-      display: flex; align-items: center; justify-content: center; font-size: 1rem;
-    }
+    .nav-logo-mark { width: 32px; height: 32px; border-radius: 9px; background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 50%, var(--deep-sage) 100%); display: flex; align-items: center; justify-content: center; font-size: 1rem; }
     .nav-logo-text { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--navy); font-weight: 700; }
     .nav-logo-sub { font-size: .65rem; color: var(--text-light); letter-spacing: .08em; text-transform: uppercase; display: block; line-height: 1; margin-top: 1px; }
     .nav-tabs { display: flex; gap: 4px; background: rgba(30,45,64,.06); padding: 4px; border-radius: 100px; }
-    .nav-tab {
-      padding: 7px 20px; border-radius: 100px; border: none; cursor: pointer;
-      font-family: 'Inter', sans-serif; font-size: .83rem; font-weight: 500;
-      color: var(--text-light); background: transparent; transition: all .2s;
-    }
+    .nav-tab { padding: 7px 20px; border-radius: 100px; border: none; cursor: pointer; font-family: 'Inter', sans-serif; font-size: .83rem; font-weight: 500; color: var(--text-light); background: transparent; transition: all .2s; }
     .nav-tab.active { background: var(--navy); color: #fff; box-shadow: 0 2px 12px rgba(30,45,64,.25); }
     .nav-tab:hover:not(.active) { color: var(--navy); background: rgba(30,45,64,.08); }
-
-    /* Active user pill */
-    .nav-user {
-      display: flex; align-items: center; gap: 8px;
-      background: rgba(30,45,64,.06); border-radius: 100px; padding: 5px 12px 5px 5px;
-      cursor: pointer; transition: background .15s; border: none; font-family: 'Inter', sans-serif;
-    }
+    .nav-user { display: flex; align-items: center; gap: 8px; background: rgba(30,45,64,.06); border-radius: 100px; padding: 5px 12px 5px 5px; cursor: pointer; transition: background .15s; border: none; font-family: 'Inter', sans-serif; }
     .nav-user:hover { background: rgba(30,45,64,.11); }
-    .nav-user-avatar {
-      width: 28px; height: 28px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center; font-size: .78rem; font-weight: 700; color: #fff;
-    }
+    .nav-user-avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .78rem; font-weight: 700; color: #fff; }
     .nav-user-name { font-size: .8rem; font-weight: 600; color: var(--navy); }
     .nav-user-switch { font-size: .68rem; color: var(--text-light); }
 
@@ -159,10 +138,7 @@
     /* ════════════════════════════════
        INTELLIGENCE PAGE
     ════════════════════════════════ */
-    .intel-hero {
-      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 50%, #3a5a3a 100%);
-      padding: 48px 24px 40px; color: #fff;
-    }
+    .intel-hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 50%, #3a5a3a 100%); padding: 48px 24px 40px; color: #fff; }
     .intel-hero-inner { max-width: 1200px; margin: 0 auto; }
     .intel-hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 36px; }
     .intel-hero-title .eyebrow { font-family: 'Inter', sans-serif; font-size: .72rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 8px; display: block; }
@@ -176,19 +152,17 @@
     .stat-card .stat-label { font-size: .72rem; color: rgba(255,255,255,.55); text-transform: uppercase; letter-spacing: .08em; margin-top: 4px; }
     .stat-card .stat-growth { font-size: .78rem; color: #6ee7a0; font-weight: 600; margin-top: 6px; }
     .stat-card .stat-growth.neg { color: #fca5a5; }
-
     .intel-body { max-width: 1200px; margin: 0 auto; padding: 36px 24px 80px; display: flex; flex-direction: column; gap: 48px; }
     .section-header { margin-bottom: 20px; display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
     .section-header h2 { font-family: 'Playfair Display', serif; font-size: 1.45rem; color: var(--navy); }
     .section-header p { font-size: .83rem; color: var(--text-light); margin-top: 4px; }
     .section-tag { font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--rose); }
-
     .trends-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
     .trend-card { background: var(--warm-white); border-radius: var(--radius); padding: 22px 22px 18px; box-shadow: var(--card-shadow); border: 1px solid transparent; transition: transform .2s, box-shadow .2s, border-color .2s; display: flex; flex-direction: column; gap: 12px; }
     .trend-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(30,45,64,.12); border-color: var(--border); }
     .trend-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
     .trend-icon { font-size: 1.6rem; line-height: 1; }
-    .trend-momentum { display: flex; align-items: center; gap: 5px; font-size: .72rem; font-weight: 700; padding: 4px 10px; border-radius: 100px; }
+    .trend-momentum { font-size: .72rem; font-weight: 700; padding: 4px 10px; border-radius: 100px; }
     .momentum-hot { background: rgba(255,100,60,.1); color: #d44a20; }
     .momentum-rising { background: rgba(201,168,76,.12); color: #9a7520; }
     .momentum-steady { background: rgba(138,171,138,.15); color: var(--deep-sage); }
@@ -198,7 +172,6 @@
     .trend-meta { display: flex; flex-wrap: wrap; gap: 6px; padding-top: 6px; border-top: 1px solid var(--border); }
     .trend-tag { font-size: .68rem; font-weight: 500; padding: 3px 9px; border-radius: 100px; background: rgba(30,45,64,.06); color: var(--text-light); }
     .trend-size { font-size: .76rem; font-weight: 600; color: var(--deep-rose); margin-left: auto; }
-
     .market-table { display: flex; flex-direction: column; gap: 14px; }
     .market-row { display: grid; grid-template-columns: 200px 1fr auto; align-items: center; gap: 16px; }
     .market-label { font-size: .85rem; font-weight: 500; color: var(--navy); }
@@ -206,14 +179,13 @@
     .market-bar-fill { height: 100%; border-radius: 100px; transition: width 1.2s cubic-bezier(.4,0,.2,1); }
     .market-size-val { font-size: .82rem; font-weight: 700; color: var(--text-light); white-space: nowrap; min-width: 100px; text-align: right; }
     .market-notes { font-size: .75rem; color: var(--text-light); margin-top: 2px; }
-
     .competitor-cats { display: flex; flex-direction: column; gap: 28px; }
     .comp-cat-label { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-light); margin-bottom: 10px; }
     .comp-grid { display: flex; flex-wrap: wrap; gap: 10px; }
-    .comp-pill { display: flex; align-items: center; gap: 8px; background: var(--warm-white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px 14px; font-size: .82rem; transition: all .15s; }
+    .comp-pill { display: flex; align-items: center; gap: 8px; background: var(--warm-white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px 14px; transition: all .15s; }
     .comp-pill:hover { border-color: var(--rose); box-shadow: 0 2px 12px rgba(212,129,106,.12); }
     .comp-pill-icon { font-size: 1rem; }
-    .comp-pill-name { font-weight: 600; color: var(--navy); }
+    .comp-pill-name { font-size: .82rem; font-weight: 600; color: var(--navy); }
     .comp-pill-stage { font-size: .68rem; color: var(--text-light); }
     .comp-pill-funding { font-size: .68rem; font-weight: 600; color: var(--deep-rose); }
     .comp-pill-tag { font-size: .65rem; padding: 2px 7px; border-radius: 100px; font-weight: 500; }
@@ -221,7 +193,6 @@
     .ct-growing { background: rgba(201,168,76,.12); color: #8a6010; }
     .ct-niche { background: rgba(138,171,138,.15); color: var(--deep-sage); }
     .ct-new { background: rgba(184,169,208,.2); color: #6b5a8c; }
-
     .gap-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
     .gap-card { border-radius: var(--radius); padding: 22px; display: flex; flex-direction: column; gap: 10px; position: relative; overflow: hidden; }
     .gap-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
@@ -238,8 +209,8 @@
     .gap-card h3 { font-size: .98rem; font-weight: 600; color: var(--navy); line-height: 1.3; }
     .gap-card p { font-size: .82rem; color: var(--text-light); line-height: 1.6; flex: 1; }
     .gap-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-    .gap-t { font-size: .68rem; font-weight: 500; padding: 3px 8px; border-radius: 100px; background: rgba(30,45,64,.06); color: var(--text-light); }
-    .gap-card .add-btn { align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; font-size: .78rem; font-weight: 600; padding: 7px 14px; border-radius: 100px; border: none; cursor: pointer; font-family: 'Inter', sans-serif; background: var(--navy); color: #fff; transition: all .2s; }
+    .gap-t { font-size: .68rem; padding: 3px 8px; border-radius: 100px; background: rgba(30,45,64,.06); color: var(--text-light); }
+    .gap-card .add-btn { align-self: flex-start; padding: 7px 14px; border-radius: 100px; border: none; cursor: pointer; font-family: 'Inter', sans-serif; font-size: .78rem; font-weight: 600; background: var(--navy); color: #fff; transition: all .2s; }
     .gap-card .add-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(30,45,64,.2); }
 
     /* ════════════════════════════════
@@ -254,15 +225,12 @@
     .tstat strong { color: #fff; font-size: 1.1rem; }
     .add-opp-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--blush); color: var(--navy); font-weight: 700; font-size: .88rem; padding: 13px 24px; border-radius: 100px; border: none; cursor: pointer; font-family: 'Inter', sans-serif; transition: all .2s; white-space: nowrap; box-shadow: 0 4px 20px rgba(242,212,200,.3); align-self: flex-start; }
     .add-opp-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(242,212,200,.45); }
-
-    /* Team presence bar */
     .team-bar { background: rgba(255,255,255,.07); border-top: 1px solid rgba(255,255,255,.1); margin-top: 20px; padding-top: 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
     .team-bar-label { font-size: .7rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.45); }
     .team-member-chip { display: flex; align-items: center; gap: 7px; background: rgba(255,255,255,.1); border-radius: 100px; padding: 5px 12px 5px 5px; }
     .team-chip-avatar { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .65rem; font-weight: 700; color: #fff; }
     .team-chip-name { font-size: .75rem; color: rgba(255,255,255,.8); font-weight: 500; }
     .team-chip-count { font-size: .68rem; color: rgba(255,255,255,.5); }
-
     .tracker-filters { background: var(--warm-white); border-bottom: 1px solid var(--border); padding: 12px 24px; }
     .tracker-filters-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
     .tfilter-btn { padding: 6px 14px; border-radius: 100px; border: 1.5px solid var(--border); background: transparent; color: var(--text-light); font-size: .78rem; font-weight: 500; cursor: pointer; transition: all .15s; font-family: 'Inter', sans-serif; }
@@ -270,12 +238,10 @@
     .tfilter-btn:hover:not(.active) { border-color: var(--navy); color: var(--navy); }
     .tfilter-sep { width: 1px; height: 18px; background: var(--border); flex-shrink: 0; }
     .sort-select { margin-left: auto; padding: 6px 12px; border-radius: 100px; border: 1.5px solid var(--border); background: transparent; color: var(--text-light); font-size: .78rem; cursor: pointer; font-family: 'Inter', sans-serif; }
-
     .tracker-body { max-width: 1200px; margin: 0 auto; padding: 28px 24px 80px; }
     .board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; align-items: start; }
     @media (max-width: 900px) { .board { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 550px) { .board { grid-template-columns: 1fr; } }
-
     .column { background: rgba(30,45,64,.04); border-radius: var(--radius); padding: 14px; display: flex; flex-direction: column; gap: 12px; min-height: 200px; }
     .col-header { display: flex; align-items: center; justify-content: space-between; padding: 4px 4px 10px; border-bottom: 2px solid transparent; }
     .col-header.exploring { border-color: var(--lavender); }
@@ -285,27 +251,21 @@
     .col-title { font-size: .82rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--navy); }
     .col-count { font-size: .72rem; font-weight: 700; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(30,45,64,.1); color: var(--navy); }
     .col-cards { display: flex; flex-direction: column; gap: 10px; min-height: 60px; }
-
     .opp-card { background: var(--warm-white); border-radius: var(--radius-sm); padding: 14px; box-shadow: 0 2px 12px rgba(30,45,64,.07); border: 1px solid var(--border); cursor: pointer; transition: transform .18s, box-shadow .18s; display: flex; flex-direction: column; gap: 8px; }
     .opp-card:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(30,45,64,.12); }
     .opp-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 6px; }
     .opp-card h4 { font-size: .88rem; font-weight: 600; color: var(--navy); line-height: 1.35; flex: 1; }
     .opp-priority { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
-    .p-high { background: var(--deep-rose); }
-    .p-med { background: var(--gold); }
-    .p-low { background: var(--sage); }
+    .p-high { background: var(--deep-rose); } .p-med { background: var(--gold); } .p-low { background: var(--sage); }
     .opp-card-cat { font-size: .68rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--rose); }
     .opp-card-note { font-size: .78rem; color: var(--text-light); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     .opp-card-footer { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding-top: 6px; border-top: 1px solid var(--border); }
     .opp-date { font-size: .68rem; color: var(--text-light); }
     .opp-tags { display: flex; gap: 5px; flex-wrap: wrap; }
     .opp-tag { font-size: .65rem; padding: 2px 7px; border-radius: 100px; background: rgba(30,45,64,.06); color: var(--text-light); }
-
-    /* Card author avatars */
-    .card-authors { display: flex; gap: -4px; }
-    .card-author-avatar { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .58rem; font-weight: 700; color: #fff; border: 1.5px solid var(--warm-white); margin-left: -4px; }
-    .card-author-avatar:first-child { margin-left: 0; }
-
+    .card-authors { display: flex; }
+    .card-author-av { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .58rem; font-weight: 700; color: #fff; border: 1.5px solid var(--warm-white); margin-left: -4px; }
+    .card-author-av:first-child { margin-left: 0; }
     .empty-col { text-align: center; padding: 24px 16px; color: var(--text-light); font-size: .78rem; line-height: 1.6; }
     .empty-col .ec-icon { font-size: 1.4rem; margin-bottom: 6px; opacity: .5; }
 
@@ -318,47 +278,43 @@
     .modal-overlay.open .modal { transform: translateY(0); }
     .modal-header { padding: 24px 24px 0; display: flex; align-items: center; justify-content: space-between; }
     .modal-header h2 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--navy); }
-    .modal-close { width: 32px; height: 32px; border-radius: 8px; border: none; background: rgba(30,45,64,.08); cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; transition: background .15s; }
+    .modal-close { width: 32px; height: 32px; border-radius: 8px; border: none; background: rgba(30,45,64,.08); cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; }
     .modal-close:hover { background: rgba(30,45,64,.14); }
     .modal-body { padding: 20px 24px 24px; display: flex; flex-direction: column; gap: 18px; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     .form-group { display: flex; flex-direction: column; gap: 6px; }
-    .form-group label { font-size: .76rem; font-weight: 600; color: var(--navy); letter-spacing: .04em; }
+    .form-group label { font-size: .76rem; font-weight: 600; color: var(--navy); }
     .form-group input, .form-group select, .form-group textarea { padding: 10px 14px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); background: var(--cream); font-family: 'Inter', sans-serif; font-size: .88rem; color: var(--text); transition: border-color .15s; resize: none; }
     .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--navy); background: #fff; }
     .form-group textarea { min-height: 80px; }
     .modal-footer { padding: 0 24px 24px; display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
     .btn-cancel { padding: 10px 20px; border-radius: 100px; border: 1.5px solid var(--border); background: transparent; color: var(--text-light); font-family: 'Inter', sans-serif; font-size: .85rem; cursor: pointer; }
-    .btn-cancel:hover { border-color: var(--text-light); color: var(--text); }
+    .btn-cancel:hover { border-color: var(--text-light); }
     .btn-save { padding: 10px 24px; border-radius: 100px; border: none; background: var(--navy); color: #fff; font-family: 'Inter', sans-serif; font-size: .85rem; font-weight: 600; cursor: pointer; transition: all .15s; }
     .btn-save:hover { background: var(--navy-mid); transform: translateY(-1px); }
     .btn-delete { margin-right: auto; padding: 10px 18px; border-radius: 100px; border: 1.5px solid rgba(176,90,68,.3); background: transparent; color: var(--deep-rose); font-family: 'Inter', sans-serif; font-size: .82rem; cursor: pointer; }
     .btn-delete:hover { background: rgba(176,90,68,.07); }
-
-    /* Notes thread */
-    .notes-section label { font-size: .76rem; font-weight: 600; color: var(--navy); letter-spacing: .04em; display: block; margin-bottom: 10px; }
+    .notes-section label { font-size: .76rem; font-weight: 600; color: var(--navy); display: block; margin-bottom: 10px; }
     .notes-thread { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; max-height: 240px; overflow-y: auto; }
     .note-entry { border-radius: var(--radius-sm); padding: 10px 14px; }
-    .note-entry.note-u0 { background: rgba(30,45,64,.04); border-left: 3px solid var(--border); }
-    .note-entry.note-u1 { background: rgba(138,171,138,.08); }
-    .note-entry.note-u2 { background: rgba(184,169,208,.1); }
+    .note-u0 { background: rgba(30,45,64,.04); }
+    .note-u1 { background: rgba(138,171,138,.08); }
     .note-entry-header { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; }
     .note-avatar { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .6rem; font-weight: 700; color: #fff; flex-shrink: 0; }
     .note-author { font-size: .75rem; font-weight: 700; }
     .note-time { font-size: .68rem; color: var(--text-light); margin-left: auto; }
     .note-text { font-size: .82rem; color: var(--text); line-height: 1.6; }
-    .note-add-row { display: flex; gap: 8px; align-items: flex-end; }
+    .note-add-row { display: flex; gap: 8px; }
     .note-add-row input { flex: 1; padding: 9px 14px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); background: var(--cream); font-family: 'Inter', sans-serif; font-size: .83rem; color: var(--text); }
     .note-add-row input:focus { outline: none; border-color: var(--navy); background: #fff; }
     .note-add-btn { padding: 9px 16px; border-radius: var(--radius-sm); border: none; background: var(--navy); color: #fff; font-family: 'Inter', sans-serif; font-size: .78rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
     .note-add-btn:hover { background: var(--navy-mid); }
-    .note-who { font-size: .72rem; color: var(--text-light); margin-top: 4px; display: flex; align-items: center; gap: 5px; }
-    .note-who-avatar { width: 16px; height: 16px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: .5rem; font-weight: 700; color: #fff; }
+    .note-who { font-size: .72rem; color: var(--text-light); margin-top: 5px; display: flex; align-items: center; gap: 5px; }
+    .note-who-av { width: 16px; height: 16px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: .5rem; font-weight: 700; color: #fff; }
 
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(30,45,64,.15); border-radius: 100px; }
-
     @media (max-width: 640px) { .form-row { grid-template-columns: 1fr; } .market-row { grid-template-columns: 1fr; gap: 6px; } }
   </style>
 </head>
@@ -375,54 +331,58 @@
       <p>Women's Health &amp; Productivity Intelligence</p>
     </div>
 
-    <!-- STEP 1: PIN entry -->
-    <div class="auth-step" id="step-pin">
-      <div class="auth-step-title">Enter access code</div>
-      <div class="pin-row">
-        <input class="pin-digit" id="p0" maxlength="1" inputmode="numeric" pattern="[0-9]" onkeyup="pinKey(event,0)" />
-        <input class="pin-digit" id="p1" maxlength="1" inputmode="numeric" pattern="[0-9]" onkeyup="pinKey(event,1)" />
-        <input class="pin-digit" id="p2" maxlength="1" inputmode="numeric" pattern="[0-9]" onkeyup="pinKey(event,2)" />
-        <input class="pin-digit" id="p3" maxlength="1" inputmode="numeric" pattern="[0-9]" onkeyup="pinKey(event,3)" />
-      </div>
-      <div class="auth-error" id="pin-error"></div>
-      <button class="auth-btn" id="pin-btn" onclick="checkPin()">Continue →</button>
-    </div>
-
-    <!-- STEP 2: Setup (first time only) -->
+    <!-- STEP: First-time setup -->
     <div class="auth-step hidden" id="step-setup">
-      <div class="auth-step-title">Set up your profiles</div>
-      <div class="setup-users">
-        <div class="setup-user-card">
-          <div class="auth-step-title" style="text-align:left;font-size:.68rem;">Person 1</div>
-          <div class="setup-avatar-row">
-            <div class="avatar-preview" id="av0" style="background:#d4816a;">J</div>
-            <input class="setup-input" id="uname0" placeholder="Your name" value="Julia" oninput="updateSetupAvatar(0)" />
-          </div>
-          <div class="color-picker" id="cpick0"></div>
+      <div class="auth-step-title">Create your workspace</div>
+
+      <div class="setup-user-section">
+        <div class="setup-user-label">
+          <div class="label-avatar" id="lav0" style="background:#d4816a">J</div>
+          Person 1
         </div>
-        <div class="setup-user-card">
-          <div class="auth-step-title" style="text-align:left;font-size:.68rem;">Person 2</div>
-          <div class="setup-avatar-row">
-            <div class="avatar-preview" id="av1" style="background:#8aab8a;">P</div>
-            <input class="setup-input" id="uname1" placeholder="Partner's name" value="Partner" oninput="updateSetupAvatar(1)" />
-          </div>
-          <div class="color-picker" id="cpick1"></div>
+        <div class="setup-row">
+          <div class="auth-field"><label>Name</label><input id="s-name0" placeholder="Your name" value="Julia" oninput="setupAvatarUpdate(0)" /></div>
+          <div class="auth-field"><label>Email</label><input type="email" id="s-email0" placeholder="you@email.com" /></div>
         </div>
+        <div class="auth-field"><label>Password</label><input type="password" id="s-pw0" placeholder="Choose a password" /></div>
+        <div class="color-picker"><span class="color-picker-label">Colour:</span><div id="cpick0"></div></div>
       </div>
-      <div class="setup-pin-row">
-        <label>Set your 4-digit access PIN</label>
-        <input class="setup-input" id="new-pin" maxlength="4" inputmode="numeric" pattern="[0-9]{4}" placeholder="e.g. 2025" />
+
+      <div class="setup-divider"></div>
+
+      <div class="setup-user-section">
+        <div class="setup-user-label">
+          <div class="label-avatar" id="lav1" style="background:#8aab8a">P</div>
+          Person 2
+        </div>
+        <div class="setup-row">
+          <div class="auth-field"><label>Name</label><input id="s-name1" placeholder="Partner's name" value="Partner" oninput="setupAvatarUpdate(1)" /></div>
+          <div class="auth-field"><label>Email</label><input type="email" id="s-email1" placeholder="partner@email.com" /></div>
+        </div>
+        <div class="auth-field"><label>Password</label><input type="password" id="s-pw1" placeholder="Choose a password" /></div>
+        <div class="color-picker"><span class="color-picker-label">Colour:</span><div id="cpick1"></div></div>
       </div>
+
       <div class="auth-error" id="setup-error"></div>
       <button class="auth-btn" onclick="finishSetup()">Create our space →</button>
-      <div class="setup-hint">Only people with the PIN can access this.</div>
+      <div class="auth-hint">Credentials are stored locally in your browser.<br>Only people on this device can log in.</div>
     </div>
 
-    <!-- STEP 3: Pick profile -->
-    <div class="auth-step hidden" id="step-profile">
-      <div class="auth-step-title">Who are you today?</div>
-      <div class="profile-cards" id="profile-cards"></div>
+    <!-- STEP: Login with email + password -->
+    <div class="auth-step hidden" id="step-login">
+      <div class="auth-step-title">Sign in</div>
+      <div class="auth-field">
+        <label>Email</label>
+        <input type="email" id="l-email" placeholder="you@email.com" onkeydown="if(event.key==='Enter')document.getElementById('l-pw').focus()" />
+      </div>
+      <div class="auth-field">
+        <label>Password</label>
+        <input type="password" id="l-pw" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()" />
+      </div>
+      <div class="auth-error" id="login-error"></div>
+      <button class="auth-btn" onclick="doLogin()">Sign in →</button>
     </div>
+
   </div>
 </div>
 
@@ -431,7 +391,6 @@
 ══════════════════════════════════ -->
 <div id="app" style="display:none;">
 
-<!-- NAV -->
 <nav>
   <a class="nav-logo" href="#">
     <div class="nav-logo-mark">🌿</div>
@@ -441,19 +400,19 @@
     </div>
   </a>
   <div class="nav-tabs">
-    <button class="nav-tab active" onclick="showPage('intel', this)">📊 Intelligence</button>
-    <button class="nav-tab" onclick="showPage('tracker', this)">🗂 Tracker</button>
+    <button class="nav-tab active" onclick="showPage('intel',this)">📊 Intelligence</button>
+    <button class="nav-tab" onclick="showPage('tracker',this)">🗂 Tracker</button>
   </div>
-  <button class="nav-user" onclick="switchUser()" title="Switch profile">
+  <button class="nav-user" onclick="doLogout()" title="Sign out">
     <div class="nav-user-avatar" id="nav-avatar"></div>
     <div>
       <div class="nav-user-name" id="nav-name"></div>
-      <div class="nav-user-switch">switch ↓</div>
+      <div class="nav-user-switch">sign out</div>
     </div>
   </button>
 </nav>
 
-<!-- ══════════════ PAGE: INTELLIGENCE ══════════════ -->
+<!-- ══════════════ INTELLIGENCE ══════════════ -->
 <div class="page active" id="page-intel">
   <div class="intel-hero">
     <div class="intel-hero-inner">
@@ -474,7 +433,6 @@
       </div>
     </div>
   </div>
-
   <div class="intel-body">
     <div>
       <div class="section-header"><div><div class="section-tag">Trend Radar</div><h2>Hot Trends Right Now</h2><p>Momentum signals across women's health and productivity verticals</p></div></div>
@@ -486,38 +444,26 @@
         <div class="trend-card"><div class="trend-card-top"><span class="trend-icon">😴</span><span class="trend-momentum momentum-rising">📈 Rising</span></div><h3>Female Sleep Optimization</h3><p>Women sleep differently due to hormonal cycles — yet most sleep apps ignore this. Wearables + AI creating personalized female-first sleep protocols. Huge underserved niche.</p><div class="trend-meta"><span class="trend-tag">Sleep</span><span class="trend-tag">Wearables</span><span class="trend-tag">AI</span><span class="trend-size">$5.1B TAM</span></div></div>
         <div class="trend-card"><div class="trend-card-top"><span class="trend-icon">⚡</span><span class="trend-momentum momentum-rising">📈 Rising</span></div><h3>Energy & Nervous System Regulation</h3><p>"Adrenal fatigue" and HPA axis dysfunction driving demand for breath work, cold therapy, and nervous system tracking apps. Strong content-to-product conversion opportunity.</p><div class="trend-meta"><span class="trend-tag">Wellness</span><span class="trend-tag">Biohacking</span><span class="trend-size">$3.4B TAM</span></div></div>
         <div class="trend-card"><div class="trend-card-top"><span class="trend-icon">🤝</span><span class="trend-momentum momentum-rising">📈 Rising</span></div><h3>Women-Led Community Platforms</h3><p>Rise of paid communities for women in specific life stages (motherhood, career pivots, chronic illness). Geneva, Heartbeat, and indie creators monetizing deeply loyal cohorts.</p><div class="trend-meta"><span class="trend-tag">Community</span><span class="trend-tag">Subscription</span><span class="trend-size">$6B TAM</span></div></div>
-        <div class="trend-card"><div class="trend-card-top"><span class="trend-icon">🏋️‍♀️</span><span class="trend-momentum momentum-steady">↔ Steady</span></div><h3>Female-Specific Strength Training</h3><p>Shift from cardio-only to strength training for women (bone density, longevity, metabolic health). Apps like Evlo Fitness and Strong growing. Content creators converting fast.</p><div class="trend-meta"><span class="trend-tag">Fitness</span><span class="trend-tag">Longevity</span><span class="trend-size">$7.3B TAM</span></div></div>
-        <div class="trend-card"><div class="trend-card-top"><span class="trend-icon">🧪</span><span class="trend-momentum momentum-emerging">🌱 Emerging</span></div><h3>At-Home Female Hormone Testing</h3><p>Consumer hormone panels (estrogen, progesterone, cortisol, thyroid) via blood spot tests. DUTCH test going mainstream. Startups building subscription insights layers on top.</p><div class="trend-meta"><span class="trend-tag">Diagnostics</span><span class="trend-tag">D2C</span><span class="trend-tag">Subscription</span><span class="trend-size">$2.8B TAM</span></div></div>
+        <div class="trend-card"><div class="trend-card-top"><span class="trend-icon">🏋️‍♀️</span><span class="trend-momentum momentum-steady">↔ Steady</span></div><h3>Female-Specific Strength Training</h3><p>Shift from cardio-only to strength training for women. Apps like Evlo Fitness and Strong growing. Content creators converting to app subscribers fast.</p><div class="trend-meta"><span class="trend-tag">Fitness</span><span class="trend-tag">Longevity</span><span class="trend-size">$7.3B TAM</span></div></div>
+        <div class="trend-card"><div class="trend-card-top"><span class="trend-icon">🧪</span><span class="trend-momentum momentum-emerging">🌱 Emerging</span></div><h3>At-Home Female Hormone Testing</h3><p>Consumer hormone panels via blood spot tests. DUTCH test going mainstream. Startups building subscription insights layers on top.</p><div class="trend-meta"><span class="trend-tag">Diagnostics</span><span class="trend-tag">D2C</span><span class="trend-tag">Subscription</span><span class="trend-size">$2.8B TAM</span></div></div>
         <div class="trend-card"><div class="trend-card-top"><span class="trend-icon">🍽️</span><span class="trend-momentum momentum-emerging">🌱 Emerging</span></div><h3>Cycle-Aware Nutrition & Meal Planning</h3><p>Seed cycling, folate cycling, and phase-based eating gaining mainstream traction. Meal kit and subscription food brands starting to target menstruating women specifically.</p><div class="trend-meta"><span class="trend-tag">Nutrition</span><span class="trend-tag">FemTech</span><span class="trend-size">$2.1B TAM</span></div></div>
-        <div class="trend-card"><div class="trend-card-top"><span class="trend-icon">💼</span><span class="trend-momentum momentum-emerging">🌱 Emerging</span></div><h3>Female Financial Wellness</h3><p>Women live longer, earn less, and retire with less — driving fintech products for women. Ellevest leading but space is underbuilt. Intersection with health (care costs) is untapped.</p><div class="trend-meta"><span class="trend-tag">FinTech</span><span class="trend-tag">Productivity</span><span class="trend-size">$18B TAM</span></div></div>
+        <div class="trend-card"><div class="trend-card-top"><span class="trend-icon">💼</span><span class="trend-momentum momentum-emerging">🌱 Emerging</span></div><h3>Female Financial Wellness</h3><p>Women live longer, earn less, retire with less — driving fintech for women. Ellevest leading but space is underbuilt. Intersection with health costs is untapped.</p><div class="trend-meta"><span class="trend-tag">FinTech</span><span class="trend-tag">Productivity</span><span class="trend-size">$18B TAM</span></div></div>
         <div class="trend-card"><div class="trend-card-top"><span class="trend-icon">🤖</span><span class="trend-momentum momentum-hot">🔥 Hot</span></div><h3>AI Health Coaches for Women</h3><p>GPT-4o + RAG enabling 24/7 health coaching personalised to cycle, age, and health goals. Wild opportunity for AI companions that actually understand female physiology.</p><div class="trend-meta"><span class="trend-tag">AI</span><span class="trend-tag">Coaching</span><span class="trend-tag">Personalization</span><span class="trend-size">$8.5B TAM</span></div></div>
       </div>
     </div>
-
-    <div>
-      <div class="section-header"><div><div class="section-tag">Market Sizing</div><h2>Segment Market Sizes</h2><p>Global TAM estimates for 2024–2025 across key verticals</p></div></div>
-      <div class="market-table" id="market-table"></div>
-    </div>
-
-    <div>
-      <div class="section-header"><div><div class="section-tag">Competitive Landscape</div><h2>Who's Playing Where</h2><p>Key players by category — understand the field before you enter it</p></div></div>
-      <div class="competitor-cats" id="competitor-cats"></div>
-    </div>
-
-    <div>
-      <div class="section-header"><div><div class="section-tag">Opportunity Analysis</div><h2>Gaps Worth Pursuing</h2><p>Underserved niches and whitespace opportunities we've identified</p></div></div>
-      <div class="gap-grid" id="gap-grid"></div>
-    </div>
+    <div><div class="section-header"><div><div class="section-tag">Market Sizing</div><h2>Segment Market Sizes</h2><p>Global TAM estimates for 2024–2025</p></div></div><div class="market-table" id="market-table"></div></div>
+    <div><div class="section-header"><div><div class="section-tag">Competitive Landscape</div><h2>Who's Playing Where</h2><p>Key players by category</p></div></div><div class="competitor-cats" id="competitor-cats"></div></div>
+    <div><div class="section-header"><div><div class="section-tag">Opportunity Analysis</div><h2>Gaps Worth Pursuing</h2><p>Underserved niches and whitespace opportunities</p></div></div><div class="gap-grid" id="gap-grid"></div></div>
   </div>
 </div>
 
-<!-- ══════════════ PAGE: TRACKER ══════════════ -->
+<!-- ══════════════ TRACKER ══════════════ -->
 <div class="page" id="page-tracker">
   <div class="tracker-header">
     <div class="tracker-header-inner">
-      <div style="flex:1;">
+      <div style="flex:1">
         <h1>Opportunity Tracker</h1>
-        <p>Track ideas from first spark to launch. Add notes, see who said what, move between stages.</p>
+        <p>Track ideas from first spark to launch. Notes show who said what.</p>
         <div class="tracker-stats">
           <div class="tstat"><strong id="stat-total">0</strong> total</div>
           <div class="tstat"><strong id="stat-exploring">0</strong> exploring</div>
@@ -530,10 +476,9 @@
       <button class="add-opp-btn" onclick="openModal()">+ Add Opportunity</button>
     </div>
   </div>
-
   <div class="tracker-filters">
     <div class="tracker-filters-inner">
-      <span style="font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);margin-right:4px;">Filter:</span>
+      <span style="font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);margin-right:4px">Filter:</span>
       <button class="tfilter-btn active" data-filter="all" onclick="setFilter('all',this)">All</button>
       <button class="tfilter-btn" data-filter="FemTech" onclick="setFilter('FemTech',this)">FemTech</button>
       <button class="tfilter-btn" data-filter="Productivity" onclick="setFilter('Productivity',this)">Productivity</button>
@@ -549,7 +494,6 @@
       </select>
     </div>
   </div>
-
   <div class="tracker-body">
     <div class="board">
       <div class="column"><div class="col-header exploring"><span class="col-title">🔍 Exploring</span><span class="col-count" id="count-exploring">0</span></div><div class="col-cards" id="col-exploring"></div></div>
@@ -562,13 +506,10 @@
 
 </div><!-- /app -->
 
-<!-- ══════════════ MODAL ══════════════ -->
+<!-- MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
   <div class="modal">
-    <div class="modal-header">
-      <h2 id="modal-title">New Opportunity</h2>
-      <button class="modal-close" onclick="closeModal()">✕</button>
-    </div>
+    <div class="modal-header"><h2 id="modal-title">New Opportunity</h2><button class="modal-close" onclick="closeModal()">✕</button></div>
     <div class="modal-body">
       <input type="hidden" id="opp-id" />
       <div class="form-group"><label>Opportunity Name *</label><input type="text" id="opp-name" placeholder="e.g. Cycle-sync productivity planner" /></div>
@@ -582,7 +523,6 @@
       </div>
       <div class="form-group"><label>Description / Hypothesis</label><textarea id="opp-desc" placeholder="What's the opportunity? Who's the customer? What's the insight?"></textarea></div>
       <div class="form-group"><label>Tags (comma separated)</label><input type="text" id="opp-tags" placeholder="e.g. B2C, subscription, mobile" /></div>
-
       <div class="notes-section">
         <label>Discussion Notes</label>
         <div class="notes-thread" id="notes-thread"></div>
@@ -594,7 +534,7 @@
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn-delete" id="btn-delete" onclick="deleteOpp()" style="display:none;">Delete</button>
+      <button class="btn-delete" id="btn-delete" onclick="deleteOpp()" style="display:none">Delete</button>
       <button class="btn-cancel" onclick="closeModal()">Cancel</button>
       <button class="btn-save" onclick="saveOpp()">Save</button>
     </div>
@@ -603,116 +543,143 @@
 
 <script>
 // ══════════════════════════════════════
-// PALETTE
+// UTILS
 // ══════════════════════════════════════
 const COLORS = ['#d4816a','#8aab8a','#2d4a6b','#c9a84c','#b8a9d0','#4a9b8e','#b05a44','#5c7a5c'];
-const COLOR_NAMES = ['Rose','Sage','Navy','Gold','Lavender','Teal','Deep Rose','Forest'];
+const CNAMES = ['Rose','Sage','Navy','Gold','Lavender','Teal','Deep Rose','Forest'];
+
+function escHtml(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function formatDate(ts) { return new Date(ts).toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
+function formatDT(ts) { return new Date(ts).toLocaleDateString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}); }
+
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
 
 // ══════════════════════════════════════
-// STATE
+// STORAGE
 // ══════════════════════════════════════
 let store = JSON.parse(localStorage.getItem('wh-store') || 'null');
+let opps  = JSON.parse(localStorage.getItem('wh-opps')  || '[]');
 let activeUser = null; // index 0 or 1
-let opportunities = JSON.parse(localStorage.getItem('wh-opps') || '[]');
+
+function saveStore() { localStorage.setItem('wh-store', JSON.stringify(store)); }
+function saveOpps()  { localStorage.setItem('wh-opps',  JSON.stringify(opps)); }
 
 // ══════════════════════════════════════
-// SETUP COLOR PICKERS
+// SETUP — COLOR PICKERS
 // ══════════════════════════════════════
-const defaultColors = ['#d4816a', '#8aab8a'];
+const defColors = ['#d4816a','#8aab8a'];
 [0,1].forEach(i => {
-  const el = document.getElementById('cpick' + i);
+  const wrap = document.getElementById('cpick' + i);
   COLORS.forEach((c, ci) => {
-    const dot = document.createElement('div');
-    dot.className = 'color-dot' + (c === defaultColors[i] ? ' selected' : '');
-    dot.style.background = c;
-    dot.title = COLOR_NAMES[ci];
-    dot.onclick = () => {
-      el.querySelectorAll('.color-dot').forEach(d => d.classList.remove('selected'));
-      dot.classList.add('selected');
-      document.getElementById('av' + i).style.background = c;
+    const d = document.createElement('div');
+    d.className = 'color-dot' + (c === defColors[i] ? ' selected' : '');
+    d.style.background = c; d.title = CNAMES[ci];
+    d.onclick = () => {
+      wrap.querySelectorAll('.color-dot').forEach(x => x.classList.remove('selected'));
+      d.classList.add('selected');
+      document.getElementById('lav' + i).style.background = c;
     };
-    el.appendChild(dot);
+    wrap.appendChild(d);
   });
-  document.getElementById('av' + i).style.background = defaultColors[i];
+  document.getElementById('lav' + i).style.background = defColors[i];
 });
 
-function updateSetupAvatar(i) {
-  const name = document.getElementById('uname' + i).value.trim();
-  const av = document.getElementById('av' + i);
-  av.textContent = name ? name[0].toUpperCase() : '?';
+function setupAvatarUpdate(i) {
+  const n = document.getElementById('s-name' + i).value.trim();
+  document.getElementById('lav' + i).textContent = n ? n[0].toUpperCase() : '?';
 }
 
 // ══════════════════════════════════════
-// AUTH FLOW
+// INIT — decide which screen to show
 // ══════════════════════════════════════
-function initAuth() {
+(function init() {
   if (!store) {
-    // First time — skip PIN step, go to setup
-    document.getElementById('step-pin').classList.add('hidden');
+    // First time — show setup
     document.getElementById('step-setup').classList.remove('hidden');
-  }
-  // else show PIN step (already visible by default)
-}
-initAuth();
-
-// PIN entry
-function pinKey(e, idx) {
-  const digit = document.getElementById('p' + idx);
-  if (digit.value) digit.classList.add('filled');
-  else digit.classList.remove('filled');
-  if (digit.value && idx < 3) document.getElementById('p' + (idx+1)).focus();
-  if (e.key === 'Backspace' && !digit.value && idx > 0) document.getElementById('p' + (idx-1)).focus();
-  if (e.key === 'Enter') checkPin();
-}
-
-function checkPin() {
-  const entered = [0,1,2,3].map(i => document.getElementById('p'+i).value).join('');
-  if (entered.length < 4) { document.getElementById('pin-error').textContent = 'Enter all 4 digits'; return; }
-  if (entered === store.pin) {
-    document.getElementById('step-pin').classList.add('hidden');
-    showProfilePicker();
   } else {
-    document.getElementById('pin-error').textContent = 'Wrong code — try again';
-    [0,1,2,3].forEach(i => { document.getElementById('p'+i).value=''; document.getElementById('p'+i).classList.remove('filled'); });
-    document.getElementById('p0').focus();
+    // Returning — check session
+    const saved = sessionStorage.getItem('wh-uid');
+    if (saved !== null) {
+      activeUser = parseInt(saved);
+      enterApp();
+    } else {
+      document.getElementById('step-login').classList.remove('hidden');
+    }
   }
-}
+})();
 
-function finishSetup() {
-  const name0 = document.getElementById('uname0').value.trim() || 'User 1';
-  const name1 = document.getElementById('uname1').value.trim() || 'User 2';
-  const pin = document.getElementById('new-pin').value.trim();
-  if (!pin || pin.length < 4) { document.getElementById('setup-error').textContent = 'Please set a 4-digit PIN'; return; }
+// ══════════════════════════════════════
+// SETUP SUBMIT
+// ══════════════════════════════════════
+async function finishSetup() {
+  const errEl = document.getElementById('setup-error');
+  errEl.textContent = '';
 
-  const color0 = document.getElementById('cpick0').querySelector('.color-dot.selected')?.style.background || '#d4816a';
-  const color1 = document.getElementById('cpick1').querySelector('.color-dot.selected')?.style.background || '#8aab8a';
+  const fields = [0,1].map(i => ({
+    name:  document.getElementById('s-name'  + i).value.trim(),
+    email: document.getElementById('s-email' + i).value.trim().toLowerCase(),
+    pw:    document.getElementById('s-pw'    + i).value,
+    color: document.getElementById('cpick'   + i).querySelector('.color-dot.selected')?.style.background || defColors[i],
+  }));
+
+  if (!fields[0].name || !fields[1].name) { errEl.textContent = 'Please enter both names.'; return; }
+  if (!fields[0].email || !fields[1].email) { errEl.textContent = 'Please enter both email addresses.'; return; }
+  if (fields[0].email === fields[1].email) { errEl.textContent = 'Emails must be different.'; return; }
+  if (!fields[0].pw || fields[0].pw.length < 4) { errEl.textContent = 'Person 1: password must be at least 4 characters.'; return; }
+  if (!fields[1].pw || fields[1].pw.length < 4) { errEl.textContent = 'Person 2: password must be at least 4 characters.'; return; }
+
+  const hashes = await Promise.all(fields.map(f => sha256(f.email + ':' + f.pw)));
 
   store = {
-    pin,
-    users: [
-      { name: name0, color: color0, initials: name0[0].toUpperCase() },
-      { name: name1, color: color1, initials: name1[0].toUpperCase() },
-    ]
+    users: fields.map((f, i) => ({
+      name:     f.name,
+      email:    f.email,
+      pwHash:   hashes[i],
+      color:    f.color,
+      initials: f.name[0].toUpperCase(),
+    }))
   };
-  localStorage.setItem('wh-store', JSON.stringify(store));
-  document.getElementById('step-setup').classList.add('hidden');
-  showProfilePicker();
+  saveStore();
+
+  activeUser = 0;
+  sessionStorage.setItem('wh-uid', '0');
+  enterApp();
 }
 
-function showProfilePicker() {
-  const el = document.getElementById('profile-cards');
-  el.innerHTML = store.users.map((u, i) => `
-    <div class="profile-card" onclick="selectProfile(${i})">
-      <div class="big-avatar" style="background:${u.color}">${u.initials}</div>
-      <div class="profile-name">${escHtml(u.name)}</div>
-      <div class="profile-role">Tap to enter</div>
-    </div>`).join('');
-  document.getElementById('step-profile').classList.remove('hidden');
-}
+// ══════════════════════════════════════
+// LOGIN
+// ══════════════════════════════════════
+async function doLogin() {
+  const errEl = document.getElementById('login-error');
+  errEl.textContent = '';
 
-function selectProfile(idx) {
+  const email = document.getElementById('l-email').value.trim().toLowerCase();
+  const pw    = document.getElementById('l-pw').value;
+
+  if (!email || !pw) { errEl.textContent = 'Please fill in email and password.'; return; }
+
+  const hash = await sha256(email + ':' + pw);
+  const idx  = store.users.findIndex(u => u.email === email && u.pwHash === hash);
+
+  if (idx === -1) {
+    errEl.textContent = 'Email or password is incorrect.';
+    document.getElementById('l-pw').value = '';
+    document.getElementById('l-pw').focus();
+    return;
+  }
+
   activeUser = idx;
-  sessionStorage.setItem('wh-active-user', idx);
+  sessionStorage.setItem('wh-uid', String(idx));
+  enterApp();
+}
+
+// ══════════════════════════════════════
+// ENTER / LEAVE APP
+// ══════════════════════════════════════
+function enterApp() {
   document.getElementById('auth-screen').classList.add('hidden');
   document.getElementById('app').style.display = 'block';
   updateNavUser();
@@ -720,37 +687,26 @@ function selectProfile(idx) {
   renderTeamBar();
 }
 
-function switchUser() {
-  // Return to profile picker without PIN
+function doLogout() {
+  sessionStorage.removeItem('wh-uid');
+  activeUser = null;
   document.getElementById('app').style.display = 'none';
   document.getElementById('auth-screen').classList.remove('hidden');
-  document.getElementById('step-pin').classList.add('hidden');
+  // clear and re-show login form
+  document.getElementById('l-email').value = '';
+  document.getElementById('l-pw').value = '';
+  document.getElementById('login-error').textContent = '';
   document.getElementById('step-setup').classList.add('hidden');
-  document.getElementById('step-profile').classList.remove('hidden');
-  showProfilePicker();
+  document.getElementById('step-login').classList.remove('hidden');
 }
 
 function updateNavUser() {
   if (activeUser === null || !store) return;
   const u = store.users[activeUser];
   const av = document.getElementById('nav-avatar');
-  av.textContent = u.initials;
-  av.style.background = u.color;
+  av.textContent = u.initials; av.style.background = u.color;
   document.getElementById('nav-name').textContent = u.name;
 }
-
-// Restore session if returning
-(function() {
-  const saved = sessionStorage.getItem('wh-active-user');
-  if (store && saved !== null) {
-    activeUser = parseInt(saved);
-    document.getElementById('auth-screen').classList.add('hidden');
-    document.getElementById('app').style.display = 'block';
-    updateNavUser();
-    renderBoard();
-    renderTeamBar();
-  }
-})();
 
 // ══════════════════════════════════════
 // NAV
@@ -764,259 +720,187 @@ function showPage(id, btn) {
 }
 
 // ══════════════════════════════════════
-// MARKET & COMPETITOR DATA (unchanged)
+// MARKET DATA
 // ══════════════════════════════════════
-const marketData = [
-  { label: 'Menopause & Perimenopause Tech', val: 22, unit: '$22B', cagr: '+18% CAGR' },
-  { label: "Women's Mental Health & Wellness", val: 9.8, unit: '$9.8B', cagr: '+22% CAGR' },
-  { label: 'Female Fitness & Strength Apps', val: 7.3, unit: '$7.3B', cagr: '+14% CAGR' },
-  { label: "Women's Community Platforms", val: 6.0, unit: '$6.0B', cagr: '+31% CAGR' },
-  { label: 'Female Sleep Optimization', val: 5.1, unit: '$5.1B', cagr: '+19% CAGR' },
-  { label: 'Cycle-Syncing & FemTech Apps', val: 4.2, unit: '$4.2B', cagr: '+24% CAGR' },
-  { label: 'Energy / Nervous System Tools', val: 3.4, unit: '$3.4B', cagr: '+27% CAGR' },
-  { label: 'At-Home Hormone Testing', val: 2.8, unit: '$2.8B', cagr: '+35% CAGR' },
-  { label: 'Cycle-Aware Nutrition', val: 2.1, unit: '$2.1B', cagr: '+28% CAGR' },
+const mktData = [
+  {label:'Menopause & Perimenopause Tech',val:22,unit:'$22B',cagr:'+18% CAGR'},
+  {label:"Women's Mental Health & Wellness",val:9.8,unit:'$9.8B',cagr:'+22% CAGR'},
+  {label:'Female Fitness & Strength Apps',val:7.3,unit:'$7.3B',cagr:'+14% CAGR'},
+  {label:"Women's Community Platforms",val:6.0,unit:'$6.0B',cagr:'+31% CAGR'},
+  {label:'Female Sleep Optimization',val:5.1,unit:'$5.1B',cagr:'+19% CAGR'},
+  {label:'Cycle-Syncing & FemTech Apps',val:4.2,unit:'$4.2B',cagr:'+24% CAGR'},
+  {label:'Energy / Nervous System Tools',val:3.4,unit:'$3.4B',cagr:'+27% CAGR'},
+  {label:'At-Home Hormone Testing',val:2.8,unit:'$2.8B',cagr:'+35% CAGR'},
+  {label:'Cycle-Aware Nutrition',val:2.1,unit:'$2.1B',cagr:'+28% CAGR'},
 ];
-const barColors = ['linear-gradient(90deg,#b05a44,#d4816a)','linear-gradient(90deg,#6b5a8c,#b8a9d0)','linear-gradient(90deg,#5c7a5c,#8aab8a)','linear-gradient(90deg,#c9a84c,#f0d98a)','linear-gradient(90deg,#2d4a6b,#4a9b8e)','linear-gradient(90deg,#d4816a,#c9a84c)','linear-gradient(90deg,#4a9b8e,#8aab8a)','linear-gradient(90deg,#9a7520,#c9a84c)','linear-gradient(90deg,#b8a9d0,#6b5a8c)'];
-const maxVal = Math.max(...marketData.map(d => d.val));
+const barC = ['linear-gradient(90deg,#b05a44,#d4816a)','linear-gradient(90deg,#6b5a8c,#b8a9d0)','linear-gradient(90deg,#5c7a5c,#8aab8a)','linear-gradient(90deg,#c9a84c,#f0d98a)','linear-gradient(90deg,#2d4a6b,#4a9b8e)','linear-gradient(90deg,#d4816a,#c9a84c)','linear-gradient(90deg,#4a9b8e,#8aab8a)','linear-gradient(90deg,#9a7520,#c9a84c)','linear-gradient(90deg,#b8a9d0,#6b5a8c)'];
+const maxV = Math.max(...mktData.map(d=>d.val));
 const mtEl = document.getElementById('market-table');
-marketData.forEach((d, i) => {
-  const pct = (d.val / maxVal * 100).toFixed(1);
-  mtEl.innerHTML += `<div class="market-row"><div><div class="market-label">${d.label}</div><div class="market-notes">${d.cagr}</div></div><div class="market-bar-track"><div class="market-bar-fill" style="width:0%;background:${barColors[i]}" data-target="${pct}"></div></div><div class="market-size-val">${d.unit}</div></div>`;
-});
-const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) document.querySelectorAll('.market-bar-fill').forEach(b => b.style.width = b.dataset.target + '%'); }); }, { threshold: 0.2 });
-observer.observe(mtEl);
+mktData.forEach((d,i) => { const p=(d.val/maxV*100).toFixed(1); mtEl.innerHTML+=`<div class="market-row"><div><div class="market-label">${d.label}</div><div class="market-notes">${d.cagr}</div></div><div class="market-bar-track"><div class="market-bar-fill" style="width:0%;background:${barC[i]}" data-target="${p}"></div></div><div class="market-size-val">${d.unit}</div></div>`; });
+new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)document.querySelectorAll('.market-bar-fill').forEach(b=>b.style.width=b.dataset.target+'%')});},{threshold:.2}).observe(mtEl);
 
-const compData = [
-  { cat: 'Period & Cycle Tracking', players: [{name:'Flo Health',icon:'🌸',stage:'Series C',funding:'$200M+',tag:'leader'},{name:'Clue',icon:'🔵',stage:'Series B',funding:'$30M',tag:'leader'},{name:'Natural Cycles',icon:'🌡️',stage:'Public',funding:'IPO',tag:'leader'},{name:'Ovia Health',icon:'💜',stage:'Acquired',funding:'Labcorp',tag:'niche'}] },
-  { cat: 'Menopause & Hormonal Health', players: [{name:'Midi Health',icon:'🌿',stage:'Series A',funding:'$60M',tag:'growing'},{name:'Elektra Health',icon:'⚡',stage:'Seed/A',funding:'$15M',tag:'growing'},{name:'Gennev',icon:'🌺',stage:'Series A',funding:'$10M',tag:'niche'},{name:'Evernow',icon:'🌙',stage:'Series A',funding:'$28M',tag:'growing'},{name:'Alloy',icon:'✨',stage:'Seed',funding:'$5M',tag:'new'}] },
-  { cat: "Women's Mental Health & Coaching", players: [{name:'BetterHelp',icon:'💙',stage:'Acquired',funding:'Teladoc',tag:'leader'},{name:'Headspace',icon:'🧘',stage:'Public',funding:'$300M+',tag:'leader'},{name:'Maven Clinic',icon:'🌱',stage:'Series D',funding:'$300M',tag:'growing'},{name:'Bloom',icon:'🌸',stage:'Series A',funding:'$9M',tag:'niche'}] },
-  { cat: "Women's Fitness & Strength", players: [{name:'Peloton',icon:'🚲',stage:'Public',funding:'PTON',tag:'leader'},{name:'Sweat (Kayla)',icon:'💪',stage:'Acquired',funding:'iFIT',tag:'leader'},{name:'Evlo Fitness',icon:'🏋️',stage:'Bootstrapped',funding:'—',tag:'niche'},{name:'Future Fit',icon:'🎯',stage:'Series B',funding:'$24M',tag:'growing'}] },
-  { cat: 'AI Health Coaching', players: [{name:'Noom',icon:'🤖',stage:'Series F',funding:'$540M',tag:'leader'},{name:'Lark Health',icon:'🐦',stage:'Series D',funding:'$100M',tag:'leader'},{name:'Kin',icon:'✨',stage:'Seed',funding:'$3M',tag:'new'}] },
-  { cat: "Women's Productivity & Career", players: [{name:'Ellevate Network',icon:'🔗',stage:'Bootstrapped',funding:'—',tag:'niche'},{name:'Chief',icon:'👑',stage:'Series C',funding:'$140M',tag:'growing'},{name:'HER',icon:'💜',stage:'Seed',funding:'$1.5M',tag:'niche'}] },
+const compData=[
+  {cat:'Period & Cycle Tracking',players:[{name:'Flo Health',icon:'🌸',stage:'Series C',funding:'$200M+',tag:'leader'},{name:'Clue',icon:'🔵',stage:'Series B',funding:'$30M',tag:'leader'},{name:'Natural Cycles',icon:'🌡️',stage:'Public',funding:'IPO',tag:'leader'},{name:'Ovia Health',icon:'💜',stage:'Acquired',funding:'Labcorp',tag:'niche'}]},
+  {cat:'Menopause & Hormonal Health',players:[{name:'Midi Health',icon:'🌿',stage:'Series A',funding:'$60M',tag:'growing'},{name:'Elektra Health',icon:'⚡',stage:'Seed/A',funding:'$15M',tag:'growing'},{name:'Gennev',icon:'🌺',stage:'Series A',funding:'$10M',tag:'niche'},{name:'Evernow',icon:'🌙',stage:'Series A',funding:'$28M',tag:'growing'},{name:'Alloy',icon:'✨',stage:'Seed',funding:'$5M',tag:'new'}]},
+  {cat:"Women's Mental Health",players:[{name:'BetterHelp',icon:'💙',stage:'Acquired',funding:'Teladoc',tag:'leader'},{name:'Headspace',icon:'🧘',stage:'Public',funding:'$300M+',tag:'leader'},{name:'Maven Clinic',icon:'🌱',stage:'Series D',funding:'$300M',tag:'growing'},{name:'Bloom',icon:'🌸',stage:'Series A',funding:'$9M',tag:'niche'}]},
+  {cat:"Women's Fitness & Strength",players:[{name:'Peloton',icon:'🚲',stage:'Public',funding:'PTON',tag:'leader'},{name:'Sweat (Kayla)',icon:'💪',stage:'Acquired',funding:'iFIT',tag:'leader'},{name:'Evlo Fitness',icon:'🏋️',stage:'Bootstrapped',funding:'—',tag:'niche'},{name:'Future Fit',icon:'🎯',stage:'Series B',funding:'$24M',tag:'growing'}]},
+  {cat:'AI Health Coaching',players:[{name:'Noom',icon:'🤖',stage:'Series F',funding:'$540M',tag:'leader'},{name:'Lark Health',icon:'🐦',stage:'Series D',funding:'$100M',tag:'leader'},{name:'Kin',icon:'✨',stage:'Seed',funding:'$3M',tag:'new'}]},
+  {cat:"Women's Productivity & Career",players:[{name:'Ellevate',icon:'🔗',stage:'Bootstrapped',funding:'—',tag:'niche'},{name:'Chief',icon:'👑',stage:'Series C',funding:'$140M',tag:'growing'}]},
 ];
-const tagC = { leader:'ct-leader', growing:'ct-growing', niche:'ct-niche', new:'ct-new' };
-const tagL = { leader:'Market Leader', growing:'Growing', niche:'Niche', new:'New Entry' };
-const ccEl = document.getElementById('competitor-cats');
-compData.forEach(cat => {
-  let html = `<div><div class="comp-cat-label">${cat.cat}</div><div class="comp-grid">`;
-  cat.players.forEach(p => { html += `<div class="comp-pill"><span class="comp-pill-icon">${p.icon}</span><div><div style="display:flex;align-items:center;gap:6px;"><span class="comp-pill-name">${p.name}</span><span class="comp-pill-tag ${tagC[p.tag]}">${tagL[p.tag]}</span></div><div style="display:flex;gap:8px;margin-top:2px;"><span class="comp-pill-stage">${p.stage}</span>${p.funding!=='—'?`<span class="comp-pill-funding">${p.funding}</span>`:''}</div></div></div>`; });
-  ccEl.innerHTML += html + '</div></div>';
-});
+const tC={leader:'ct-leader',growing:'ct-growing',niche:'ct-niche',new:'ct-new'};
+const tL={leader:'Market Leader',growing:'Growing',niche:'Niche',new:'New Entry'};
+const ccEl=document.getElementById('competitor-cats');
+compData.forEach(c=>{let h=`<div><div class="comp-cat-label">${c.cat}</div><div class="comp-grid">`;c.players.forEach(p=>{h+=`<div class="comp-pill"><span class="comp-pill-icon">${p.icon}</span><div><div style="display:flex;align-items:center;gap:6px"><span class="comp-pill-name">${p.name}</span><span class="comp-pill-tag ${tC[p.tag]}">${tL[p.tag]}</span></div><div style="display:flex;gap:8px;margin-top:2px"><span class="comp-pill-stage">${p.stage}</span>${p.funding!=='—'?`<span class="comp-pill-funding">${p.funding}</span>`:''}</div></div></div>`;});ccEl.innerHTML+=h+'</div></div>';});
 
-const gapData = [
-  { tier:'high', title:'Perimenopause Companion for 35–45 Year Olds', desc:'Most menopause apps target post-menopausal women. The perimenopausal 35–45 cohort is deeply underserved. Combine symptom tracking, education, and community.', tags:['FemTech','Community','Subscription','$22B market'] },
-  { tier:'high', title:'Cycle-Synced AI Productivity Planner', desc:'No mainstream productivity tool accounts for menstrual phases. An AI planner that suggests focus work in the follicular phase and review/reflection in luteal has massive appeal.', tags:['Productivity','AI','B2C','SaaS'] },
-  { tier:'high', title:"Women's Metabolic Health After GLP-1", desc:"As millions of women come off GLP-1 drugs, they need muscle preservation, nutrition resets, and metabolic tracking designed for female physiology. Massive first-mover window.", tags:['Nutrition','Metabolic','Trending','D2C'] },
-  { tier:'med', title:'Female-Specific Sleep Protocol App', desc:"Sleep apps are gender-neutral. Women's sleep is disrupted by cycle phases, pregnancy, and menopause. An app tracking sleep against hormonal data with phase-specific protocols is a gap.", tags:['Sleep','FemTech','Wearables'] },
-  { tier:'med', title:'Hormone Testing + Insights Subscription', desc:'At-home test kits exist but the insight/coaching layer is weak. Combine regular testing with personalised AI interpretation, protocol suggestions, and community benchmarking.', tags:['Diagnostics','Subscription','AI','D2C'] },
-  { tier:'med', title:'Burnout Recovery Program for Women', desc:'No structured digital program exists for female burnout recovery. 6-week or 12-week program combining somatic work, cycle awareness, and career recalibration.', tags:['Mental Health','Productivity','Wellness','Course'] },
-  { tier:'watch', title:'Community Platform for Women 40+', desc:'The 40+ professional woman cohort is underserved by existing communities. A curated async community with health + career integration could command premium pricing.', tags:['Community','Subscription','$6B market'] },
-  { tier:'watch', title:'Cycle-Aware Meal Kit or Nutrition Plan', desc:'No meal kit brand has built a female-cycle-aware offering. Phase-based meal plans with the right micronutrients could command premium pricing.', tags:['Nutrition','D2C','Subscription','CPG'] },
+const gapData=[
+  {tier:'high',title:'Perimenopause Companion for 35–45 Year Olds',desc:'Most menopause apps target post-menopausal women. The perimenopausal 35–45 cohort is deeply underserved. Combine symptom tracking, education, and community.',tags:['FemTech','Community','Subscription','$22B market']},
+  {tier:'high',title:'Cycle-Synced AI Productivity Planner',desc:'No mainstream productivity tool accounts for menstrual phases. An AI planner that suggests focus work in follicular phase and reflection in luteal has massive appeal.',tags:['Productivity','AI','B2C','SaaS']},
+  {tier:'high',title:"Women's Metabolic Health After GLP-1",desc:'As millions of women come off GLP-1 drugs, they need muscle preservation, nutrition resets, and metabolic tracking designed for female physiology.',tags:['Nutrition','Metabolic','Trending','D2C']},
+  {tier:'med',title:'Female-Specific Sleep Protocol App',desc:"Sleep apps are gender-neutral. Women's sleep is disrupted by cycle phases, pregnancy, and menopause. Phase-specific protocols are a gap.",tags:['Sleep','FemTech','Wearables']},
+  {tier:'med',title:'Hormone Testing + Insights Subscription',desc:'At-home test kits exist but the insight/coaching layer is weak. Combine regular testing with AI interpretation, protocol suggestions, and community.',tags:['Diagnostics','Subscription','AI','D2C']},
+  {tier:'med',title:'Burnout Recovery Program for Women',desc:'No structured digital program exists for female burnout recovery. 6–12 week program combining somatic work, cycle awareness, and career recalibration.',tags:['Mental Health','Productivity','Wellness','Course']},
+  {tier:'watch',title:'Community Platform for Women 40+',desc:'The 40+ professional woman cohort is underserved. A curated async community with health + career integration could command premium pricing.',tags:['Community','Subscription','$6B market']},
+  {tier:'watch',title:'Cycle-Aware Meal Kit',desc:'No meal kit brand has built a female-cycle-aware offering. Phase-based meal plans with the right micronutrients could command premium pricing.',tags:['Nutrition','D2C','Subscription','CPG']},
 ];
-const gapLabels = { high:'🔥 High Priority Gap', med:'📈 Strong Opportunity', watch:'👀 Watch & Explore' };
-const ggEl = document.getElementById('gap-grid');
-gapData.forEach(g => {
-  ggEl.innerHTML += `<div class="gap-card gap-${g.tier}"><div class="gap-label">${gapLabels[g.tier]}</div><h3>${g.title}</h3><p>${g.desc}</p><div class="gap-tags">${g.tags.map(t=>`<span class="gap-t">${t}</span>`).join('')}</div><button class="add-btn" onclick="addFromGap(${JSON.stringify(g.title)})">+ Track this →</button></div>`;
-});
+const gL={high:'🔥 High Priority Gap',med:'📈 Strong Opportunity',watch:'👀 Watch & Explore'};
+const ggEl=document.getElementById('gap-grid');
+gapData.forEach(g=>{ggEl.innerHTML+=`<div class="gap-card gap-${g.tier}"><div class="gap-label">${gL[g.tier]}</div><h3>${g.title}</h3><p>${g.desc}</p><div class="gap-tags">${g.tags.map(t=>`<span class="gap-t">${t}</span>`).join('')}</div><button class="add-btn" onclick="addFromGap(${JSON.stringify(g.title)})">+ Track this →</button></div>`;});
 
 // ══════════════════════════════════════
 // TRACKER
 // ══════════════════════════════════════
-let currentFilter = 'all';
-let priorityFilter = null;
-let editingId = null;
-let tempNotes = [];
+let currentFilter='all', priorityFilter=null, editingId=null, tempNotes=[];
 
-function saveData() { localStorage.setItem('wh-opps', JSON.stringify(opportunities)); }
-function genId() { return Date.now().toString(36) + Math.random().toString(36).substr(2,5); }
-function escHtml(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function formatDate(ts) { return new Date(ts).toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
-function formatDateTime(ts) { return new Date(ts).toLocaleDateString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}); }
-
-function getUserColor(userIdx) {
-  if (!store || userIdx === undefined || userIdx === null) return '#aaa';
-  return store.users[userIdx]?.color || '#aaa';
-}
-function getUserName(userIdx) {
-  if (!store || userIdx === undefined || userIdx === null) return 'Unknown';
-  return store.users[userIdx]?.name || 'Unknown';
-}
-function getUserInitials(userIdx) {
-  if (!store || userIdx === undefined || userIdx === null) return '?';
-  return store.users[userIdx]?.initials || '?';
-}
+function genId() { return Date.now().toString(36)+Math.random().toString(36).substr(2,5); }
+function getUserColor(idx)    { return store?.users[idx]?.color    || '#aaa'; }
+function getUserName(idx)     { return store?.users[idx]?.name     || 'Unknown'; }
+function getUserInitials(idx) { return store?.users[idx]?.initials || '?'; }
 
 function renderTeamBar() {
-  if (!store) return;
   const el = document.getElementById('team-bar');
-  if (!el) return;
-  const counts = [0, 1].map(i => opportunities.filter(o => o.createdBy === i).length);
+  if (!el || !store) return;
+  const counts = [0,1].map(i => opps.filter(o=>o.createdBy===i).length);
   el.innerHTML = '<span class="team-bar-label">Team</span>' +
-    store.users.map((u, i) => `
-      <div class="team-member-chip">
-        <div class="team-chip-avatar" style="background:${u.color}">${u.initials}</div>
-        <span class="team-chip-name">${escHtml(u.name)}</span>
-        <span class="team-chip-count">${counts[i]} opp.</span>
-      </div>`).join('');
+    store.users.map((u,i) => `<div class="team-member-chip"><div class="team-chip-avatar" style="background:${u.color}">${u.initials}</div><span class="team-chip-name">${escHtml(u.name)}</span><span class="team-chip-count">${counts[i]} opp.</span></div>`).join('');
 }
 
 function renderBoard() {
   if (!store) return;
-  const stages = ['exploring','validating','building','launched'];
-  const sortVal = document.getElementById('sort-select')?.value || 'newest';
+  const sort = document.getElementById('sort-select')?.value || 'newest';
+  let list = [...opps];
+  if (currentFilter !== 'all') list = list.filter(o=>o.cat===currentFilter);
+  if (priorityFilter)          list = list.filter(o=>o.priority===priorityFilter);
+  if (sort==='newest')  list.sort((a,b)=>b.created-a.created);
+  else if (sort==='oldest') list.sort((a,b)=>a.created-b.created);
+  else { const ord={high:0,med:1,low:2}; list.sort((a,b)=>ord[a.priority]-ord[b.priority]); }
 
-  let filtered = [...opportunities];
-  if (currentFilter !== 'all') filtered = filtered.filter(o => o.cat === currentFilter);
-  if (priorityFilter) filtered = filtered.filter(o => o.priority === priorityFilter);
-  if (sortVal === 'newest') filtered.sort((a,b) => b.created-a.created);
-  else if (sortVal === 'oldest') filtered.sort((a,b) => a.created-b.created);
-  else { const ord={high:0,med:1,low:2}; filtered.sort((a,b) => ord[a.priority]-ord[b.priority]); }
-
-  stages.forEach(stage => {
-    const col = document.getElementById('col-' + stage);
-    const countEl = document.getElementById('count-' + stage);
-    const items = filtered.filter(o => o.stage === stage);
-    if (countEl) countEl.textContent = items.length;
+  ['exploring','validating','building','launched'].forEach(stage => {
+    const col = document.getElementById('col-'+stage);
+    const cnt = document.getElementById('count-'+stage);
+    const items = list.filter(o=>o.stage===stage);
+    if (cnt) cnt.textContent = items.length;
     if (!col) return;
-    if (items.length === 0) { col.innerHTML = `<div class="empty-col"><div class="ec-icon">💭</div>Drop ideas here</div>`; return; }
+    if (!items.length) { col.innerHTML=`<div class="empty-col"><div class="ec-icon">💭</div>Drop ideas here</div>`; return; }
     col.innerHTML = items.map(o => {
-      const pC = {high:'p-high',med:'p-med',low:'p-low'}[o.priority]||'p-med';
-      const tagHtml = (o.tags||[]).slice(0,3).map(t=>`<span class="opp-tag">${escHtml(t)}</span>`).join('');
-      const noteCount = (o.notes||[]).length;
-      // show unique author avatars
-      const authorIdxs = [...new Set([o.createdBy, ...((o.notes||[]).map(n=>n.userIdx))].filter(x=>x!==undefined&&x!==null))];
-      const authorsHtml = authorIdxs.map(idx => `<div class="card-author-avatar" style="background:${getUserColor(idx)}" title="${getUserName(idx)}">${getUserInitials(idx)}</div>`).join('');
+      const pC={high:'p-high',med:'p-med',low:'p-low'}[o.priority]||'p-med';
+      const tags=(o.tags||[]).slice(0,3).map(t=>`<span class="opp-tag">${escHtml(t)}</span>`).join('');
+      const noteCount=(o.notes||[]).length;
+      const authorIdxs=[...new Set([o.createdBy,...((o.notes||[]).map(n=>n.userIdx))].filter(x=>x!=null))];
+      const avs=authorIdxs.map(i=>`<div class="card-author-av" style="background:${getUserColor(i)}" title="${getUserName(i)}">${getUserInitials(i)}</div>`).join('');
       return `<div class="opp-card" onclick="openEditModal('${o.id}')">
         <div class="opp-card-top"><h4>${escHtml(o.name)}</h4><div class="opp-priority ${pC}"></div></div>
         <div class="opp-card-cat">${escHtml(o.cat)}${o.market?' · '+escHtml(o.market):''}</div>
         ${o.desc?`<div class="opp-card-note">${escHtml(o.desc)}</div>`:''}
-        ${tagHtml?`<div class="opp-tags">${tagHtml}</div>`:''}
-        <div class="opp-card-footer">
-          <span class="opp-date">${formatDate(o.created)}${noteCount?` · 💬 ${noteCount}`:''}</span>
-          <div class="card-authors">${authorsHtml}</div>
-        </div>
+        ${tags?`<div class="opp-tags">${tags}</div>`:''}
+        <div class="opp-card-footer"><span class="opp-date">${formatDate(o.created)}${noteCount?` · 💬 ${noteCount}`:''}</span><div class="card-authors">${avs}</div></div>
       </div>`;
     }).join('');
   });
 
-  document.getElementById('stat-total').textContent = opportunities.length;
-  stages.forEach(s => { const el=document.getElementById('stat-'+s); if(el) el.textContent=opportunities.filter(o=>o.stage===s).length; });
+  document.getElementById('stat-total').textContent = opps.length;
+  ['exploring','validating','building','launched'].forEach(s=>{const el=document.getElementById('stat-'+s);if(el)el.textContent=opps.filter(o=>o.stage===s).length;});
   renderTeamBar();
 }
 
-// ── FILTERS ──
 function setFilter(val, btn) {
-  currentFilter = (currentFilter === val && val !== 'all') ? 'all' : val;
-  document.querySelectorAll('.tfilter-btn[data-filter]').forEach(b => b.classList.remove('active'));
-  if (currentFilter === 'all') document.querySelector('.tfilter-btn[data-filter="all"]').classList.add('active');
-  else btn.classList.add('active');
-  priorityFilter = null;
-  document.querySelectorAll('.tfilter-btn[data-priority]').forEach(b => b.classList.remove('active'));
+  currentFilter = (currentFilter===val && val!=='all') ? 'all' : val;
+  document.querySelectorAll('.tfilter-btn[data-filter]').forEach(b=>b.classList.remove('active'));
+  (currentFilter==='all' ? document.querySelector('.tfilter-btn[data-filter="all"]') : btn)?.classList.add('active');
+  priorityFilter=null; document.querySelectorAll('.tfilter-btn[data-priority]').forEach(b=>b.classList.remove('active'));
   renderBoard();
 }
 function setPriority(val, btn) {
-  if (priorityFilter === val) { priorityFilter = null; btn.classList.remove('active'); }
-  else { priorityFilter = val; btn.classList.add('active'); }
+  priorityFilter = priorityFilter===val ? null : val;
+  document.querySelectorAll('.tfilter-btn[data-priority]').forEach(b=>b.classList.remove('active'));
+  if (priorityFilter) btn.classList.add('active');
   renderBoard();
 }
 
-// ── MODAL ──
-function openModal(prefill) {
-  editingId = null; tempNotes = [];
-  document.getElementById('opp-id').value = '';
-  document.getElementById('opp-name').value = prefill||'';
-  document.getElementById('opp-cat').value = 'FemTech';
-  document.getElementById('opp-stage').value = 'exploring';
-  document.getElementById('opp-priority').value = 'med';
-  document.getElementById('opp-market').value = '';
-  document.getElementById('opp-desc').value = '';
-  document.getElementById('opp-tags').value = '';
-  document.getElementById('btn-delete').style.display = 'none';
-  document.getElementById('modal-title').textContent = 'New Opportunity';
-  renderNotes();
-  document.getElementById('modal-overlay').classList.add('open');
+// modal
+function openModal(pre) {
+  editingId=null; tempNotes=[];
+  ['opp-id','opp-name','opp-market','opp-desc','opp-tags'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('opp-cat').value='FemTech';
+  document.getElementById('opp-stage').value='exploring';
+  document.getElementById('opp-priority').value='med';
+  if (pre) document.getElementById('opp-name').value=pre;
+  document.getElementById('btn-delete').style.display='none';
+  document.getElementById('modal-title').textContent='New Opportunity';
+  renderNotes(); document.getElementById('modal-overlay').classList.add('open');
 }
 function openEditModal(id) {
-  const opp = opportunities.find(o => o.id === id);
-  if (!opp) return;
-  editingId = id; tempNotes = [...(opp.notes||[])];
-  document.getElementById('opp-id').value = id;
-  document.getElementById('opp-name').value = opp.name;
-  document.getElementById('opp-cat').value = opp.cat;
-  document.getElementById('opp-stage').value = opp.stage;
-  document.getElementById('opp-priority').value = opp.priority;
-  document.getElementById('opp-market').value = opp.market||'';
-  document.getElementById('opp-desc').value = opp.desc||'';
-  document.getElementById('opp-tags').value = (opp.tags||[]).join(', ');
-  document.getElementById('btn-delete').style.display = 'inline-flex';
-  document.getElementById('modal-title').textContent = 'Edit Opportunity';
-  renderNotes();
-  document.getElementById('modal-overlay').classList.add('open');
+  const o=opps.find(x=>x.id===id); if(!o) return;
+  editingId=id; tempNotes=[...(o.notes||[])];
+  document.getElementById('opp-id').value=id;
+  document.getElementById('opp-name').value=o.name;
+  document.getElementById('opp-cat').value=o.cat;
+  document.getElementById('opp-stage').value=o.stage;
+  document.getElementById('opp-priority').value=o.priority;
+  document.getElementById('opp-market').value=o.market||'';
+  document.getElementById('opp-desc').value=o.desc||'';
+  document.getElementById('opp-tags').value=(o.tags||[]).join(', ');
+  document.getElementById('btn-delete').style.display='inline-flex';
+  document.getElementById('modal-title').textContent='Edit Opportunity';
+  renderNotes(); document.getElementById('modal-overlay').classList.add('open');
 }
 function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); editingId=null; tempNotes=[]; }
-function handleOverlayClick(e) { if (e.target===document.getElementById('modal-overlay')) closeModal(); }
+function handleOverlayClick(e) { if(e.target===document.getElementById('modal-overlay'))closeModal(); }
 
 function saveOpp() {
-  const name = document.getElementById('opp-name').value.trim();
-  if (!name) { document.getElementById('opp-name').focus(); return; }
-  const tags = document.getElementById('opp-tags').value ? document.getElementById('opp-tags').value.split(',').map(t=>t.trim()).filter(Boolean) : [];
-  const data = { name, cat:document.getElementById('opp-cat').value, stage:document.getElementById('opp-stage').value, priority:document.getElementById('opp-priority').value, market:document.getElementById('opp-market').value.trim(), desc:document.getElementById('opp-desc').value.trim(), tags, notes:[...tempNotes], updated:Date.now() };
-  if (editingId) {
-    const idx = opportunities.findIndex(o=>o.id===editingId);
-    if (idx!==-1) opportunities[idx] = {...opportunities[idx], ...data};
-  } else {
-    opportunities.push({id:genId(), ...data, createdBy:activeUser, created:Date.now()});
-  }
-  saveData(); closeModal(); renderBoard();
+  const name=document.getElementById('opp-name').value.trim();
+  if(!name){document.getElementById('opp-name').focus();return;}
+  const tags=document.getElementById('opp-tags').value?document.getElementById('opp-tags').value.split(',').map(t=>t.trim()).filter(Boolean):[];
+  const data={name,cat:document.getElementById('opp-cat').value,stage:document.getElementById('opp-stage').value,priority:document.getElementById('opp-priority').value,market:document.getElementById('opp-market').value.trim(),desc:document.getElementById('opp-desc').value.trim(),tags,notes:[...tempNotes],updated:Date.now()};
+  if(editingId){const i=opps.findIndex(o=>o.id===editingId);if(i!==-1)opps[i]={...opps[i],...data};}
+  else opps.push({id:genId(),...data,createdBy:activeUser,created:Date.now()});
+  saveOpps(); closeModal(); renderBoard();
 }
 function deleteOpp() {
-  if (!editingId) return;
-  if (!confirm('Delete this opportunity?')) return;
-  opportunities = opportunities.filter(o=>o.id!==editingId);
-  saveData(); closeModal(); renderBoard();
+  if(!editingId||!confirm('Delete this opportunity?'))return;
+  opps=opps.filter(o=>o.id!==editingId);
+  saveOpps(); closeModal(); renderBoard();
 }
 
-// ── NOTES ──
 function renderNotes() {
-  const el = document.getElementById('notes-thread');
-  if (!el) return;
-  // update "posting as" label
-  const whoEl = document.getElementById('note-who-label');
-  if (whoEl && store && activeUser!==null) {
-    const u = store.users[activeUser];
-    whoEl.innerHTML = `Posting as <div class="note-who-avatar" style="background:${u.color}">${u.initials}</div> <strong>${escHtml(u.name)}</strong>`;
-  }
-  if (tempNotes.length===0) { el.innerHTML='<div style="font-size:.78rem;color:var(--text-light);font-style:italic;padding:6px 0;">No notes yet — start the discussion!</div>'; return; }
-  el.innerHTML = tempNotes.map((n,i) => {
-    const color = getUserColor(n.userIdx);
-    const uname = getUserName(n.userIdx);
-    const initials = getUserInitials(n.userIdx);
-    return `<div class="note-entry note-u${(n.userIdx||0)+1}">
-      <div class="note-entry-header">
-        <div class="note-avatar" style="background:${color}">${initials}</div>
-        <span class="note-author" style="color:${color}">${escHtml(uname)}</span>
-        <span class="note-time">${formatDateTime(n.ts)}</span>
-      </div>
-      <div class="note-text">${escHtml(n.text)}</div>
-    </div>`;
-  }).join('');
-  el.scrollTop = el.scrollHeight;
+  const el=document.getElementById('notes-thread'); if(!el)return;
+  const whoEl=document.getElementById('note-who-label');
+  if(whoEl&&store&&activeUser!=null){const u=store.users[activeUser];whoEl.innerHTML=`Posting as <div class="note-who-av" style="background:${u.color}">${u.initials}</div> <strong>${escHtml(u.name)}</strong>`;}
+  if(!tempNotes.length){el.innerHTML='<div style="font-size:.78rem;color:var(--text-light);font-style:italic;padding:6px 0">No notes yet — start the discussion!</div>';return;}
+  el.innerHTML=tempNotes.map(n=>`<div class="note-entry note-u${(n.userIdx??0)}">
+    <div class="note-entry-header"><div class="note-avatar" style="background:${getUserColor(n.userIdx)}">${getUserInitials(n.userIdx)}</div><span class="note-author" style="color:${getUserColor(n.userIdx)}">${escHtml(getUserName(n.userIdx))}</span><span class="note-time">${formatDT(n.ts)}</span></div>
+    <div class="note-text">${escHtml(n.text)}</div>
+  </div>`).join('');
+  el.scrollTop=el.scrollHeight;
 }
 function addNote() {
-  const input = document.getElementById('note-input');
-  const text = input.value.trim();
-  if (!text) return;
-  tempNotes.push({ text, userIdx: activeUser, ts: Date.now() });
-  input.value = '';
-  renderNotes();
+  const inp=document.getElementById('note-input');
+  const txt=inp.value.trim(); if(!txt)return;
+  tempNotes.push({text:txt,userIdx:activeUser,ts:Date.now()});
+  inp.value=''; renderNotes();
 }
-
-// ── ADD FROM GAP ──
 function addFromGap(title) {
-  showPage('tracker');
-  document.querySelectorAll('.nav-tab').forEach((t,i) => { if(i===1) t.classList.add('active'); else t.classList.remove('active'); });
-  setTimeout(() => openModal(title), 100);
+  showPage('tracker'); document.querySelectorAll('.nav-tab').forEach((t,i)=>{t.classList.toggle('active',i===1);});
+  setTimeout(()=>openModal(title),100);
 }
 </script>
 </body>
