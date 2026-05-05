@@ -836,6 +836,7 @@ async function saveOpp() {
     }
     btn.disabled = false; btn.textContent = 'Save';
     closeModal();
+    await loadOpps();
   } catch (e) {
     console.error('saveOpp error:', e);
     showModalError(e.message || 'Something went wrong — check console.');
@@ -848,6 +849,7 @@ async function confirmDelete() {
   const { error } = await sb.from('opportunities').delete().eq('id', modalOppId);
   if (error) { showModalError(error.message); return; }
   closeModal();
+  await loadOpps();
 }
 
 // ══════════════════════════════════
@@ -902,9 +904,10 @@ async function postNote() {
   inp.value = '';
 
   if (modalOppId) {
-    // existing opp — save immediately to DB
-    await sb.from('notes').insert({ opportunity_id: modalOppId, text, user_id: currentUser.id });
-    // real-time will refresh
+    const { error } = await sb.from('notes').insert({ opportunity_id: modalOppId, text, user_id: currentUser.id });
+    if (error) { console.error('note error:', error.message); return; }
+    await loadOpps();
+    renderModalNotes();
   } else {
     // new opp — buffer locally
     tempNotes.push({ text, user_id: currentUser.id, created_at: new Date().toISOString() });
