@@ -547,20 +547,32 @@ async function doLogin() {
   if (!email || !pw) { err.textContent = 'Please enter email and password.'; return; }
   btn.innerHTML = '<span class="spinner"></span>';
   btn.disabled = true;
-  const { data, error } = await sb.auth.signInWithPassword({ email, password: pw });
+  let data, error;
+  try {
+    ({ data, error } = await sb.auth.signInWithPassword({ email, password: pw }));
+  } catch (e) {
+    btn.innerHTML = 'Sign in →';
+    btn.disabled = false;
+    err.textContent = 'Network error: ' + e.message;
+    return;
+  }
   btn.innerHTML = 'Sign in →';
   btn.disabled = false;
   if (error) {
-    if (error.message.includes('Invalid login credentials')) {
+    if (error.message.toLowerCase().includes('invalid login credentials') || error.message.toLowerCase().includes('invalid credentials')) {
       err.textContent = 'Wrong email or password. Try again.';
-    } else if (error.message.includes('Email not confirmed')) {
+    } else if (error.message.toLowerCase().includes('email not confirmed')) {
       err.style.color = '#b07800';
-      err.textContent = '📧 Check your email and click the confirmation link first, then try signing in.';
+      err.textContent = '📧 Email not confirmed. Go to Supabase → Authentication → Users, find your email, click ••• → Send confirmation email. Or delete your account there and sign up again here.';
     } else {
-      err.textContent = error.message;
+      err.textContent = 'Error: ' + error.message;
     }
+    return;
   }
-  // on success, onAuthStateChange handles the redirect
+  if (!data?.session) {
+    err.textContent = 'Sign in returned no session — please try signing up first.';
+  }
+  // on success, onAuthStateChange fires and opens the app
 }
 
 // ══════════════════════════════════
