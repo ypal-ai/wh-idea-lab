@@ -541,15 +541,26 @@ async function doLogin() {
   const err = document.getElementById('login-error');
   const btn = document.getElementById('login-btn');
   err.textContent = '';
+  err.style.color = 'var(--deep-rose)';
   const email = document.getElementById('l-email').value.trim();
   const pw    = document.getElementById('l-pw').value;
   if (!email || !pw) { err.textContent = 'Please enter email and password.'; return; }
   btn.innerHTML = '<span class="spinner"></span>';
   btn.disabled = true;
-  const { error } = await sb.auth.signInWithPassword({ email, password: pw });
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pw });
   btn.innerHTML = 'Sign in →';
   btn.disabled = false;
-  if (error) { err.textContent = error.message === 'Invalid login credentials' ? 'Wrong email or password.' : error.message; }
+  if (error) {
+    if (error.message.includes('Invalid login credentials')) {
+      err.textContent = 'Wrong email or password. Try again.';
+    } else if (error.message.includes('Email not confirmed')) {
+      err.style.color = '#b07800';
+      err.textContent = '📧 Check your email and click the confirmation link first, then try signing in.';
+    } else {
+      err.textContent = error.message;
+    }
+  }
+  // on success, onAuthStateChange handles the redirect
 }
 
 // ══════════════════════════════════
@@ -559,6 +570,7 @@ async function doSignup() {
   const err = document.getElementById('signup-error');
   const btn = document.getElementById('signup-btn');
   err.textContent = '';
+  err.style.color = 'var(--deep-rose)';
   const name  = document.getElementById('s-name').value.trim();
   const email = document.getElementById('s-email').value.trim();
   const pw    = document.getElementById('s-pw').value;
@@ -568,16 +580,27 @@ async function doSignup() {
   btn.innerHTML = '<span class="spinner"></span>';
   btn.disabled = true;
   const { data, error } = await sb.auth.signUp({ email, password: pw });
-  if (error) { err.textContent = error.message; btn.innerHTML = 'Create account →'; btn.disabled = false; return; }
-  // create profile
-  await sb.from('profiles').insert({
-    id: data.user.id,
-    name,
-    color: signupColor,
-    initials: name[0].toUpperCase()
-  });
   btn.innerHTML = 'Create account →';
   btn.disabled = false;
+  if (error) { err.textContent = error.message; return; }
+
+  // save profile regardless of confirmation state
+  if (data.user) {
+    await sb.from('profiles').upsert({
+      id: data.user.id,
+      name,
+      color: signupColor,
+      initials: name[0].toUpperCase()
+    });
+  }
+
+  // if session exists → auto-logged in (email confirmation is OFF)
+  // if no session → email confirmation required
+  if (!data.session) {
+    err.style.color = '#2d7a2d';
+    err.textContent = '✅ Account created! Check your email for a confirmation link, then come back and sign in.';
+  }
+  // if session exists, onAuthStateChange fires automatically and opens the app
 }
 
 // ══════════════════════════════════
@@ -593,10 +616,16 @@ async function doSignOut() {
 sb.auth.onAuthStateChange(async (event, session) => {
   if (session?.user) {
     currentUser = session.user;
-    await loadProfiles();
-    await loadOpps();
-    subscribeRealtime();
-    enterApp();
+    try {
+      await loadProfiles();
+      await loadOpps();
+      subscribeRealtime();
+      enterApp();
+    } catch (e) {
+      console.error('App load error:', e);
+      // still show app even if data load fails
+      enterApp();
+    }
   } else {
     currentUser = null; myProfile = null;
     document.getElementById('app').style.display = 'none';
